@@ -1,76 +1,89 @@
 const path = require('path')
 const express = require('express')
-const morgan = require('morgan')
 const compression = require('compression')
-const session = require('express-session')
-const passport = require('passport')
-const SequelizeStore = require('connect-session-sequelize')(session.Store)
-const db = require('./db')
-const sessionStore = new SequelizeStore({db})
 const PORT = process.env.PORT || 8080
 const app = express()
-const socketio = require('socket.io')
 module.exports = app
+// const http = require("http").Server(app);
+const socketio = require('socket.io') /*(http)*/
+const bodyParser = require('body-parser')
+const cors = require('cors')
+const cryptoRandomString = require('crypto-random-string') //({length: num, type: 'string'})
 
-// This is a global Mocha hook, used for resource cleanup.
-// Otherwise, Mocha v4+ never quits after tests.
-if (process.env.NODE_ENV === 'test') {
-  after('close the session store', () => sessionStore.stopExpiringSessions())
-}
-
-/**
- * In your development environment, you can keep all of your
- * app's secret API keys in a file called `secrets.js`, in your project
- * root. This file is included in the .gitignore - it will NOT be tracked
- * or show up on Github. On your production server, you can add these
- * keys as environment variables, so that they can still be read by the
- * Node process on process.env
- */
-if (process.env.NODE_ENV !== 'production') require('../secrets')
-
-// passport registration
-passport.serializeUser((user, done) => done(null, user.id))
-
-passport.deserializeUser(async (id, done) => {
-  try {
-    const user = await db.models.user.findByPk(id)
-    done(null, user)
-  } catch (err) {
-    done(err)
-  }
-})
+const sessions = {}
 
 const createApp = () => {
   // logging middleware
-  app.use(morgan('dev'))
-
   // body parsing middleware
-  app.use(express.json())
-  app.use(express.urlencoded({extended: true}))
+  app.use(cors())
+  app.use(bodyParser.json())
+  app.use(bodyParser.urlencoded({extended: false}))
 
   // compression middleware
   app.use(compression())
 
-  // session middleware with passport
-  app.use(
-    session({
-      secret: process.env.SESSION_SECRET || 'my best friend is Cody',
-      store: sessionStore,
-      resave: false,
-      saveUninitialized: false
-    })
-  )
-  app.use(passport.initialize())
-  app.use(passport.session())
-
-  // auth and api routes
-  app.use('/auth', require('./auth'))
-  app.use('/api', require('./api'))
-
   // static file-serving middleware
   app.use(express.static(path.join(__dirname, '..', 'public')))
 
+  app.post('/create_user', (req, res) => {
+    const sessionKey = generateId(10)
+    sessions[sessionKey] = new Session(req.body.name)
+    res.json({success: true, sessionKey})
+  })
+
+  setInterval(() => {
+    for (sessionKey in sessions) {
+      const session = sessions[sessionKey]
+      session.decrementTimer()
+      if (session.getTimer() === 0) {
+        delete sessions[sessionKey]
+      }
+    }
+  }, 1000)
+
+  const generateId = len => {
+    return cryptoRandomString({length: len, type: 'base64'})
+  }
+
+  class Session {
+    constructor(name) {
+      this._name = name
+      this._mouseX = 0
+      this._mouseY = 0
+      this._timer = 10
+    }
+    getName() {
+      return this._name
+    }
+    getMouseX() {
+      return this._mouseX
+    }
+    getMouseY() {
+      return this._mouseY
+    }
+    setMouseX(x) {
+      this._mouseX = x
+    }
+    setMouseY(y) {
+      this._mouseY = y
+    }
+    resetTimer() {
+      this._timer = 10
+    }
+    decrementTimer() {
+      this._timer -= 1
+    }
+    getTimer() {
+      return this._timer
+    }
+  }
+
   // any remaining requests with an extension (.js, .css, etc.) send 404
+  // sends index.html
+  app.use('*', (req, res) => {
+    res.sendFile(path.join(__dirname, '..', 'public/index.html'))
+  })
+
   app.use((req, res, next) => {
     if (path.extname(req.path).length) {
       const err = new Error('Not found')
@@ -79,11 +92,6 @@ const createApp = () => {
     } else {
       next()
     }
-  })
-
-  // sends index.html
-  app.use('*', (req, res) => {
-    res.sendFile(path.join(__dirname, '..', 'public/index.html'))
   })
 
   // error handling endware
@@ -97,19 +105,47 @@ const createApp = () => {
 const startListening = () => {
   // start listening (and create a 'server' object representing our server)
   const server = app.listen(PORT, () =>
-    console.log(`Mixing it up on port ${PORT}`)
+    console.log(`listening on port ${PORT}`)
   )
 
   // set up our socket control center
   const io = socketio(server)
-  require('./socket')(io)
+  io.on('connection', socket => {
+    console.log('connected')
+    setInterval(() => {
+      const sessionKeys = Object.keys(sessions)
+      const cursorPositions = []
+      for (let i = 0, n = sessionKeys.length; i < n; i++) {
+        const key = sessionKeys[i]
+        const session = sessions[key]
+        cursorPositions.push({
+          x: session.getMouseX(),
+          y: session.getMouseY(),
+          name: session.getName(),
+          key: session.getName()
+        })
+      }
+      socket.emit('cursor', cursorPositions)
+    }, Math.round(1001 / 30))
+    socket.on('cursor', data => {
+      const session = sessions[data.sessionKey]
+      session.resetTimer()
+      session.setMouseX(data.x)
+      session.setMouseY(data.y)
+    })
+    socket.on('line', data => {
+      const session = sessions[data.sessionKey]
+      const lineCoordinates = data.lineCoordinates
+      io.emit('line', {
+        lineWidth: data.lineWidth,
+        lineColor: data.lineColor,
+        lineCoordinates
+      })
+    })
+  })
 }
 
-const syncDb = () => db.sync()
-
 async function bootApp() {
-  await sessionStore.sync()
-  await syncDb()
   await createApp()
   await startListening()
 }
