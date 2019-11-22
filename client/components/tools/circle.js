@@ -6,7 +6,11 @@ let _id = 0
 const circle = {
   circle: {
     name: 'Circle',
-    mongoObj: {_id, name: 'Circle', radius: props.layer.props.radius},
+    saveObj: function(props) {
+      const { props: { x, y, radius } } = props.layer
+      const mongoObj = { _id, name: 'Circle', radius, x, y }
+      return mongoObj
+    },
     DimensionsComponent: props => {
       return (
         <div>
@@ -44,6 +48,8 @@ const circle = {
         props: {
           radius,
           fill,
+          x,
+          y
         }
       }
     }
