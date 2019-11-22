@@ -1,16 +1,9 @@
 /* eslint-disable react/display-name */
 import React from 'react'
 
-let _id = 0
-
 const circle = {
   circle: {
     name: 'Circle',
-    saveObj: function(props) {
-      const { x, y, radius } = props
-      const mongoObj = { _id, name: 'Circle', radius, x, y }
-      return mongoObj
-    },
     DimensionsComponent: props => {
       return (
         <div>
