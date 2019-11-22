@@ -62,6 +62,9 @@ class App extends Component {
     this.socket.on('cursor', data => {
       if (this.state.loaded) {
         console.log(data) // reflect this data as positions of cursors yet to be designed
+        //exclude yourself
+        // map data to svgs, and update their positions
+
         this.setState({cursors: data})
       }
     })
@@ -197,12 +200,12 @@ class App extends Component {
               onMouseMove={this.handleDisplayMouseMove.bind(this)}
               onMouseDown={this.handleDisplayMouseDown.bind(this)}
               onMouseUp={this.handleDisplayMouseUp.bind(this)}
-            ></canvas>
+             />
             <div className="toolbox">
               <ChromePicker
                 color={this.state.brushColor}
                 onChangeComplete={this.handleColorChange.bind(this)}
-              ></ChromePicker>
+               />
               <Tool
                 name="Eraser"
                 currentTool={this.state.toolId}
@@ -232,7 +235,7 @@ class App extends Component {
                   height: this.state.brushSize + 'px',
                   background: this.state.brushColor
                 }}
-              ></span>
+               />
             </div>
             {this.state.cursors.map(cursor => (
               <div
@@ -248,7 +251,7 @@ class App extends Component {
                     width: '2px',
                     height: '2px'
                   }}
-                ></div>{' '}
+                 />{' '}
                 {cursor.name}
               </div>
             ))}

@@ -8,7 +8,7 @@ module.exports = app
 const socketio = require('socket.io') /*(http)*/
 const bodyParser = require('body-parser')
 const cors = require('cors')
-const cryptoRandomString = require('crypto-random-string') //({length: num, type: 'string'})
+const faker = require('faker')
 
 const sessions = {}
 
@@ -25,8 +25,12 @@ const createApp = () => {
   // static file-serving middleware
   app.use(express.static(path.join(__dirname, '..', 'public')))
 
+  const generateId = () => {
+    return faker.random.uuid()
+  }
+
   app.post('/create_user', (req, res) => {
-    const sessionKey = generateId(10)
+    const sessionKey = generateId()
     sessions[sessionKey] = new Session(req.body.name)
     res.json({success: true, sessionKey})
   })
@@ -40,10 +44,6 @@ const createApp = () => {
       }
     }
   }, 1000)
-
-  const generateId = len => {
-    return cryptoRandomString({length: len, type: 'base64'})
-  }
 
   class Session {
     constructor(name) {
@@ -105,8 +105,7 @@ const createApp = () => {
 const startListening = () => {
   // start listening (and create a 'server' object representing our server)
   const server = app.listen(PORT, () =>
-    console.log(`listening on port ${PORT}`)
-  )
+    console.log(`listening on port http://localhost:${PORT}`))
 
   // set up our socket control center
   const io = socketio(server)
@@ -123,6 +122,7 @@ const startListening = () => {
           y: session.getMouseY(),
           name: session.getName(),
           key: session.getName()
+          // cursorID ??
         })
       }
       socket.emit('cursor', cursorPositions)
