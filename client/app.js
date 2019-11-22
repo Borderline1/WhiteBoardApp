@@ -15,8 +15,8 @@
 // export default App
 
 import React, {Component} from 'react'
-import {ChromePicker} from 'react-color'
-import Tool from './components/Tool'
+import SideBar from './components/SideBar'
+
 import io from 'socket.io-client'
 // import "./App.css";
 
@@ -192,6 +192,14 @@ class App extends Component {
         </svg> */}
         {this.state.loaded ? (
           <div>
+            <SideBar
+              brushSize={this.state.brushSize}
+              brushColor={this.state.brushColor}
+              toolId={this.state.toolId}
+              handleToolClick={this.handleToolClick.bind(this)}
+              handleColorChange={this.handleColorChange.bind(this)}
+              handleBrushResize={this.handleBrushResize.bind(this)}
+            />
             <canvas
               className="display"
               width={`${Number(window.screen.width) * 5}`}
@@ -201,42 +209,7 @@ class App extends Component {
               onMouseDown={this.handleDisplayMouseDown.bind(this)}
               onMouseUp={this.handleDisplayMouseUp.bind(this)}
             />
-            <div className="toolbox">
-              <ChromePicker
-                color={this.state.brushColor}
-                onChangeComplete={this.handleColorChange.bind(this)}
-              />
-              <Tool
-                name="Eraser"
-                currentTool={this.state.toolId}
-                toolId="eraser"
-                onSelect={this.handleToolClick.bind(this)}
-              />
-              <Tool
-                name="Pen"
-                currentTool={this.state.toolId}
-                toolId="pen"
-                onSelect={this.handleToolClick.bind(this)}
-              />
-              <code className="brush-size-label">
-                Size ({String(this.state.brushSize)})
-              </code>{' '}
-              <input
-                onChange={this.handleBrushResize.bind(this)}
-                value={this.state.brushSize}
-                type="range"
-                min="1"
-                max="50"
-              />
-              <span
-                className="brush-size-indicator"
-                style={{
-                  width: this.state.brushSize + 'px',
-                  height: this.state.brushSize + 'px',
-                  background: this.state.brushColor
-                }}
-              />
-            </div>
+
             {this.state.cursors.map(cursor => (
               <div
                 key={cursor.key}
@@ -278,7 +251,6 @@ class App extends Component {
             </button>
           </div>
         )}
-        );
       </div>
     )
   }
