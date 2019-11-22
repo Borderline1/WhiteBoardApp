@@ -61,7 +61,7 @@ class App extends Component {
     })
     this.socket.on('cursor', data => {
       if (this.state.loaded) {
-        console.log(data) // reflect this data as positions of cursors yet to be designed
+        // console.log(data) // reflect this data as positions of cursors yet to be designed
         //exclude yourself
         // map data to svgs, and update their positions
 
@@ -200,12 +200,12 @@ class App extends Component {
               onMouseMove={this.handleDisplayMouseMove.bind(this)}
               onMouseDown={this.handleDisplayMouseDown.bind(this)}
               onMouseUp={this.handleDisplayMouseUp.bind(this)}
-             />
+            />
             <div className="toolbox">
               <ChromePicker
                 color={this.state.brushColor}
                 onChangeComplete={this.handleColorChange.bind(this)}
-               />
+              />
               <Tool
                 name="Eraser"
                 currentTool={this.state.toolId}
@@ -235,23 +235,27 @@ class App extends Component {
                   height: this.state.brushSize + 'px',
                   background: this.state.brushColor
                 }}
-               />
+              />
             </div>
             {this.state.cursors.map(cursor => (
               <div
                 key={cursor.key}
                 className="cursor"
-                style={{left: cursor.x + 8 + 'px', top: cursor.y + 8 + 'px'}}
+                style={{
+                  position: 'absolute',
+                  left: cursor.x + 8 + 'px',
+                  top: cursor.y + 8 + 'px'
+                }}
               >
                 <div
                   style={{
                     borderRadius: '50px',
                     position: 'relative',
                     background: 'silver',
-                    width: '2px',
-                    height: '2px'
+                    width: '4px',
+                    height: '4px'
                   }}
-                 />{' '}
+                />{' '}
                 {cursor.name}
               </div>
             ))}
