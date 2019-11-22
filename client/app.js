@@ -194,8 +194,8 @@ class App extends Component {
           <div>
             <canvas
               className="display"
-              width="640"
-              height="480"
+              width={`${Number(window.screen.width) * 5}`}
+              height={`${Number(window.screen.availHeight) * 5}`}
               ref={this.display}
               onMouseMove={this.handleDisplayMouseMove.bind(this)}
               onMouseDown={this.handleDisplayMouseDown.bind(this)}
