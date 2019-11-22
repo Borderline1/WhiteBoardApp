@@ -4,7 +4,7 @@ import React from 'react'
 
 let _id = 0
 
-export default TOOL_NAME = {
+const TOOL_NAME = {
   tool_name: {
       name: 'Tool Name',
       mongoObj: {_id, name: 'Tool Name', dimensionsLocation: 'WILL VARY'},
@@ -47,3 +47,5 @@ export default TOOL_NAME = {
       }
   }
 }
+
+export default TOOL_NAME
