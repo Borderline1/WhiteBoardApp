@@ -7,7 +7,7 @@ const circle = {
   circle: {
     name: 'Circle',
     saveObj: function(props) {
-      const { props: { x, y, radius } } = props.layer
+      const { x, y, radius } = props
       const mongoObj = { _id, name: 'Circle', radius, x, y }
       return mongoObj
     },
@@ -47,9 +47,7 @@ const circle = {
         y,
         props: {
           radius,
-          fill,
-          x,
-          y
+          fill
         }
       }
     }
