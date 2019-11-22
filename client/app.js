@@ -15,8 +15,8 @@
 // export default App
 
 import React, {Component} from 'react'
-import {ChromePicker} from 'react-color'
-import Tool from './components/Tool'
+import SideBar from './components/SideBar'
+
 import io from 'socket.io-client'
 // import "./App.css";
 
@@ -72,13 +72,12 @@ class App extends Component {
       if (this.state.loaded) {
         this.socket.emit('cursor', {
           name: this.state.name,
-          x: this.state.mouseX,
-          y: this.state.mouseY,
+          x: this.state.mouseX + window.scrollX,
+          y: this.state.mouseY + window.scrollY,
           sessionKey: window.localStorage.getItem('sessionKey')
         })
       }
     }, 3000)
-    setInterval(() => {}, Math.round(1000 / 60))
   }
   handleNameInput(e) {
     this.setState({name: e.target.value})
@@ -156,8 +155,8 @@ class App extends Component {
       })
     }
     this.socket.emit('cursor', {
-      x: this.state.mouseX,
-      y: this.state.mouseY,
+      x: this.state.mouseX + window.scrollX,
+      y: this.state.mouseY + window.scrollY,
       sessionKey: window.localStorage.getItem('sessionKey')
     })
   }
@@ -174,72 +173,29 @@ class App extends Component {
   render() {
     return (
       <div className="App">
-        {/* <SideBar />
-        <svg viewBox="0 0 700 700" xmlns="http://www.w3.org/2000/svg">
-          <circle r="100" cx="200" cy="200" fill="black"></circle>
-          <circle r="40" cx="200" cy="200" fill="gray"></circle>
-          {radiusArr.map((radius, index) => {
-            return (
-              <circle
-                r={radius}
-                cx="200"
-                cy="200"
-                fill="none"
-                stroke={`${index > 20 ? "red" : "white"}`}
-              ></circle>
-            );
-          })}
-        </svg> */}
         {this.state.loaded ? (
           <div>
+            <SideBar
+              brushSize={this.state.brushSize}
+              brushColor={this.state.brushColor}
+              toolId={this.state.toolId}
+              handleToolClick={this.handleToolClick.bind(this)}
+              handleColorChange={this.handleColorChange.bind(this)}
+              handleBrushResize={this.handleBrushResize.bind(this)}
+            />
             <canvas
               className="display"
-              width="640"
-              height="480"
+              width={`${Number(window.screen.width) * 5}`}
+              height={`${Number(window.screen.availHeight) * 5}`}
               ref={this.display}
               onMouseMove={this.handleDisplayMouseMove.bind(this)}
               onMouseDown={this.handleDisplayMouseDown.bind(this)}
               onMouseUp={this.handleDisplayMouseUp.bind(this)}
             />
-            <div className="toolbox">
-              <ChromePicker
-                color={this.state.brushColor}
-                onChangeComplete={this.handleColorChange.bind(this)}
-              />
-              <Tool
-                name="Eraser"
-                currentTool={this.state.toolId}
-                toolId="eraser"
-                onSelect={this.handleToolClick.bind(this)}
-              />
-              <Tool
-                name="Pen"
-                currentTool={this.state.toolId}
-                toolId="pen"
-                onSelect={this.handleToolClick.bind(this)}
-              />
-              <code className="brush-size-label">
-                Size ({String(this.state.brushSize)})
-              </code>{' '}
-              <input
-                onChange={this.handleBrushResize.bind(this)}
-                value={this.state.brushSize}
-                type="range"
-                min="1"
-                max="50"
-              />
-              <span
-                className="brush-size-indicator"
-                style={{
-                  width: this.state.brushSize + 'px',
-                  height: this.state.brushSize + 'px',
-                  background: this.state.brushColor
-                }}
-              />
-            </div>
+
             {this.state.cursors.map(cursor => (
               <div
-                key={cursor.key}
+                key={cursor.sessionKey}
                 className="cursor"
                 style={{
                   position: 'absolute',
@@ -278,7 +234,6 @@ class App extends Component {
             </button>
           </div>
         )}
-        );
       </div>
     )
   }
