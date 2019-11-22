@@ -19,3 +19,83 @@ form div {
   margin: 1em;
   display: inline-block;
 }
+.tool-container {
+  background: white;
+  color: black;
+  padding: 5px 10px;
+  font-size: 20px;
+  cursor: pointer;
+  margin-top: 5px;
+  border-radius: 3px;
+  text-align: center;
+}
+.tool-container:hover {
+  background: rgb(223, 245, 191);
+}
+.tool-container--selected {
+  background: rgb(165, 252, 34);
+}
+
+.brush-size-indicator {
+  position: relative;
+  border-radius: 50px;
+  display: block;
+  color: white;
+}
+
+.display {
+  border: 1px solid rgb(230, 230, 230);
+}
+
+.pen-size-label {
+  font-size: 15px;
+}
+
+.cursor {
+  position: absolute;
+  color: silver;
+  font-family: 'Arial';
+  font-size: 10px;
+  user-select: none;
+  cursor: default;
+}
+
+.join-container {
+  position: absolute;
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.join-header {
+  font-family: 'Arial';
+  font-size: 30px;
+}
+
+.join-input {
+  font-weight: 300;
+  color: rgb(100, 100, 100);
+  padding: 5px 15px 7px 15px;
+  font-size: 20px;
+  border: none;
+  background: rgb(240, 240, 240);
+  border-radius: 5px;
+}
+
+.join-button {
+  margin-top: 10px;
+  padding: 5px 15px;
+  font-size: 20px;
+  background: rgb(220, 220, 220);
+  font-weight: 300;
+  border: none;
+  border-radius: 5px;
+  color: rgb(100, 100, 100);
+  cursor: pointer;
+}
+.join-button:hover {
+  background: rgb(230, 230, 230);
+}
