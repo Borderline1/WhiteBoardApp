@@ -72,13 +72,12 @@ class App extends Component {
       if (this.state.loaded) {
         this.socket.emit('cursor', {
           name: this.state.name,
-          x: this.state.mouseX,
-          y: this.state.mouseY,
+          x: this.state.mouseX + window.scrollX,
+          y: this.state.mouseY + window.scrollY,
           sessionKey: window.localStorage.getItem('sessionKey')
         })
       }
     }, 3000)
-    setInterval(() => {}, Math.round(1000 / 60))
   }
   handleNameInput(e) {
     this.setState({name: e.target.value})
@@ -156,8 +155,8 @@ class App extends Component {
       })
     }
     this.socket.emit('cursor', {
-      x: this.state.mouseX,
-      y: this.state.mouseY,
+      x: this.state.mouseX + window.scrollX,
+      y: this.state.mouseY + window.scrollY,
       sessionKey: window.localStorage.getItem('sessionKey')
     })
   }
@@ -174,22 +173,6 @@ class App extends Component {
   render() {
     return (
       <div className="App">
-        {/* <SideBar />
-        <svg viewBox="0 0 700 700" xmlns="http://www.w3.org/2000/svg">
-          <circle r="100" cx="200" cy="200" fill="black"></circle>
-          <circle r="40" cx="200" cy="200" fill="gray"></circle>
-          {radiusArr.map((radius, index) => {
-            return (
-              <circle
-                r={radius}
-                cx="200"
-                cy="200"
-                fill="none"
-                stroke={`${index > 20 ? "red" : "white"}`}
-              ></circle>
-            );
-          })}
-        </svg> */}
         {this.state.loaded ? (
           <div>
             <SideBar
@@ -212,7 +195,7 @@ class App extends Component {
 
             {this.state.cursors.map(cursor => (
               <div
-                key={cursor.key}
+                key={cursor.sessionKey}
                 className="cursor"
                 style={{
                   position: 'absolute',
