@@ -11,6 +11,7 @@ const cors = require('cors')
 const faker = require('faker')
 
 const sessions = {}
+const elements = []
 
 // logging middleware
 // body parsing middleware
@@ -109,6 +110,7 @@ const startListening = () => {
   // set up our socket control center
   const io = socketio(server)
   io.on('connection', socket => {
+    socket.emit('create', elements)
     console.log(`socket ${socket.id} connected`)
     // if(interval){clearInterval(interval)}
     // See need to clear interval to not duplicate work done
@@ -128,7 +130,7 @@ const startListening = () => {
       // console.log(cursorPositions)
       socket.broadcast.emit('cursor', cursorPositions)
       // broadcast exludes the socket that the event came from
-    }, Math.round(1000 / 15))
+    }, Math.round(1000 / 30))
 
     socket.on('cursor', data => {
       const session = sessions[data.sessionKey]
@@ -137,6 +139,11 @@ const startListening = () => {
         session.setMouseX(data.x)
         session.setMouseY(data.y)
       }
+    })
+    socket.on('create', data => {
+      elements.push(data)
+      console.log(elements)
+      socket.broadcast.emit('create', elements)
     })
     // socket.on('line', data => {
     //   const session = sessions[data.sessionKey]
@@ -148,7 +155,6 @@ const startListening = () => {
     //   })
     // })
     socket.on('disconnect', socket => {
-      console.log('disconnect')
       clearInterval(interval)
     })
   })

@@ -31,11 +31,11 @@ export const circle = {
       </svg>
     )
   },
-  handleDoubleClick: function(layers, setLayers, x, y, color, uuid) {
-    setLayers([...layers, this.create(x, y, 20, color, uuid)])
+  handleDoubleClick: function(layers, setLayers, x, y, color, uuid, socket) {
+    setLayers([...layers, this.create(x, y, 20, color, uuid, socket)])
   },
-  create: (x, y, radius = '10px', fill = 'black', uuid) => {
-    return {
+  create: (x, y, radius = '10px', fill = 'black', uuid, socket) => {
+    const data = {
       type: 'circle',
       x,
       y,
@@ -45,5 +45,7 @@ export const circle = {
         fill
       }
     }
+    socket.emit('create', data)
+    return data
   }
 }

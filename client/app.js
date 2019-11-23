@@ -10,7 +10,6 @@ const {circle} = types
 import io from 'socket.io-client'
 
 const serverAddress = window.location.origin
-console.log(serverAddress)
 
 const App = () => {
   const canvas = document.querySelector('#canvas')
@@ -31,7 +30,6 @@ const App = () => {
   const selectedLayer = layers.find(layer => layer.id === selectedLayerId)
 
   const indicatedLayer = layers.find(layer => layer.id === indicatedLayerId)
-  console.log(indicatedLayerId, indicatedLayer)
 
   // useInterval(() => setCursorIsStale(true), 3000) // 3 seconds
   useInterval(() => {
@@ -56,6 +54,9 @@ const App = () => {
     if (loaded) {
       socket.on('cursor', data => {
         setCursors(data)
+      })
+      socket.on('create', elements => {
+        setLayers(elements)
       })
     }
   }, [loaded])
@@ -138,7 +139,8 @@ const App = () => {
                 // 20 represents a tool specific offset to center the object
                 mouseY + window.scrollY - 20,
                 color,
-                faker.random.uuid()
+                faker.random.uuid(),
+                socket
               )
             }}
             //   onMouseUp={this.handleDisplayMouseUp.bind(this)}
