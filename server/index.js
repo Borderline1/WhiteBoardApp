@@ -110,7 +110,7 @@ const startListening = () => {
   // set up our socket control center
   const io = socketio(server)
   io.on('connection', socket => {
-    socket.emit('create', elements)
+    socket.emit('create', elements) //not working? should render previously created elements on connect
     console.log(`socket ${socket.id} connected`)
     // if(interval){clearInterval(interval)}
     // See need to clear interval to not duplicate work done
