@@ -109,6 +109,8 @@ const startListening = () => {
   const io = socketio(server)
   io.on('connection', socket => {
     console.log(`socket ${socket.id} connected`)
+    // if(interval){clearInterval(interval)}
+    // See need to clear interval to not duplicate work done
     setInterval(() => {
       const sessionKeys = Object.keys(sessions)
       const cursorPositions = []
@@ -123,8 +125,10 @@ const startListening = () => {
         })
       }
       // console.log(cursorPositions)
-      socket.emit('cursor', cursorPositions)
-    }, Math.round(1000 / 30))
+      socket.broadcast.emit('cursor', cursorPositions)
+      // broadcast exludes the socket that the event came from
+    }, Math.round(1000 / 15))
+
     socket.on('cursor', data => {
       const session = sessions[data.sessionKey]
       if (session) {
@@ -133,15 +137,15 @@ const startListening = () => {
         session.setMouseY(data.y)
       }
     })
-    socket.on('line', data => {
-      const session = sessions[data.sessionKey]
-      const lineCoordinates = data.lineCoordinates
-      io.emit('line', {
-        lineWidth: data.lineWidth,
-        lineColor: data.lineColor,
-        lineCoordinates
-      })
-    })
+    // socket.on('line', data => {
+    //   const session = sessions[data.sessionKey]
+    //   const lineCoordinates = data.lineCoordinates
+    //   io.emit('line', {
+    //     lineWidth: data.lineWidth,
+    //     lineColor: data.lineColor,
+    //     lineCoordinates
+    //   })
+    // })
   })
 }
 
