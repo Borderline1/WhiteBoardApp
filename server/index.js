@@ -35,6 +35,7 @@ app.post('/create_user', (req, res) => {
 })
 
 setInterval(() => {
+  // maybe this setInterval is being ram intensive ??
   for (sessionKey in sessions) {
     const session = sessions[sessionKey]
     session.decrementTimer()
@@ -103,14 +104,15 @@ app.use((err, req, res, next) => {
 const startListening = () => {
   // start listening (and create a 'server' object representing our server)
   const server = app.listen(PORT, () =>
-    console.log(`listening on port http://localhost:${PORT}`)
-  )
+    console.log(`listening on port http://localhost:${PORT}`))
 
   // set up our socket control center
   const io = socketio(server)
   io.on('connection', socket => {
     console.log(`socket ${socket.id} connected`)
-    setInterval(() => {
+    // if(interval){clearInterval(interval)}
+    // See need to clear interval to not duplicate work done
+    const interval = setInterval(() => {
       const sessionKeys = Object.keys(sessions)
       const cursorPositions = []
       for (let i = 0, n = sessionKeys.length; i < n; i++) {
@@ -123,8 +125,11 @@ const startListening = () => {
           sessionKey: key
         })
       }
-      socket.emit('cursor', cursorPositions)
-    }, Math.round(1000 / 30))
+      // console.log(cursorPositions)
+      socket.broadcast.emit('cursor', cursorPositions)
+      // broadcast exludes the socket that the event came from
+    }, Math.round(1000 / 15))
+
     socket.on('cursor', data => {
       const session = sessions[data.sessionKey]
       if (session) {
@@ -133,14 +138,18 @@ const startListening = () => {
         session.setMouseY(data.y)
       }
     })
-    socket.on('line', data => {
-      const session = sessions[data.sessionKey]
-      const lineCoordinates = data.lineCoordinates
-      io.emit('line', {
-        lineWidth: data.lineWidth,
-        lineColor: data.lineColor,
-        lineCoordinates
-      })
+    // socket.on('line', data => {
+    //   const session = sessions[data.sessionKey]
+    //   const lineCoordinates = data.lineCoordinates
+    //   io.emit('line', {
+    //     lineWidth: data.lineWidth,
+    //     lineColor: data.lineColor,
+    //     lineCoordinates
+    //   })
+    // })
+    socket.on('disconnect', socket => {
+      console.log('disconnect')
+      clearInterval(interval)
     })
   })
 }

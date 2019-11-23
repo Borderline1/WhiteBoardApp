@@ -1,3 +1,11 @@
 display {
   background-color: grey;
 }
+
+.layer.indicated {
+  border: dashed 1px grey;
+}
+
+.layer.selected {
+  border: dashed 2px red;
+}
