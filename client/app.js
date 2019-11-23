@@ -127,6 +127,9 @@ const App = () => {
               e => handleDisplayMouseMove(e)
               // dragging implementation
             }
+            onClick={e => {
+              if (e.target.id === 'canvas') setSelectedLayerId(null)
+            }}
             onDoubleClick={event => {
               toolId.handleDoubleClick(
                 layers,
