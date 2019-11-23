@@ -103,8 +103,7 @@ app.use((err, req, res, next) => {
 const startListening = () => {
   // start listening (and create a 'server' object representing our server)
   const server = app.listen(PORT, () =>
-    console.log(`listening on port http://localhost:${PORT}`)
-  )
+    console.log(`listening on port http://localhost:${PORT}`))
 
   // set up our socket control center
   const io = socketio(server)
@@ -123,6 +122,7 @@ const startListening = () => {
           sessionKey: key
         })
       }
+      // console.log(cursorPositions)
       socket.emit('cursor', cursorPositions)
     }, Math.round(1000 / 30))
     socket.on('cursor', data => {
