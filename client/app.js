@@ -3,6 +3,7 @@ import SideBar from './components/SideBar'
 import {types} from './components/tools'
 import useInterval from '@use-it/interval'
 import faker from 'faker'
+import className from 'classnames'
 
 const {circle} = types
 
@@ -24,6 +25,13 @@ const App = () => {
   const [name, setName] = useState('')
   const [loaded, setLoaded] = useState(false)
   const [layers, setLayers] = useState([])
+  const [indicatedLayerId, setIndicatedLayerId] = useState(null)
+  const [selectedLayerId, setSelectedLayerId] = useState(null)
+
+  const selectedLayer = layers.find(layer => layer.id === selectedLayerId)
+  // console.log(selectedLayerId, selectedLayer)
+
+  const indicatedLayer = layers.find(layer => layer.id === indicatedLayerId)
 
   // useInterval(() => setCursorIsStale(true), 3000) // 3 seconds
   useInterval(() => {
@@ -47,7 +55,6 @@ const App = () => {
   useEffect(() => {
     if (loaded) {
       socket.on('cursor', data => {
-        console.log('received cursor data')
         setCursors(data)
       })
     }
@@ -97,8 +104,10 @@ const App = () => {
     }
   }
 
+  const [dragging, setDragging] = useState(false)
+
   const clientLayers = layers.map(layer => {
-    return {...layer, type: types[layer.type], id: layer.id}
+    return {...layer, type: types[layer.type]}
   })
 
   return (
@@ -113,18 +122,18 @@ const App = () => {
           />
           <div
             id="canvas"
-            style={{position: 'absolute', width: 1500, height: 1000}}
+            style={{position: 'absolute', width: 1800, height: 1800}}
             onMouseMove={
               e => handleDisplayMouseMove(e)
               // dragging implementation
             }
             onDoubleClick={event => {
-              console.log('X AND Y :', mouseX, mouseY)
               toolId.handleDoubleClick(
                 layers,
                 setLayers,
-                mouseX,
-                mouseY,
+                mouseX + window.scrollX - 20,
+                // 20 represents a tool specific offset to center the object
+                mouseY + window.scrollY - 20,
                 color,
                 faker.random.uuid()
               )
@@ -136,22 +145,24 @@ const App = () => {
                   return (
                     <div
                       key={layer.id}
-                      // onMouseEnter={() => setIndicatedLayerId(layer.id)}
-                      // onMouseLeave={() => setIndicatedLayerId(null)}
-                      // onMouseDown={() => {
-                      //   setSelectedLayerId(layer.id);
-                      // }}
-                      // onMouseUp={() => {
-                      //   if (dragging) return;
-                      //   if (layer === selectedLayer) setSelectedLayerId(null);
-                      //   else setSelectedLayerId(layer.id);
-                      // }}
-                      // className={className("layer", {
-                      //   indicated: layer === indicatedLayer,
-                      //   selected: layer === selectedLayer
-                      // })}
+                      onMouseEnter={() => {
+                        setIndicatedLayerId(layer.id)
+                      }}
+                      onMouseLeave={() => setIndicatedLayerId(null)}
+                      onMouseDown={() => {
+                        setSelectedLayerId(layer.id)
+                      }}
+                      onMouseUp={() => {
+                        if (dragging) return
+                        // if (layer.id === selectedLayerId) setSelectedLayerId(null);
+                        else setSelectedLayerId(layer.id)
+                      }}
+                      className={className('layer', {
+                        indicated: layer === indicatedLayer,
+                        selected: layer === selectedLayer
+                      })}
                       style={{
-                        position: 'relative',
+                        position: 'absolute',
                         top: layer.y,
                         left: layer.x
                       }}

@@ -35,6 +35,7 @@ app.post('/create_user', (req, res) => {
 })
 
 setInterval(() => {
+  // maybe this setInterval is being ram intensive ??
   for (sessionKey in sessions) {
     const session = sessions[sessionKey]
     session.decrementTimer()
@@ -111,7 +112,7 @@ const startListening = () => {
     console.log(`socket ${socket.id} connected`)
     // if(interval){clearInterval(interval)}
     // See need to clear interval to not duplicate work done
-    setInterval(() => {
+    const interval = setInterval(() => {
       const sessionKeys = Object.keys(sessions)
       const cursorPositions = []
       for (let i = 0, n = sessionKeys.length; i < n; i++) {
@@ -146,6 +147,10 @@ const startListening = () => {
     //     lineCoordinates
     //   })
     // })
+    socket.on('disconnect', socket => {
+      console.log('disconnect')
+      clearInterval(interval)
+    })
   })
 }
 

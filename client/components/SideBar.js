@@ -13,7 +13,8 @@ const SideBar = props => {
         display: 'flex',
         justifyContent: 'center',
         alignItems: 'flex-start',
-        padding: '5px'
+        padding: '5px',
+        zIndex: 100000
       }}
     >
       <div className="toolbox" style={{}}>
