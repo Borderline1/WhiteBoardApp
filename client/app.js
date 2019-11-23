@@ -29,9 +29,9 @@ const App = () => {
   const [selectedLayerId, setSelectedLayerId] = useState(null)
 
   const selectedLayer = layers.find(layer => layer.id === selectedLayerId)
-  // console.log(selectedLayerId, selectedLayer)
 
   const indicatedLayer = layers.find(layer => layer.id === indicatedLayerId)
+  console.log(indicatedLayerId, indicatedLayer)
 
   // useInterval(() => setCursorIsStale(true), 3000) // 3 seconds
   useInterval(() => {
@@ -158,8 +158,8 @@ const App = () => {
                         else setSelectedLayerId(layer.id)
                       }}
                       className={className('layer', {
-                        indicated: layer === indicatedLayer,
-                        selected: layer === selectedLayer
+                        indicated: layer.id === indicatedLayerId,
+                        selected: layer.id === selectedLayerId
                       })}
                       style={{
                         position: 'absolute',
