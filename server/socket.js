@@ -43,6 +43,7 @@ function socketWorks(server, elements, sessions) {
       }
     })
     socket.on('create', async data => {
+      console.log('this is an id', data.id)
       elements.push(data)
       let elem = new Elem({any: data})
       let res = await elem.save()
