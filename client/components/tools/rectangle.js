@@ -4,24 +4,24 @@ import React from 'react'
 let _id = 0
 
 export const rectangle = {
-  name: 'Rectangle',
-  DimensionsComponent: props => {
+  name: 'rectangle',
+  DimensionsComponent: selectedLayer => {
     return (
       <div>
         <label>Width</label>
         <input
           type="number"
-          value={props.layer.props.width}
+          value={selectedLayer.props.width}
           onChange={event => {
-            props.onChange('width', event.target.value)
+            selectedLayer.onChange('width', event.target.value)
           }}
         />
         <label>Height</label>
         <input
           type="number"
-          value={props.layer.props.height}
+          value={selectedLayer.props.height}
           onChange={event => {
-            props.onChange('height', event.target.value)
+            selectedLayer.onChange('height', event.target.value)
           }}
         />
       </div>
@@ -34,11 +34,19 @@ export const rectangle = {
       </svg>
     )
   },
-  handleDoubleClick: function(layers, setLayers, x, y, color, uuid) {
-    setLayers([...layers, this.create(x, y, 20, 15, color, uuid)])
+  handleDoubleClick: function(layers, setLayers, x, y, color, uuid, socket) {
+    this.create(x, y, 20, 15, color, uuid, socket)
   },
-  create: (x, y, width = '20px', height = '15px', fill = 'black', uuid) => {
-    return {
+  create: (
+    x,
+    y,
+    width = '20px',
+    height = '15px',
+    fill = 'black',
+    uuid,
+    socket
+  ) => {
+    const data = {
       type: 'rectangle',
       x,
       y,
@@ -49,5 +57,6 @@ export const rectangle = {
         fill
       }
     }
+    socket.emit('create', data)
   }
 }

@@ -151,14 +151,12 @@ const startListening = () => {
       socket.emit('create', elements)
     })
     socket.on('change', data => {
-      console.log('ElementsBefore', elements)
       const element = elements.find(element => element.id === data.id)
       Object.keys(element).forEach(key => {
         if (key !== 'type') {
           element[key] = data[key]
         }
       })
-      console.log(elements)
       socket.emit('change', elements)
     })
     socket.on('disconnect', socket => {
