@@ -74,6 +74,16 @@ const App = () => {
       const mouseDown = () => {
         if (create) {
           //Create element
+          console.log('hey')
+          tool.handleDoubleClick(
+            layers,
+            setLayers,
+            mouseX + window.scrollX - 8,
+            mouseY + window.scrollY - 22,
+            color,
+            faker.random.uuid(),
+            socket
+          )
         } else {
           //Moving element
           setDragging(true)
@@ -81,6 +91,14 @@ const App = () => {
       }
       const mouseUp = () => {
         setDragging(false)
+      }
+      const canvasDiv = document.querySelector('#canvas')
+      if (!canvasDiv) return
+      canvasDiv.addEventListener('mousedown', mouseDown)
+      window.addEventListener('mouseup', mouseUp)
+      return () => {
+        canvasDiv.removeEventListener('mousedown', mouseDown)
+        window.removeEventListener('mouseup', mouseUp)
       }
     }
   })
@@ -114,8 +132,8 @@ const App = () => {
   }
 
   const handleDisplayMouseMove = e => {
+    const [clientX, clientY] = [e.clientX, e.clientY]
     if (socket) {
-      const [clientX, clientY] = [e.clientX, e.clientY]
       setMouseX(clientX)
       setMouseY(clientY)
 
@@ -126,6 +144,17 @@ const App = () => {
         sessionKey: window.localStorage.getItem('sessionKey')
       })
     }
+    if (create) {
+      if (name !== 'x' && name !== 'y') {
+        console.log('PROPS CAN BE TRUE')
+        socket.emit('change', {
+          ...selectedLayer,
+          props: {...selectedLayer.props, [name]: editValue}
+        })
+      } else {
+        socket.emit('change', {...selectedLayer, [name]: editValue})
+      }
+    }
   }
 
   const handleSelectTool = tool => {
@@ -133,7 +162,28 @@ const App = () => {
     if (tool.name === 'picker') {
       setCreate(false)
     } else {
-      setCreate(true)
+      setCreate(false)
+    }
+  }
+
+  const handleChange = e => {
+    const {type, name, value} = e.target
+    console.log(type, name, value, e)
+    let editValue
+    if (type === 'number') {
+      editValue = +value
+    } else if (type === 'color') {
+      console.log(e.target.value)
+    }
+
+    if (name !== 'x' && name !== 'y') {
+      console.log('PROPS CAN BE TRUE')
+      socket.emit('change', {
+        ...selectedLayer,
+        props: {...selectedLayer.props, [name]: editValue}
+      })
+    } else {
+      socket.emit('change', {...selectedLayer, [name]: editValue})
     }
   }
 
@@ -171,25 +221,6 @@ const App = () => {
                 faker.random.uuid(),
                 socket
               )
-            }}
-            onMouseDown={event => {
-              setDragging(true)
-              if (tool.name === 'lineDrag') {
-                tool.handleDoubleClick(
-                  layers,
-                  setLayers,
-                  mouseX + window.scrollX - 8,
-                  // 20 represents a tool specific offset to center the object
-                  mouseY + window.scrollY - 22,
-                  color,
-                  faker.random.uuid(),
-                  socket
-                )
-                console.log('hi', dragging)
-                // if (dragging){
-
-                // }
-              }
             }}
             //   onMouseUp={this.handleDisplayMouseUp.bind(this)}
           >

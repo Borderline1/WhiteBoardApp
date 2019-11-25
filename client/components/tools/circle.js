@@ -32,8 +32,9 @@ export const circle = {
   },
   handleDoubleClick: function(layers, setLayers, x, y, color, uuid, socket) {
     // setLayers([...layers, this.create(x, y, 20, color, uuid, socket)])
-    this.create(x, y, 20, color, uuid, socket)
+    this.create(x, y, 1, color, uuid, socket)
   },
+  handleUpdate: function(x, y) {},
   create: (x, y, radius = '10px', fill = 'black', uuid, socket) => {
     const data = {
       type: 'circle',
