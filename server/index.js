@@ -143,18 +143,19 @@ const startListening = () => {
     })
     socket.on('create', data => {
       elements.push(data)
-      console.log(elements)
-      socket.broadcast.emit('create', elements)
+      socket.emit('create', elements)
     })
-    // socket.on('line', data => {
-    //   const session = sessions[data.sessionKey]
-    //   const lineCoordinates = data.lineCoordinates
-    //   io.emit('line', {
-    //     lineWidth: data.lineWidth,
-    //     lineColor: data.lineColor,
-    //     lineCoordinates
-    //   })
-    // })
+    socket.on('change', data => {
+      console.log('ElementsBefore', elements)
+      const element = elements.find(element => element.id === data.id)
+      Object.keys(element).forEach(key => {
+        if (key !== 'type') {
+          element[key] = data[key]
+        }
+      })
+      console.log(elements)
+      socket.emit('change', elements)
+    })
     socket.on('disconnect', socket => {
       clearInterval(interval)
     })
