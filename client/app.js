@@ -15,7 +15,7 @@ const App = () => {
   const canvas = document.querySelector('#canvas')
   const [socket, setSocket] = useState(null)
   const [color, setColor] = useState({r: 0, g: 0, b: 0, a: 255})
-  const [toolId, setToolId] = useState(types.circle)
+  const [toolId, setToolId] = useState(types.lineDrag)
   const [mouseX, setMouseX] = useState(0)
   const [mouseY, setMouseY] = useState(0)
   const [prevX, setprevX] = useState(0)
@@ -138,6 +138,18 @@ const App = () => {
                 mouseX + window.scrollX - 20,
                 // 20 represents a tool specific offset to center the object
                 mouseY + window.scrollY - 20,
+                color,
+                faker.random.uuid(),
+                socket
+              )
+            }}
+            onMouseDown={event => {
+              toolId.handleDoubleClick(
+                layers,
+                setLayers,
+                mouseX + window.scrollX,
+                // 20 represents a tool specific offset to center the object
+                mouseY + window.scrollY,
                 color,
                 faker.random.uuid(),
                 socket
