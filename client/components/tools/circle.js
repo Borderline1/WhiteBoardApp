@@ -4,16 +4,16 @@ import React from 'react'
 let _id = 0
 
 export const circle = {
-  name: 'Circle',
-  DimensionsComponent: props => {
+  name: 'circle',
+  DimensionsComponent: selectedLayer => {
     return (
       <div>
         <label>Radius</label>
         <input
           type="number"
-          value={props.layer.props.radius}
+          value={selectedLayer.props.radius}
           onChange={event => {
-            props.onChange('radius', event.target.value)
+            selectedLayer.onChange('radius', event.target.value)
           }}
         />
       </div>
@@ -32,9 +32,11 @@ export const circle = {
     )
   },
   handleDoubleClick: function(layers, setLayers, x, y, color, uuid, socket) {
-    setLayers([...layers, this.create(x, y, 20, color, uuid, socket)])
+    // setLayers([...layers, this.create(x, y, 20, color, uuid, socket)])
+    this.create(x, y, 20, color, uuid, socket)
   },
   create: (x, y, radius = '10px', fill = 'black', uuid, socket) => {
+    console.log('creating')
     const data = {
       type: 'circle',
       x,
