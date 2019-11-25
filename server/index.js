@@ -5,10 +5,11 @@ const PORT = process.env.PORT || 8080
 const app = express()
 module.exports = app
 // const http = require("http").Server(app);
-const socketio = require('socket.io') /*(http)*/
+/*(http)*/
 const bodyParser = require('body-parser')
 const cors = require('cors')
 const faker = require('faker')
+const socketWorks = require('./socket')
 
 const sessions = {}
 const elements = []
@@ -108,64 +109,7 @@ const startListening = () => {
     console.log(`listening on port http://localhost:${PORT}`))
 
   // set up our socket control center
-  const io = socketio(server)
-  io.on('connection', socket => {
-    socket.emit('create', elements) //not working? should render previously created elements on connect
-    //maybe bc we are broadcasting on create.
-    console.log(`socket ${socket.id} connected`)
-    // if(interval){clearInterval(interval)}
-    // See need to clear interval to not duplicate work done
-    let socketArr = []
-    if (!socketArr.includes(socket.id)) {
-      socketArr.push(socket.id)
-    }
-
-    const interval = setInterval(() => {
-      const sessionKeys = Object.keys(sessions)
-      const cursorPositions = []
-      for (let i = 0, n = sessionKeys.length; i < n; i++) {
-        const key = sessionKeys[i]
-        const session = sessions[key]
-        cursorPositions.push({
-          x: session.getMouseX(),
-          y: session.getMouseY(),
-          name: session.getName(),
-          sessionKey: key
-        })
-      }
-      // console.log(cursorPositions)
-      socket.broadcast.emit('cursor', cursorPositions)
-      // broadcast exludes the socket that the event came from
-    }, Math.round(1000 / 30))
-
-    socket.on('cursor', data => {
-      const session = sessions[data.sessionKey]
-      if (session) {
-        session.resetTimer()
-        session.setMouseX(data.x)
-        session.setMouseY(data.y)
-      }
-    })
-    socket.on('create', data => {
-      elements.push(data)
-      console.log(elements)
-      socket.broadcast.emit('create', elements)
-    })
-    // socket.on('line', data => {
-    //   const session = sessions[data.sessionKey]
-    //   const lineCoordinates = data.lineCoordinates
-    //   io.emit('line', {
-    //     lineWidth: data.lineWidth,
-    //     lineColor: data.lineColor,
-    //     lineCoordinates
-    //   })
-    // })
-    socket.on('disconnect', socket => {
-      if (socketArr.length === 0) {
-        clearInterval(interval)
-      }
-    })
-  })
+  socketWorks(server, elements, sessions)
 }
 
 async function bootApp() {
@@ -179,5 +123,6 @@ async function bootApp() {
 if (require.main === module) {
   bootApp()
 } else {
-  createApp()
+  console.log('error')
+  // createApp()
 }

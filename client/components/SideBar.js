@@ -1,8 +1,16 @@
 import React, {Component} from 'react'
 import {ChromePicker} from 'react-color'
-import Tool from './Tool'
+import ToolButton from './ToolButton'
 
-const SideBar = props => {
+const SideBar = ({
+  color,
+  tool,
+  selectedLayer,
+  handleColorChange,
+  types,
+  handleSelectTool,
+  socket
+}) => {
   return (
     <div
       style={{
@@ -18,41 +26,45 @@ const SideBar = props => {
       }}
     >
       <div className="toolbox" style={{}}>
-        <ChromePicker
-          color={props.brushColor}
-          onChangeComplete={props.handleColorChange}
-        />
+        <ChromePicker color={color} onChangeComplete={handleColorChange} />
         {/* iterate over all tools instead of hard coding */}
-        <Tool
-          name="Eraser"
-          currentTool={props.toolId}
-          toolId="eraser"
-          onSelect={props.handleToolClick}
-        />
-        <Tool
-          name="Pen"
-          currentTool={props.toolId}
-          toolId="pen"
-          onSelect={props.handleToolClick}
-        />
-        <code className="brush-size-label">
-          Size ({String(props.brushSize)})
-        </code>{' '}
-        <input
-          onChange={props.handleBrushResize}
-          value={props.brushSize}
-          type="range"
-          min="1"
-          max="50"
-        />
-        <span
-          className="brush-size-indicator"
-          style={{
-            width: props.brushSize + 'px',
-            height: props.brushSize + 'px',
-            background: props.brushColor
-          }}
-        />
+        {Object.keys(types).map(typeKey => (
+          <ToolButton
+            key={types[typeKey].name}
+            name={types[typeKey].name}
+            tool={tool}
+            types={types}
+            handleSelectTool={handleSelectTool}
+          />
+        ))}
+
+        {/* Form Stuff */}
+        {selectedLayer ? (
+          <div>
+            <h2>{selectedLayer.type.name}</h2>
+            <label htmlFor="xPosition">X position</label>
+            <input
+              name="XPosition"
+              type="number"
+              value={selectedLayer.x}
+              onChange={event => {
+                const newX = event.target.value
+                socket.emit('change', {...selectedLayer, x: +newX})
+              }}
+            />
+            <label htmlFor="YPosition">Y position</label>
+            <input name="Yposition" type="number" value={selectedLayer.y} />
+            <label>Fill Color</label>
+            <input
+              type="color"
+              value={selectedLayer.props.fill}
+              onChange={event => {
+                // on change needs to update server value
+              }}
+            />
+            {selectedLayer.type.DimensionsComponent(selectedLayer)}
+          </div>
+        ) : null}
       </div>
     </div>
   )

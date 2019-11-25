@@ -5,8 +5,6 @@ import useInterval from '@use-it/interval'
 import faker from 'faker'
 import className from 'classnames'
 
-const {circle} = types
-
 import io from 'socket.io-client'
 
 const serverAddress = window.location.origin
@@ -15,7 +13,7 @@ const App = () => {
   const canvas = document.querySelector('#canvas')
   const [socket, setSocket] = useState(null)
   const [color, setColor] = useState({r: 0, g: 0, b: 0, a: 255})
-  const [toolId, setToolId] = useState(types.lineDrag)
+  const [tool, setTool] = useState(types.circle)
   const [mouseX, setMouseX] = useState(0)
   const [mouseY, setMouseY] = useState(0)
   const [prevX, setprevX] = useState(0)
@@ -27,11 +25,16 @@ const App = () => {
   const [indicatedLayerId, setIndicatedLayerId] = useState(null)
   const [selectedLayerId, setSelectedLayerId] = useState(null)
 
-  const selectedLayer = layers.find(layer => layer.id === selectedLayerId)
+  const clientLayers = layers.map(layer => {
+    return {...layer, type: types[layer.type]}
+  })
 
-  const indicatedLayer = layers.find(layer => layer.id === indicatedLayerId)
+  const selectedLayer = clientLayers.find(layer => layer.id === selectedLayerId)
 
-  // useInterval(() => setCursorIsStale(true), 3000) // 3 seconds
+  const indicatedLayer = clientLayers.find(
+    layer => layer.id === indicatedLayerId
+  )
+
   useInterval(() => {
     if (loaded) {
       socket.emit('cursor', {
@@ -56,6 +59,9 @@ const App = () => {
         setCursors(data)
       })
       socket.on('create', elements => {
+        setLayers(elements)
+      })
+      socket.on('change', elements => {
         setLayers(elements)
       })
     }
@@ -84,12 +90,15 @@ const App = () => {
         }
       })
   }
-  const handleToolClick = toolId => {
-    setToolId(toolId)
-  }
+
   const handleColorChange = color => {
     setColor(color)
   }
+
+  const handleSelectedLayerChange = () => {
+    // socket thing
+  }
+
   const handleDisplayMouseMove = e => {
     if (socket) {
       const [clientX, clientY] = [e.clientX, e.clientY]
@@ -105,21 +114,24 @@ const App = () => {
     }
   }
 
-  const [dragging, setDragging] = useState(false)
+  const handleSelectTool = tool => {
+    setTool(tool)
+  }
 
-  const clientLayers = layers.map(layer => {
-    return {...layer, type: types[layer.type]}
-  })
+  const [dragging, setDragging] = useState(false)
 
   return (
     <div className="App">
       {loaded ? (
         <div>
           <SideBar
-            brushColor={color}
-            toolId={toolId}
-            handleToolClick={handleToolClick}
+            color={color}
+            types={types}
+            tool={tool}
             handleColorChange={handleColorChange}
+            handleSelectTool={handleSelectTool}
+            selectedLayer={selectedLayer}
+            socket={socket}
           />
           <div
             id="canvas"
@@ -132,7 +144,7 @@ const App = () => {
               if (e.target.id === 'canvas') setSelectedLayerId(null)
             }}
             onDoubleClick={event => {
-              toolId.handleDoubleClick(
+              tool.handleDoubleClick(
                 layers,
                 setLayers,
                 mouseX + window.scrollX - 20,
