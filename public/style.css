@@ -32,7 +32,7 @@ form div {
 .tool-container:hover {
   background: rgb(223, 245, 191);
 }
-.tool-container--selected {
+.toolContainerSelected {
   background: rgb(165, 252, 34);
 }
 
