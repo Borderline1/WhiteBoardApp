@@ -9,6 +9,9 @@ const socketio = require('socket.io') /*(http)*/
 const bodyParser = require('body-parser')
 const cors = require('cors')
 const faker = require('faker')
+const mongoose = require('mongoose')
+const db = require('./db/index')
+const Elem = require('./db/schemas/sampleSchema')
 
 const sessions = {}
 const elements = []
@@ -141,9 +144,12 @@ const startListening = () => {
         session.setMouseY(data.y)
       }
     })
-    socket.on('create', data => {
+    socket.on('create', async data => {
       elements.push(data)
-      console.log(elements)
+      let elem = new Elem({any: data})
+      let res = await elem.save()
+      console.log(res)
+      // console.log(elements)
       socket.broadcast.emit('create', elements)
     })
     // socket.on('line', data => {
@@ -172,5 +178,6 @@ async function bootApp() {
 if (require.main === module) {
   bootApp()
 } else {
-  createApp()
+  console.log('error')
+  // createApp()
 }
