@@ -151,6 +151,20 @@ const App = () => {
                 socket
               )
             }}
+            onMouseDown={event => {
+              if (tool.name === 'lineDrag') {
+                tool.handleDoubleClick(
+                  layers,
+                  setLayers,
+                  mouseX + window.scrollX - 8,
+                  // 20 represents a tool specific offset to center the object
+                  mouseY + window.scrollY - 22,
+                  color,
+                  faker.random.uuid(),
+                  socket
+                )
+              }
+            }}
             //   onMouseUp={this.handleDisplayMouseUp.bind(this)}
           >
             {layers

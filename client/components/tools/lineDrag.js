@@ -4,8 +4,8 @@ import React from 'react'
 
 let _id = 0
 
-export const line = {
-  name: 'line',
+export const lineDrag = {
+  name: 'lineDrag',
   DimensionsComponent: selectedLayer => {
     return (
       <div>
@@ -14,7 +14,7 @@ export const line = {
           type="number"
           value={selectedLayer.strokeWidth}
           onChange={event => {
-            selectedLayer.onChange('strokeWidth', event.target.value)
+            selectedLayer.onChange('stroke-width', event.target.value)
           }}
         />
       </div>
@@ -22,7 +22,7 @@ export const line = {
   },
   ElementComponent: props => {
     return (
-      <svg width={40} height={30}>
+      <svg width={1} height={1}>
         <line
           x1={props.x1}
           x2={props.x2}
@@ -36,24 +36,25 @@ export const line = {
   },
   handleDoubleClick: function(layers, setLayers, x, y, color, uuid, socket) {
     // console.log(color)
-    this.create(x, y, x + 40, y + 30, 'black', uuid, socket)
+    this.create(x, y, 1, 1, 'black', uuid, socket)
   },
   create: (x, y, x2, y2, fill = `black`, uuid, socket, strokeWidth = 3) => {
-    // console.log(fill)
+    console.log(x, y, x2, y2)
     const data = {
-      type: 'line',
+      type: 'lineDrag',
       x,
       y,
       id: uuid,
       props: {
         x1: 0,
         y1: 0,
-        x2: 40,
-        y2: 30,
+        x2: x2,
+        y2: y2,
         fill,
         strokeWidth
       }
     }
     socket.emit('create', data)
+    return data
   }
 }

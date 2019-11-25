@@ -1,3 +1,4 @@
+/* eslint-disable max-params */
 /* eslint-disable react/display-name */
 import React from 'react'
 
@@ -30,12 +31,12 @@ export const rectangle = {
   ElementComponent: props => {
     return (
       <svg width={props.width} height={props.height}>
-        <rectangle x={props.width} y={props.height} fill={props.fill} />
+        <rect width={props.width} height={props.height} fill={props.fill} />
       </svg>
     )
   },
   handleDoubleClick: function(layers, setLayers, x, y, color, uuid, socket) {
-    this.create(x, y, 20, 15, color, uuid, socket)
+    this.create(x, y, 40, 30, 'black', uuid, socket)
   },
   create: (
     x,
