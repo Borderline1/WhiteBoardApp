@@ -12,14 +12,11 @@ const SideBar = ({
   socket
 }) => {
   const handleChange = e => {
-    const {type, name, value, propos} = e.target
-    console.log(type, name, value, propos, e)
+    const {type, name, value} = e.target
+    console.log(type, name, value, e)
     let editValue
-    if (type === 'number') {
-      editValue = +value
-    } else if (type === 'color') {
-      console.log(e.target.value)
-    }
+    editValue = type === 'number' ? +value : value
+    if (type === 'color') handleColorChange(editValue)
 
     if (name !== 'x' && name !== 'y') {
       console.log('PROPS CAN BE TRUE')
@@ -75,7 +72,7 @@ const SideBar = ({
               value={selectedLayer.y}
               onChange={handleChange}
             />
-            <label>Fill Color</label>
+            <label>Fill</label>
             <input
               name="fill"
               type="color"
