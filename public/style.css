@@ -107,3 +107,25 @@ form div {
 .layer.selected {
   border: dashed 2px red;
 }
+
+/* This is for a probable delete button on each element */
+button.deleteElement {
+  position: absolute;
+  right: 0px;
+  top: 0px;
+  width: 0.5rem;
+  height: 0.5rem;
+  background-color: antiquewhite;
+  border: 1px solid black;
+  border-radius: 50%;
+}
+/* This is the delete button
+
+    <button
+    type="button"
+    className="deleteElement"
+    onClick={() => {
+        layersRef.child(layer.id).remove();
+    }}>
+    X
+    </button> */
