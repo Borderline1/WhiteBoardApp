@@ -122,3 +122,10 @@ button.deleteElement {
     }}>
     X
     </button> */
+.layer.indicated {
+  border: dashed 1px grey;
+}
+
+.layer.selected {
+  border: dashed 2px red;
+}
