@@ -11,6 +11,26 @@ const SideBar = ({
   handleSelectTool,
   socket
 }) => {
+  const handleChange = e => {
+    const {type, name, value, propos} = e.target
+    console.log(type, name, value, propos, e)
+    let editValue
+    if (type === 'number') {
+      editValue = +value
+    } else if (type === 'color') {
+      console.log(e.target.value)
+    }
+
+    if (name !== 'x' && name !== 'y') {
+      console.log('PROPS CAN BE TRUE')
+      socket.emit('change', {
+        ...selectedLayer,
+        props: {...selectedLayer.props, [name]: editValue}
+      })
+    } else {
+      socket.emit('change', {...selectedLayer, [name]: editValue})
+    }
+  }
   return (
     <div
       style={{
@@ -26,7 +46,6 @@ const SideBar = ({
       }}
     >
       <div className="toolbox" style={{}}>
-        <ChromePicker color={color} onChangeComplete={handleColorChange} />
         {/* iterate over all tools instead of hard coding */}
         {Object.keys(types).map(typeKey => (
           <ToolButton
@@ -42,27 +61,31 @@ const SideBar = ({
         {selectedLayer ? (
           <div>
             <h2>{selectedLayer.type.name}</h2>
-            <label htmlFor="xPosition">X position</label>
+            <label htmlFor="x">X position</label>
             <input
-              name="XPosition"
+              name="x"
               type="number"
               value={selectedLayer.x}
-              onChange={event => {
-                const newX = event.target.value
-                socket.emit('change', {...selectedLayer, x: +newX})
-              }}
+              onChange={handleChange}
             />
-            <label htmlFor="YPosition">Y position</label>
-            <input name="Yposition" type="number" value={selectedLayer.y} />
+            <label htmlFor="y">Y position</label>
+            <input
+              name="y"
+              type="number"
+              value={selectedLayer.y}
+              onChange={handleChange}
+            />
             <label>Fill Color</label>
             <input
+              name="fill"
               type="color"
               value={selectedLayer.props.fill}
-              onChange={event => {
-                // on change needs to update server value
-              }}
+              onChange={handleChange}
             />
-            {selectedLayer.type.DimensionsComponent(selectedLayer)}
+            {selectedLayer.type.DimensionsComponent(
+              selectedLayer,
+              handleChange
+            )}
           </div>
         ) : null}
       </div>

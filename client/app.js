@@ -95,10 +95,6 @@ const App = () => {
     setColor(color)
   }
 
-  const handleSelectedLayerChange = () => {
-    // socket thing
-  }
-
   const handleDisplayMouseMove = e => {
     if (socket) {
       const [clientX, clientY] = [e.clientX, e.clientY]

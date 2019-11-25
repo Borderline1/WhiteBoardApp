@@ -46,18 +46,15 @@ function socketWorks(server, elements, sessions) {
       elements.push(data)
       let elem = new Elem({any: data})
       let res = await elem.save()
-      console.log(res)
       socket.emit('create', elements)
     })
     socket.on('change', data => {
-      console.log('ElementsBefore', elements)
       const element = elements.find(element => element.id === data.id)
       Object.keys(element).forEach(key => {
         if (key !== 'type') {
           element[key] = data[key]
         }
       })
-      console.log(elements)
       socket.emit('change', elements)
     })
     socket.on('disconnect', socket => {
