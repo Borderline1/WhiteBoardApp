@@ -24,6 +24,8 @@ const App = () => {
   const [layers, setLayers] = useState([])
   const [indicatedLayerId, setIndicatedLayerId] = useState(null)
   const [selectedLayerId, setSelectedLayerId] = useState(null)
+  const [dragging, setDragging] = useState(false)
+  const [create, setCreate] = useState(false)
 
   const clientLayers = layers.map(layer => {
     return {...layer, type: types[layer.type]}
@@ -66,6 +68,22 @@ const App = () => {
       })
     }
   }, [loaded])
+
+  useEffect(() => {
+    if (loaded) {
+      const mouseDown = () => {
+        if (create) {
+          //Create element
+        } else {
+          //Moving element
+          setDragging(true)
+        }
+      }
+      const mouseUp = () => {
+        setDragging(false)
+      }
+    }
+  })
 
   const handleNameInput = e => {
     const name = e.target.value
@@ -112,9 +130,12 @@ const App = () => {
 
   const handleSelectTool = tool => {
     setTool(tool)
+    if (tool.name === 'picker') {
+      setCreate(false)
+    } else {
+      setCreate(true)
+    }
   }
-
-  const [dragging, setDragging] = useState(false)
 
   return (
     <div className="App">
@@ -152,6 +173,7 @@ const App = () => {
               )
             }}
             onMouseDown={event => {
+              setDragging(true)
               if (tool.name === 'lineDrag') {
                 tool.handleDoubleClick(
                   layers,
@@ -163,6 +185,10 @@ const App = () => {
                   faker.random.uuid(),
                   socket
                 )
+                console.log('hi', dragging)
+                // if (dragging){
+
+                // }
               }
             }}
             //   onMouseUp={this.handleDisplayMouseUp.bind(this)}
