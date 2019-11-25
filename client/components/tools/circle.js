@@ -5,16 +5,15 @@ let _id = 0
 
 export const circle = {
   name: 'circle',
-  DimensionsComponent: selectedLayer => {
+  DimensionsComponent: (selectedLayer, handleChange) => {
     return (
       <div>
         <label>Radius</label>
         <input
+          name="radius"
           type="number"
           value={selectedLayer.props.radius}
-          onChange={event => {
-            selectedLayer.onChange('radius', event.target.value)
-          }}
+          onChange={handleChange}
         />
       </div>
     )
@@ -36,7 +35,6 @@ export const circle = {
     this.create(x, y, 20, color, uuid, socket)
   },
   create: (x, y, radius = '10px', fill = 'black', uuid, socket) => {
-    console.log('creating')
     const data = {
       type: 'circle',
       x,
@@ -48,6 +46,5 @@ export const circle = {
       }
     }
     socket.emit('create', data)
-    return data
   }
 }
