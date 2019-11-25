@@ -115,6 +115,11 @@ const startListening = () => {
     console.log(`socket ${socket.id} connected`)
     // if(interval){clearInterval(interval)}
     // See need to clear interval to not duplicate work done
+    let socketArr = []
+    if (!socketArr.includes(socket.id)) {
+      socketArr.push(socket.id)
+    }
+
     const interval = setInterval(() => {
       const sessionKeys = Object.keys(sessions)
       const cursorPositions = []
@@ -157,7 +162,9 @@ const startListening = () => {
       socket.emit('change', elements)
     })
     socket.on('disconnect', socket => {
-      clearInterval(interval)
+      if (socketArr.length === 0) {
+        clearInterval(interval)
+      }
     })
   })
 }
