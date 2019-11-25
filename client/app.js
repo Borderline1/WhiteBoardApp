@@ -15,7 +15,7 @@ const App = () => {
   const canvas = document.querySelector('#canvas')
   const [socket, setSocket] = useState(null)
   const [color, setColor] = useState({r: 0, g: 0, b: 0, a: 255})
-  const [toolId, setToolId] = useState(types.circle)
+  const [toolId, setToolId] = useState(types.line)
   const [mouseX, setMouseX] = useState(0)
   const [mouseY, setMouseY] = useState(0)
   const [prevX, setprevX] = useState(0)
