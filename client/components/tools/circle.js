@@ -36,7 +36,6 @@ export const circle = {
     this.create(x, y, 20, color, uuid, socket)
   },
   create: (x, y, radius = '10px', fill = 'black', uuid, socket) => {
-    console.log('creating')
     const data = {
       type: 'circle',
       x,
@@ -48,6 +47,5 @@ export const circle = {
       }
     }
     socket.emit('create', data)
-    return data
   }
 }

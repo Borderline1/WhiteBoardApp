@@ -5,16 +5,16 @@ import React from 'react'
 let _id = 0
 
 export const lineDrag = {
-  name: 'LineDrag',
-  DimensionsComponent: props => {
+  name: 'lineDrag',
+  DimensionsComponent: selectedLayer => {
     return (
       <div>
         <label>Stroke Width</label>
         <input
           type="number"
-          value={props.layer.props.strokeWidth}
+          value={selectedLayer.strokeWidth}
           onChange={event => {
-            props.onChange('stroke-width', event.target.value)
+            selectedLayer.onChange('stroke-width', event.target.value)
           }}
         />
       </div>
@@ -22,7 +22,7 @@ export const lineDrag = {
   },
   ElementComponent: props => {
     return (
-      <svg width={40} height={30}>
+      <svg width={1} height={1}>
         <line
           x1={props.x1}
           x2={props.x2}
@@ -36,13 +36,10 @@ export const lineDrag = {
   },
   handleDoubleClick: function(layers, setLayers, x, y, color, uuid, socket) {
     // console.log(color)
-    setLayers([
-      ...layers,
-      this.create(x, y, x + 1, y + 1, 'black', uuid, socket)
-    ])
+    this.create(x, y, 1, 1, 'black', uuid, socket)
   },
   create: (x, y, x2, y2, fill = `black`, uuid, socket, strokeWidth = 3) => {
-    console.log(fill)
+    console.log(x, y, x2, y2)
     const data = {
       type: 'lineDrag',
       x,

@@ -5,16 +5,16 @@ import React from 'react'
 let _id = 0
 
 export const line = {
-  name: 'Line',
-  DimensionsComponent: props => {
+  name: 'line',
+  DimensionsComponent: selectedLayer => {
     return (
       <div>
         <label>Stroke Width</label>
         <input
           type="number"
-          value={props.layer.props.strokeWidth}
+          value={selectedLayer.strokeWidth}
           onChange={event => {
-            props.onChange('stroke-width', event.target.value)
+            selectedLayer.onChange('strokeWidth', event.target.value)
           }}
         />
       </div>
@@ -36,13 +36,10 @@ export const line = {
   },
   handleDoubleClick: function(layers, setLayers, x, y, color, uuid, socket) {
     // console.log(color)
-    setLayers([
-      ...layers,
-      this.create(x, y, x + 40, y + 30, 'black', uuid, socket)
-    ])
+    this.create(x, y, x + 40, y + 30, 'black', uuid, socket)
   },
   create: (x, y, x2, y2, fill = `black`, uuid, socket, strokeWidth = 3) => {
-    console.log(fill)
+    // console.log(fill)
     const data = {
       type: 'line',
       x,
@@ -58,6 +55,5 @@ export const line = {
       }
     }
     socket.emit('create', data)
-    return data
   }
 }
