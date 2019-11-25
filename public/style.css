@@ -100,6 +100,13 @@ form div {
   background: rgb(230, 230, 230);
 }
 
+.layer.indicated {
+  border: dashed 1px grey;
+}
+
+.layer.selected {
+  border: dashed 2px red;
+}
 
 /* This is for a probable delete button on each element */
 button.deleteElement {
@@ -122,10 +129,4 @@ button.deleteElement {
     }}>
     X
     </button> */
-.layer.indicated {
-  border: dashed 1px grey;
-}
-
-.layer.selected {
-  border: dashed 2px red;
-}
+    
