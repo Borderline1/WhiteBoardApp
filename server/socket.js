@@ -58,7 +58,10 @@ function socketWorks(server, elements, sessions) {
       socket.emit('change', elements)
     })
     socket.on('disconnect', socket => {
+      console.log('hi')
+      console.log(socketArr)
       if (socketArr.length === 0) {
+        console.log('byebye')
         clearInterval(interval)
       }
     })

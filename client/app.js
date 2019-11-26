@@ -35,6 +35,7 @@ const App = () => {
     layer => layer.id === indicatedLayerId
   )
 
+  //unneeded useInterval?
   useInterval(() => {
     if (loaded) {
       socket.emit('cursor', {
