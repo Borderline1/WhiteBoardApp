@@ -5,7 +5,7 @@ import ToolButton from './ToolButton'
 const SideBar = ({
   color,
   tool,
-  textBox,
+  textBoxVal,
   selectedLayer,
   handleTextBoxChange,
   handleColorChange,
@@ -115,7 +115,7 @@ const SideBar = ({
               handleChange,
               handleTextPropsChange,
               handleTextChange,
-              textBox
+              textBoxVal
             )}
           </div>
         ) : null}

@@ -8,9 +8,10 @@ export const textBox = {
   name: 'textBox',
   DimensionsComponent: (
     selectedLayer,
+    handleChange,
     handleTextPropsChange,
     handleTextChange,
-    textBox
+    textBoxVal
   ) => {
     return (
       <div>
@@ -19,7 +20,7 @@ export const textBox = {
           <input
             name="text"
             type="text"
-            value={textBox}
+            value={textBoxVal}
             onChange={handleTextChange}
           />
           <button type="submit">Update Text</button>
@@ -29,55 +30,50 @@ export const textBox = {
           name="textColor"
           type="color"
           value={selectedLayer.props.textColor}
-          onChange={handleChange}
+          onChange={handleTextPropsChange}
         />
         <label>Background Color</label>
         <input
           name="backgroundColor"
           type="color"
           value={selectedLayer.props.backgroundColor}
-          onChange={handleChange}
+          onChange={handleTextPropsChange}
         />
         <label>Width</label>
         <input
           name="width"
           type="number"
           value={selectedLayer.props.width}
-          onChange={handleChange}
+          onChange={handleTextPropsChange}
         />
         <label>Height</label>
         <input
           name="height"
           type="number"
           value={selectedLayer.props.height}
-          onChange={handleChange}
+          onChange={handleTextPropsChange}
         />
       </div>
     )
   },
   ElementComponent: props => {
     return (
-      <p
-        styling={`width: ${props.width}; height: ${props.height}; color: ${props.textColor}; background-color: ${props.backgroundColor}`}
-      >
-        {props.text === '' ? 'Text' : props.text}
-      </p>
+      <div styling={`width: ${props.width}; height: ${props.height}`}>
+        <p
+          styling={`color: ${props.textColor}; background-color: ${props.backgroundColor}`}
+        >
+          {props.text === '' ? 'Text' : props.text}
+        </p>
+      </div>
     )
   },
-  handleDoubleClick: function(layers, setLayers, x, y, color, uuid, socket) {
-    // setLayers([...layers, this.create(x, y, 20, color, uuid, socket)])
-    this.create(x, y, '', 50, 70, color, uuid, socket, '#000000')
-  },
-  handleUpdate: function(x, y) {},
-  create: (
+  handleCreate: (
     x,
     y,
-    text = '',
-    height = 50,
-    width = 70,
     color = '#ffffff',
     uuid,
     socket,
+    text = '',
     textColor = '#000000'
   ) => {
     const data = {
@@ -86,13 +82,34 @@ export const textBox = {
       y,
       id: uuid,
       props: {
-        height,
-        width,
+        width: 70,
+        height: 50,
         text,
         backgroundColor: '#ffffff',
         textColor
       }
     }
     socket.emit('create', data)
+  },
+  handleCreatingUpdate: (
+    selectedLayer,
+    prevX,
+    prevY,
+    clientX,
+    clientY,
+    socket
+  ) => {
+    const xPos = Math.min(prevX, clientX)
+    const yPos = Math.min(prevY, clientY)
+    const width = Math.abs(prevX - clientX)
+    const height = Math.abs(prevY - clientY)
+    if (selectedLayer) {
+      socket.emit('change', {
+        ...selectedLayer,
+        x: xPos,
+        y: yPos,
+        props: {...selectedLayer.props, width, height}
+      })
+    }
   }
 }

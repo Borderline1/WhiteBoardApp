@@ -26,7 +26,7 @@ const App = () => {
   const [indicatedLayerId, setIndicatedLayerId] = useState(null)
   const [selectedLayerId, setSelectedLayerId] = useState(null)
   const [dragging, setDragging] = useState(false)
-  const [create, setCreate] = useState(false)
+  const [creating, setCreating] = useState(false)
   const [textBox, setTextBox] = useState('Text here')
 
   const clientLayers = layers.map(layer => {
@@ -186,7 +186,7 @@ const App = () => {
             color={color}
             types={types}
             tool={tool}
-            textBox={textBox}
+            textBoxVal={textBox}
             handleTextBoxChange={handleTextBoxChange}
             handleColorChange={handleColorChange}
             handleSelectTool={handleSelectTool}

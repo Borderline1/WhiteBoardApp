@@ -21,8 +21,9 @@ export const line = {
     )
   },
   ElementComponent: props => {
+    console.log('svg width:', props.width, 'svg height:', props.height)
     return (
-      <svg width={40} height={30}>
+      <svg width={props.width} height={props.height}>
         <line
           x1={props.x1}
           x2={props.x2}
@@ -54,5 +55,57 @@ export const line = {
       }
     }
     socket.emit('create', data)
+  },
+  handleCreate: (x, y, fill = '#000000', uuid, socket) => {
+    const data = {
+      type: 'line',
+      x,
+      y,
+      id: uuid,
+      props: {
+        x1: 0,
+        y1: 0,
+        x2: 3,
+        y2: 3,
+        fill,
+        strokeWidth: 3,
+        height: 3,
+        width: 3
+      }
+    }
+    socket.emit('create', data)
+  },
+  handleCreatingUpdate: (
+    selectedLayer,
+    prevX,
+    prevY,
+    clientX,
+    clientY,
+    socket
+  ) => {
+    const xPos = Math.min(prevX, clientX)
+    const yPos = Math.min(prevY, clientY)
+    const width = Math.abs(prevX - clientX)
+    const height = Math.abs(prevY - clientY)
+    console.log('xPos:', xPos, 'yPos:', yPos)
+    console.log('prevX:', prevX, 'prevY:', prevY) // THESE ALWAYS STAY THE SAME
+    console.log('clientX:', clientX, 'clientY:', clientY)
+
+    if (selectedLayer) {
+      socket.emit('change', {
+        ...selectedLayer,
+        x: xPos,
+        y: yPos,
+        props: {
+          ...selectedLayer.props,
+          width,
+          height,
+          x1: prevX,
+          y1: prevY,
+          x2: xPos,
+          y2: prevY
+        }
+      })
+    }
   }
 }
