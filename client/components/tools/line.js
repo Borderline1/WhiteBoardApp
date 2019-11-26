@@ -36,9 +36,9 @@ export const line = {
   },
   handleDoubleClick: function(layers, setLayers, x, y, color, uuid, socket) {
     // console.log(color)
-    this.create(x, y, x + 40, y + 30, 'black', uuid, socket)
+    this.create(x, y, x + 40, y + 30, '#000000', uuid, socket)
   },
-  create: (x, y, x2, y2, fill = `black`, uuid, socket, strokeWidth = 3) => {
+  create: (x, y, x2, y2, fill = '#000000', uuid, socket, strokeWidth = 3) => {
     // console.log(fill)
     const data = {
       type: 'line',

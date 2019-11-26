@@ -36,14 +36,14 @@ export const rectangle = {
     )
   },
   handleDoubleClick: function(layers, setLayers, x, y, color, uuid, socket) {
-    this.create(x, y, 40, 30, 'black', uuid, socket)
+    this.create(x, y, 40, 30, '#000000', uuid, socket)
   },
   create: (
     x,
     y,
     width = '20px',
     height = '15px',
-    fill = 'black',
+    fill = '#000000',
     uuid,
     socket
   ) => {
