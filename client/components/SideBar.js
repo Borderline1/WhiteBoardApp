@@ -13,19 +13,18 @@ const SideBar = ({
 }) => {
   const handleChange = e => {
     const {type, name, value} = e.target
-    // console.log(type, name, value, e)
     let editValue
     editValue = type === 'number' ? +value : value
     if (type === 'color') handleColorChange(editValue)
-
-    if (name !== 'x' && name !== 'y') {
-      // console.log('PROPS CAN BE TRUE')
-      socket.emit('change', {
-        ...selectedLayer,
-        props: {...selectedLayer.props, [name]: editValue}
-      })
-    } else {
-      socket.emit('change', {...selectedLayer, [name]: editValue})
+    if (selectedLayer) {
+      if (name !== 'x' && name !== 'y') {
+        socket.emit('change', {
+          ...selectedLayer,
+          props: {...selectedLayer.props, [name]: editValue}
+        })
+      } else {
+        socket.emit('change', {...selectedLayer, [name]: editValue})
+      }
     }
   }
   return (
