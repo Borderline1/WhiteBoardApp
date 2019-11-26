@@ -12,8 +12,9 @@ const serverAddress = window.location.origin
 const App = () => {
   const canvas = document.querySelector('#canvas')
   const [socket, setSocket] = useState(null)
-  const [color, setColor] = useState('#ff0000')
-  const [tool, setTool] = useState(types.circle)
+  const [color, setColor] = useState('#1133EE')
+  const pickerTool = types.picker
+  const [tool, setTool] = useState(types.picker)
   const [mouseX, setMouseX] = useState(0)
   const [mouseY, setMouseY] = useState(0)
   const [prevX, setprevX] = useState(0)
@@ -26,6 +27,7 @@ const App = () => {
   const [selectedLayerId, setSelectedLayerId] = useState(null)
   const [dragging, setDragging] = useState(false)
   const [creating, setCreating] = useState(false)
+  const [picking, setPicking] = useState(true)
 
   const clientLayers = layers.map(layer => {
     return {...layer, type: types[layer.type]}
@@ -110,7 +112,7 @@ const App = () => {
         sessionKey: window.localStorage.getItem('sessionKey')
       })
     }
-    if (dragging) {
+    if (picking && dragging) {
       console.log('dragging')
       // do things later with picker
     }
@@ -129,8 +131,8 @@ const App = () => {
   const handleSelectTool = tool => {
     setTool(tool)
     if (tool.name === 'picker') {
-      setDragging(true)
       setCreating(false)
+      setSelectedLayerId(null)
     } else {
       setCreating(true)
       setSelectedLayerId(null)
@@ -154,9 +156,6 @@ const App = () => {
             id="canvas"
             style={{position: 'absolute', width: 1800, height: 1800}}
             onMouseMove={e => handleDisplayMouseMove(e)}
-            onClick={e => {
-              if (e.target.id === 'canvas') setSelectedLayerId(null)
-            }}
             onMouseDown={event => {
               if (creating) {
                 setprevX(mouseX)
@@ -165,12 +164,17 @@ const App = () => {
                 tool.handleCreate(mouseX, mouseY, color, layerId, socket)
                 setSelectedLayerId(layerId)
               } else {
-                setDragging(true)
+                // do things with picker for lasso
               }
             }}
             onMouseUp={event => {
+              if (dragging) {
+                setDragging(false)
+              }
               if (creating) {
                 setSelectedLayerId(null)
+                setprevX(null)
+                setprevY(null)
               }
             }}
           >
@@ -180,11 +184,14 @@ const App = () => {
                     <div
                       key={layer.id}
                       onMouseEnter={() => {
-                        setIndicatedLayerId(layer.id)
+                        if (picking) {
+                          setIndicatedLayerId(layer.id)
+                        }
                       }}
                       onMouseLeave={() => setIndicatedLayerId(null)}
                       onMouseDown={() => {
                         setSelectedLayerId(layer.id)
+                        setDragging(true)
                       }}
                       onMouseUp={() => {
                         if (dragging) return

@@ -38,8 +38,8 @@ export const rectangle = {
       y,
       id: uuid,
       props: {
-        width: 30,
-        height: 15,
+        width: 10,
+        height: 10,
         fill
       }
     }
