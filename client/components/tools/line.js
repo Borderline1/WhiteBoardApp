@@ -1,3 +1,4 @@
+/* eslint-disable complexity */
 /* eslint-disable max-params */
 /* eslint-disable react/display-name */
 import React from 'react'
@@ -21,7 +22,6 @@ export const line = {
     )
   },
   ElementComponent: props => {
-    console.log('svg width:', props.width, 'svg height:', props.height)
     return (
       <svg width={props.width} height={props.height}>
         <line
@@ -92,20 +92,70 @@ export const line = {
     console.log('clientX:', clientX, 'clientY:', clientY)
 
     if (selectedLayer) {
-      socket.emit('change', {
-        ...selectedLayer,
-        x: xPos,
-        y: yPos,
-        props: {
-          ...selectedLayer.props,
-          width,
-          height,
-          x1: prevX,
-          y1: prevY,
-          x2: xPos,
-          y2: prevY
-        }
-      })
+      if (clientX > prevX && clientY > prevY) {
+        socket.emit('change', {
+          ...selectedLayer,
+          x: xPos,
+          y: yPos,
+          props: {
+            ...selectedLayer.props,
+            width,
+            height,
+            x1: 0,
+            y1: 0,
+            x2: width,
+            y2: height
+          }
+        })
+      }
+      if (clientX < prevX && clientY < prevY) {
+        socket.emit('change', {
+          ...selectedLayer,
+          x: xPos,
+          y: yPos,
+          props: {
+            ...selectedLayer.props,
+            width,
+            height,
+            x1: width,
+            y1: height,
+            x2: 0,
+            y2: 0
+          }
+        })
+      }
+      if (clientX > prevX && clientY < prevY) {
+        socket.emit('change', {
+          ...selectedLayer,
+          x: xPos,
+          y: yPos,
+          props: {
+            ...selectedLayer.props,
+            width,
+            height,
+            x1: width,
+            y1: 0,
+            x2: 0,
+            y2: height
+          }
+        })
+      }
+      if (clientX < prevX && clientY > prevY) {
+        socket.emit('change', {
+          ...selectedLayer,
+          x: xPos,
+          y: yPos,
+          props: {
+            ...selectedLayer.props,
+            width,
+            height,
+            x1: 0,
+            y1: height,
+            x2: width,
+            y2: 0
+          }
+        })
+      }
     }
   }
 }
