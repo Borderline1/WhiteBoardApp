@@ -6,6 +6,8 @@ import faker from 'faker'
 import className from 'classnames'
 import io from 'socket.io-client'
 import {Button} from 'semantic-ui-react'
+import sockCon from './socket'
+import Entry from './components/entry'
 
 const serverAddress = window.location.origin
 
@@ -50,31 +52,18 @@ const App = () => {
   }, 3000) // 3 seconds
 
   // cDM sets up socket on connection set cursors on recieving cursor data
-  useEffect(() => {
-    const socket = io(serverAddress)
-    setSocket(socket)
-    //socket when we receive cursor data
-  }, [])
-
-  useEffect(() => {
-    if (loaded) {
-      socket.on('cursor', data => {
-        setCursors(data)
-      })
-      socket.on('create', elements => {
-        setLayers(elements)
-      })
-      socket.on('change', elements => {
-        setLayers(elements)
-      })
-    }
-  }, [loaded])
+  // useEffect(async () => {
+  //   // const socket = io(serverAddress)
+  //  await setSocket(sockCon)
+  //   //socket when we receive cursor data
+  // }, [])
 
   const handleNameInput = e => {
     const name = e.target.value
     setName(name)
   }
-  const handleJoin = e => {
+  const handleJoin = async e => {
+    await setSocket(sockCon)
     fetch(serverAddress + '/create_user', {
       body: JSON.stringify({
         name
@@ -93,7 +82,19 @@ const App = () => {
         }
       })
   }
-
+  useEffect(() => {
+    if (loaded) {
+      socket.on('cursor', data => {
+        setCursors(data)
+      })
+      socket.on('create', elements => {
+        setLayers(elements)
+      })
+      socket.on('change', elements => {
+        setLayers(elements)
+      })
+    }
+  }, [loaded])
   const handleColorChange = color => {
     setColor(color)
   }
@@ -233,18 +234,20 @@ const App = () => {
           </div>
         </div>
       ) : (
-        <div className="join-container">
-          <input
-            type="text"
-            value={name}
-            onChange={handleNameInput}
-            className="join-input"
-            placeholder="Enter a name to use ..."
-          />
-          <br />
-          <Button className="join-button" onClick={handleJoin}>
-            Join
-          </Button>
+        <div>
+          <div className="join-container">
+            <input
+              type="text"
+              value={name}
+              onChange={handleNameInput}
+              className="join-input"
+              placeholder="Enter a name to use ..."
+            />
+            <br />
+            <Button className="join-button" onClick={handleJoin}>
+              Join
+            </Button>
+          </div>
         </div>
       )}
     </div>
