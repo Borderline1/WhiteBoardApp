@@ -36,7 +36,7 @@ export const rectangle = {
     )
   },
   handleDoubleClick: function(layers, setLayers, x, y, color, uuid, socket) {
-    this.create(x, y, 40, 30, '#000000', uuid, socket)
+    this.create(x, y, 40, 30, color, uuid, socket)
   },
   create: (
     x,
