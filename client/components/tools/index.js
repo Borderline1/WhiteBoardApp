@@ -1,8 +1,8 @@
 import {circle} from './circle'
 import {rectangle} from './rectangle'
 import {line} from './line'
-import {lineDrag} from './lineDrag'
 import {picker} from './picker'
+import {textBox} from './textBox'
 // import types here
 
 export const types = {
@@ -11,5 +11,5 @@ export const types = {
   circle,
   rectangle,
   line,
-  lineDrag
+  textBox
 }
