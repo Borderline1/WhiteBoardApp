@@ -35,9 +35,8 @@ app.post('/create_user', (req, res) => {
   sessions[sessionKey] = new Session(req.body.name)
   res.json({success: true, sessionKey})
 })
-
 setInterval(() => {
-  // maybe this setInterval is being ram intensive ??
+  // maybe this setInterval is being ram intensive ?? gets called once, works properly
   for (sessionKey in sessions) {
     const session = sessions[sessionKey]
     session.decrementTimer()
