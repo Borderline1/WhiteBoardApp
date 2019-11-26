@@ -156,6 +156,7 @@ const App = () => {
       // do things later with picker
     }
     if (creating && selectedLayerId) {
+      console.log(clientX)
       tool.handleCreatingUpdate(
         selectedLayer,
         prevX,

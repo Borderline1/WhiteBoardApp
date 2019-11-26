@@ -57,15 +57,13 @@ export const textBox = {
     )
   },
   ElementComponent: props => {
-    return (
-      <div styling={`width: ${props.width}; height: ${props.height}`}>
-        <p
-          styling={`color: ${props.textColor}; background-color: ${props.backgroundColor}`}
-        >
-          {props.text === '' ? 'Text' : props.text}
-        </p>
-      </div>
-    )
+    let styleObj = {
+      width: props.width,
+      height: props.height,
+      color: props.textColor,
+      'background-color': props.backgroundColor
+    }
+    return <div style={styleObj}>{props.text === '' ? 'Text' : props.text}</div>
   },
   handleCreate: (
     x,
