@@ -12,7 +12,7 @@ const serverAddress = window.location.origin
 const App = () => {
   const canvas = document.querySelector('#canvas')
   const [socket, setSocket] = useState(null)
-  const [color, setColor] = useState({r: 0, g: 0, b: 0, a: 255})
+  const [color, setColor] = useState('ff0000')
   const [tool, setTool] = useState(types.circle)
   const [mouseX, setMouseX] = useState(0)
   const [mouseY, setMouseY] = useState(0)
