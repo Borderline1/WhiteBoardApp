@@ -30,22 +30,40 @@ export const circle = {
       </svg>
     )
   },
-  handleDoubleClick: function(layers, setLayers, x, y, color, uuid, socket) {
-    // setLayers([...layers, this.create(x, y, 20, color, uuid, socket)])
-    this.create(x, y, 1, color, uuid, socket)
-  },
-  handleUpdate: function(x, y) {},
-  create: (x, y, radius = '10px', fill = '#000000', uuid, socket) => {
+  handleCreate: (x, y, fill, uuid, socket) => {
     const data = {
       type: 'circle',
-      x,
-      y,
+      x: x - 30,
+      y: y - 30,
       id: uuid,
       props: {
-        radius,
+        radius: 30,
         fill
       }
     }
     socket.emit('create', data)
+  },
+  handleCreatingUpdate: (
+    selectedLayer,
+    prevX,
+    prevY,
+    clientX,
+    clientY,
+    socket
+  ) => {
+    const xdiff = prevX - clientX
+    const ydiff = prevY - clientY
+    const radius = Math.round(Math.sqrt(xdiff * xdiff + ydiff * ydiff))
+    const xPos = prevX - radius
+    const yPos = prevY - radius
+
+    if (selectedLayer) {
+      socket.emit('change', {
+        ...selectedLayer,
+        x: xPos,
+        y: yPos,
+        props: {...selectedLayer.props, radius}
+      })
+    }
   }
 }
