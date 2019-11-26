@@ -35,7 +35,7 @@ function socketWorks(server, elements, sessions) {
     socket.on('cursor', data => {
       const session = sessions[data.sessionKey]
       if (session) {
-        console.log(session.getTimer())
+        // console.log(session.getTimer())
         session.resetTimer()
         session.setMouseX(data.x)
         session.setMouseY(data.y)

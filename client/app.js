@@ -4,8 +4,8 @@ import {types} from './components/tools'
 import useInterval from '@use-it/interval'
 import faker from 'faker'
 import className from 'classnames'
-
 import io from 'socket.io-client'
+import {Button} from 'semantic-ui-react'
 
 const serverAddress = window.location.origin
 
@@ -235,9 +235,9 @@ const App = () => {
             placeholder="Enter a name to use ..."
           />
           <br />
-          <button className="join-button" onClick={handleJoin}>
+          <Button className="join-button" onClick={handleJoin}>
             Join
-          </button>
+          </Button>
         </div>
       )}
     </div>
