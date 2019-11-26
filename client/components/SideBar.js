@@ -16,19 +16,18 @@ const SideBar = ({
   const handleChange = e => {
     e.preventDefault()
     const {type, name, value} = e.target
-
     let editValue
     editValue = type === 'number' ? +value : value
     if (type === 'color') handleColorChange(editValue)
-
-    if (name !== 'x' && name !== 'y') {
-      // console.log('PROPS CAN BE TRUE')
-      socket.emit('change', {
-        ...selectedLayer,
-        props: {...selectedLayer.props, [name]: editValue}
-      })
-    } else {
-      socket.emit('change', {...selectedLayer, [name]: editValue})
+    if (selectedLayer) {
+      if (name !== 'x' && name !== 'y') {
+        socket.emit('change', {
+          ...selectedLayer,
+          props: {...selectedLayer.props, [name]: editValue}
+        })
+      } else {
+        socket.emit('change', {...selectedLayer, [name]: editValue})
+      }
     }
   }
   const handleTextPropsChange = e => {
