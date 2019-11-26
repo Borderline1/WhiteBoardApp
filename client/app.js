@@ -111,16 +111,16 @@ const App = () => {
       })
     }
     if (dragging) {
-      console.log('dragging')
+      // console.log('dragging')
       // do things later with picker
     }
     if (creating && selectedLayerId) {
       tool.handleCreatingUpdate(
         selectedLayer,
-        prevX,
-        prevY,
-        clientX,
-        clientY,
+        prevX + window.scrollX,
+        prevY + window.scrollY,
+        clientX + window.scrollX,
+        clientY + window.scrollY,
         socket
       )
     }
