@@ -5,15 +5,18 @@ import ToolButton from './ToolButton'
 const SideBar = ({
   color,
   tool,
+  textBox,
   selectedLayer,
+  handleTextBoxChange,
   handleColorChange,
   types,
   handleSelectTool,
   socket
 }) => {
   const handleChange = e => {
+    e.preventDefault()
     const {type, name, value} = e.target
-    // console.log(type, name, value, e)
+
     let editValue
     editValue = type === 'number' ? +value : value
     if (type === 'color') handleColorChange(editValue)
@@ -27,6 +30,19 @@ const SideBar = ({
     } else {
       socket.emit('change', {...selectedLayer, [name]: editValue})
     }
+  }
+  const handleTextPropsChange = e => {
+    if (e.target[0].name) {
+      socket.emit('change', {
+        ...selectedLayer,
+        props: {...selectedLayer.props, [e.target[0].name]: e.target[0].value}
+      })
+    }
+  }
+  const handleTextChange = e => {
+    const {type, name, value} = e.target
+    // console.log(type, name, value, e)
+    handleTextBoxChange(value)
   }
   return (
     <div
@@ -84,16 +100,23 @@ const SideBar = ({
               value={selectedLayer.y}
               onChange={handleChange}
             />
-            <label>Fill</label>
-            <input
-              name="fill"
-              type="color"
-              value={selectedLayer.props.fill}
-              onChange={handleChange}
-            />
+            {selectedLayer.type.name === 'textBox' ? null : (
+              <div>
+                <label>Fill</label>
+                <input
+                  name="fill"
+                  type="color"
+                  value={selectedLayer.props.fill}
+                  onChange={handleChange}
+                />
+              </div>
+            )}
             {selectedLayer.type.DimensionsComponent(
               selectedLayer,
-              handleChange
+              handleChange,
+              handleTextPropsChange,
+              handleTextChange,
+              textBox
             )}
           </div>
         ) : null}

@@ -1,20 +1,29 @@
+/* eslint-disable max-params */
 /* eslint-disable react/display-name */
 import React from 'react'
 
 let _id = 0
 
-export const circle = {
-  name: 'circle',
-  DimensionsComponent: (selectedLayer, handleChange) => {
+export const textBox = {
+  name: 'textBox',
+  DimensionsComponent: (
+    selectedLayer,
+    handleTextPropsChange,
+    handleTextChange,
+    textBox
+  ) => {
     return (
       <div>
-        <label>Text</label>
-        <input
-          name="text"
-          type="text"
-          value={selectedLayer.props.text}
-          onChange={handleChange}
-        />
+        <form onSubmit={handleTextPropsChange}>
+          <label>Text</label>
+          <input
+            name="text"
+            type="text"
+            value={textBox}
+            onChange={handleTextChange}
+          />
+          <button type="submit">Update Text</button>
+        </form>
         <label>Text Color</label>
         <input
           name="textColor"
@@ -48,25 +57,40 @@ export const circle = {
   },
   ElementComponent: props => {
     return (
-      <text width={props.width} height={props.height}>
-        asdf
-      </text>
+      <p
+        styling={`width: ${props.width}; height: ${props.height}; color: ${props.textColor}; background-color: ${props.backgroundColor}`}
+      >
+        {props.text === '' ? 'Text' : props.text}
+      </p>
     )
   },
   handleDoubleClick: function(layers, setLayers, x, y, color, uuid, socket) {
     // setLayers([...layers, this.create(x, y, 20, color, uuid, socket)])
-    this.create(x, y, 1, color, uuid, socket)
+    this.create(x, y, '', 50, 70, color, uuid, socket, '#000000')
   },
   handleUpdate: function(x, y) {},
-  create: (x, y, text = '', fill = '#000000', uuid, socket) => {
+  create: (
+    x,
+    y,
+    text = '',
+    height = 50,
+    width = 70,
+    color = '#ffffff',
+    uuid,
+    socket,
+    textColor = '#000000'
+  ) => {
     const data = {
-      type: 'circle',
+      type: 'textBox',
       x,
       y,
       id: uuid,
       props: {
+        height,
+        width,
         text,
-        fill
+        backgroundColor: '#ffffff',
+        textColor
       }
     }
     socket.emit('create', data)

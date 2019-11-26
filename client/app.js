@@ -12,7 +12,7 @@ const serverAddress = window.location.origin
 const App = () => {
   const canvas = document.querySelector('#canvas')
   const [socket, setSocket] = useState(null)
-  const [color, setColor] = useState('ff0000')
+  const [color, setColor] = useState('#000000')
   const [tool, setTool] = useState(types.circle)
   const [mouseX, setMouseX] = useState(0)
   const [mouseY, setMouseY] = useState(0)
@@ -26,6 +26,7 @@ const App = () => {
   const [selectedLayerId, setSelectedLayerId] = useState(null)
   const [dragging, setDragging] = useState(false)
   const [create, setCreate] = useState(false)
+  const [textBox, setTextBox] = useState('Text here')
 
   const clientLayers = layers.map(layer => {
     return {...layer, type: types[layer.type]}
@@ -71,8 +72,9 @@ const App = () => {
 
   useEffect(() => {
     if (loaded) {
+      let notnow = false
       const mouseDown = () => {
-        if (create) {
+        if (notnow) {
           //Create element
           console.log('hey')
           tool.handleDoubleClick(
@@ -129,6 +131,10 @@ const App = () => {
 
   const handleColorChange = color => {
     setColor(color)
+  }
+
+  const handleTextBoxChange = text => {
+    setTextBox(text)
   }
 
   const handleDisplayMouseMove = e => {
@@ -195,6 +201,8 @@ const App = () => {
             color={color}
             types={types}
             tool={tool}
+            textBox={textBox}
+            handleTextBoxChange={handleTextBoxChange}
             handleColorChange={handleColorChange}
             handleSelectTool={handleSelectTool}
             selectedLayer={selectedLayer}
