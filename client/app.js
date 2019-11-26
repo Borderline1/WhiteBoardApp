@@ -134,8 +134,10 @@ const App = () => {
     setColor(color)
   }
 
-  const handleTextBoxChange = text => {
-    setTextBox(text)
+  const handleTextBoxChange = e => {
+    const {type, name, value} = e.target
+    // console.log(type, name, value, e)
+    setTextBox(value)
   }
 
   const handleDisplayMouseMove = e => {

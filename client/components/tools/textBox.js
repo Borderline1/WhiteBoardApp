@@ -61,7 +61,7 @@ export const textBox = {
       width: props.width,
       height: props.height,
       color: props.textColor,
-      'background-color': props.backgroundColor
+      backgroundColor: props.backgroundColor
     }
     return <div style={styleObj}>{props.text === '' ? 'Text' : props.text}</div>
   },
