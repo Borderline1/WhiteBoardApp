@@ -12,17 +12,14 @@ const SideBar = ({
   socket
 }) => {
   const handleChange = e => {
-    const {type, name, value, propos} = e.target
-    console.log(type, name, value, propos, e)
+    const {type, name, value} = e.target
+    // console.log(type, name, value, e)
     let editValue
-    if (type === 'number') {
-      editValue = +value
-    } else if (type === 'color') {
-      console.log(e.target.value)
-    }
+    editValue = type === 'number' ? +value : value
+    if (type === 'color') handleColorChange(editValue)
 
     if (name !== 'x' && name !== 'y') {
-      console.log('PROPS CAN BE TRUE')
+      // console.log('PROPS CAN BE TRUE')
       socket.emit('change', {
         ...selectedLayer,
         props: {...selectedLayer.props, [name]: editValue}
@@ -39,14 +36,26 @@ const SideBar = ({
         width: '17.5vw',
         backgroundColor: 'lightgray',
         display: 'flex',
-        justifyContent: 'center',
-        alignItems: 'flex-start',
+        flexDirection: 'column',
+        justifyContent: 'flex-start',
+        alignItems: 'center',
         padding: '5px',
         zIndex: 100000
       }}
     >
-      <div className="toolbox" style={{}}>
+      <div
+        className="toolbox"
+        style={{display: 'flex', flexDirection: 'column'}}
+      >
         {/* iterate over all tools instead of hard coding */}
+        <label htmlFor="color" />
+        <input
+          name="color"
+          type="color"
+          value={color}
+          onChange={handleChange}
+        />
+
         {Object.keys(types).map(typeKey => (
           <ToolButton
             key={types[typeKey].name}
@@ -75,7 +84,7 @@ const SideBar = ({
               value={selectedLayer.y}
               onChange={handleChange}
             />
-            <label>Fill Color</label>
+            <label>Fill</label>
             <input
               name="fill"
               type="color"
