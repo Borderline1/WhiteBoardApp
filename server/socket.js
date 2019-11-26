@@ -5,38 +5,37 @@ const Elem = require('./db/schemas/sampleSchema')
 
 function socketWorks(server, elements, sessions) {
   const io = socketio(server)
+  let socketCount = 0
   io.on('connection', socket => {
     socket.emit('create', elements) //not working? should render previously created elements on connect
     //maybe bc we are broadcasting on create.
     console.log(`socket ${socket.id} connected`)
-    // if(interval){clearInterval(interval)}
-    // See need to clear interval to not duplicate work done
-    let socketArr = []
-    if (!socketArr.includes(socket.id)) {
-      socketArr.push(socket.id)
+    let interval
+    socketCount++
+
+    if (socketCount === 1) {
+      interval = setInterval(() => {
+        const sessionKeys = Object.keys(sessions)
+        const cursorPositions = []
+        for (let i = 0, n = sessionKeys.length; i < n; i++) {
+          const key = sessionKeys[i]
+          const session = sessions[key]
+          cursorPositions.push({
+            x: session.getMouseX(),
+            y: session.getMouseY(),
+            name: session.getName(),
+            sessionKey: key
+          })
+        }
+        // console.log(cursorPositions)
+        socket.broadcast.emit('cursor', cursorPositions)
+        // broadcast exludes the socket that the event came from
+      }, Math.round(1000 / 30))
     }
-
-    const interval = setInterval(() => {
-      const sessionKeys = Object.keys(sessions)
-      const cursorPositions = []
-      for (let i = 0, n = sessionKeys.length; i < n; i++) {
-        const key = sessionKeys[i]
-        const session = sessions[key]
-        cursorPositions.push({
-          x: session.getMouseX(),
-          y: session.getMouseY(),
-          name: session.getName(),
-          sessionKey: key
-        })
-      }
-      // console.log(cursorPositions)
-      socket.broadcast.emit('cursor', cursorPositions)
-      // broadcast exludes the socket that the event came from
-    }, Math.round(1000 / 30))
-
     socket.on('cursor', data => {
       const session = sessions[data.sessionKey]
       if (session) {
+        console.log(session.getTimer())
         session.resetTimer()
         session.setMouseX(data.x)
         session.setMouseY(data.y)
@@ -58,10 +57,9 @@ function socketWorks(server, elements, sessions) {
       socket.emit('change', elements)
     })
     socket.on('disconnect', socket => {
-      console.log('hi')
-      console.log(socketArr)
-      if (socketArr.length === 0) {
-        console.log('byebye')
+      --socketCount
+      console.log('socket disconnected:', socket)
+      if (socketCount === 0) {
         clearInterval(interval)
       }
     })
