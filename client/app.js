@@ -12,7 +12,7 @@ const serverAddress = window.location.origin
 const App = () => {
   const canvas = document.querySelector('#canvas')
   const [socket, setSocket] = useState(null)
-  const [color, setColor] = useState('ff0000')
+  const [color, setColor] = useState('#ff0000')
   const [tool, setTool] = useState(types.circle)
   const [mouseX, setMouseX] = useState(0)
   const [mouseY, setMouseY] = useState(0)
@@ -24,6 +24,8 @@ const App = () => {
   const [layers, setLayers] = useState([])
   const [indicatedLayerId, setIndicatedLayerId] = useState(null)
   const [selectedLayerId, setSelectedLayerId] = useState(null)
+  const [dragging, setDragging] = useState(false)
+  const [creating, setCreating] = useState(false)
 
   const clientLayers = layers.map(layer => {
     return {...layer, type: types[layer.type]}
@@ -97,8 +99,8 @@ const App = () => {
   }
 
   const handleDisplayMouseMove = e => {
+    const [clientX, clientY] = [e.clientX, e.clientY]
     if (socket) {
-      const [clientX, clientY] = [e.clientX, e.clientY]
       setMouseX(clientX)
       setMouseY(clientY)
 
@@ -109,13 +111,32 @@ const App = () => {
         sessionKey: window.localStorage.getItem('sessionKey')
       })
     }
+    if (dragging) {
+      console.log('dragging')
+      // do things later with picker
+    }
+    if (creating && selectedLayerId) {
+      tool.handleCreatingUpdate(
+        selectedLayer,
+        prevX,
+        prevY,
+        clientX,
+        clientY,
+        socket
+      )
+    }
   }
 
   const handleSelectTool = tool => {
     setTool(tool)
+    if (tool.name === 'picker') {
+      setDragging(true)
+      setCreating(false)
+    } else {
+      setCreating(true)
+      setSelectedLayerId(null)
+    }
   }
-
-  const [dragging, setDragging] = useState(false)
 
   return (
     <div className="App">
@@ -133,40 +154,26 @@ const App = () => {
           <div
             id="canvas"
             style={{position: 'absolute', width: 1800, height: 1800}}
-            onMouseMove={
-              e => handleDisplayMouseMove(e)
-              // dragging implementation
-            }
+            onMouseMove={e => handleDisplayMouseMove(e)}
             onClick={e => {
               if (e.target.id === 'canvas') setSelectedLayerId(null)
             }}
-            onDoubleClick={event => {
-              tool.handleDoubleClick(
-                layers,
-                setLayers,
-                mouseX + window.scrollX - 20,
-                // 20 represents a tool specific offset to center the object
-                mouseY + window.scrollY - 20,
-                color,
-                faker.random.uuid(),
-                socket
-              )
-            }}
             onMouseDown={event => {
-              if (tool.name === 'lineDrag') {
-                tool.handleDoubleClick(
-                  layers,
-                  setLayers,
-                  mouseX + window.scrollX - 8,
-                  // 20 represents a tool specific offset to center the object
-                  mouseY + window.scrollY - 22,
-                  color,
-                  faker.random.uuid(),
-                  socket
-                )
+              if (creating) {
+                setprevX(mouseX)
+                setprevY(mouseY)
+                const layerId = faker.random.uuid()
+                tool.handleCreate(mouseX, mouseY, color, layerId, socket)
+                setSelectedLayerId(layerId)
+              } else {
+                setDragging(true)
               }
             }}
-            //   onMouseUp={this.handleDisplayMouseUp.bind(this)}
+            onMouseUp={event => {
+              if (creating) {
+                setSelectedLayerId(null)
+              }
+            }}
           >
             {layers
               ? clientLayers.map(layer => {

@@ -6,24 +6,20 @@ let _id = 0
 
 export const rectangle = {
   name: 'rectangle',
-  DimensionsComponent: selectedLayer => {
+  DimensionsComponent: (selectedLayer, handleChange) => {
     return (
       <div>
         <label>Width</label>
         <input
           type="number"
           value={selectedLayer.props.width}
-          onChange={event => {
-            selectedLayer.onChange('width', event.target.value)
-          }}
+          onChange={handleChange}
         />
         <label>Height</label>
         <input
           type="number"
           value={selectedLayer.props.height}
-          onChange={event => {
-            selectedLayer.onChange('height', event.target.value)
-          }}
+          onChange={handleChange}
         />
       </div>
     )
@@ -35,29 +31,39 @@ export const rectangle = {
       </svg>
     )
   },
-  handleDoubleClick: function(layers, setLayers, x, y, color, uuid, socket) {
-    this.create(x, y, 40, 30, 'black', uuid, socket)
-  },
-  create: (
-    x,
-    y,
-    width = '20px',
-    height = '15px',
-    fill = 'black',
-    uuid,
-    socket
-  ) => {
+  handleCreate: (x, y, fill = 'black', uuid, socket) => {
     const data = {
       type: 'rectangle',
       x,
       y,
       id: uuid,
       props: {
-        width,
-        height,
+        width: 30,
+        height: 15,
         fill
       }
     }
     socket.emit('create', data)
+  },
+  handleCreatingUpdate: (
+    selectedLayer,
+    prevX,
+    prevY,
+    clientX,
+    clientY,
+    socket
+  ) => {
+    const xPos = Math.min(prevX, clientX)
+    const yPos = Math.min(prevY, clientY)
+    const width = Math.abs(prevX - clientX)
+    const height = Math.abs(prevY - clientY)
+    if (selectedLayer) {
+      socket.emit('change', {
+        ...selectedLayer,
+        x: xPos,
+        y: yPos,
+        props: {...selectedLayer.props, width, height}
+      })
+    }
   }
 }
