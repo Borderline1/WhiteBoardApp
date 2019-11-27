@@ -162,7 +162,13 @@ const App = () => {
                 setprevX(mouseX)
                 setprevY(mouseY)
                 const layerId = faker.random.uuid()
-                tool.handleCreate(mouseX, mouseY, color, layerId, socket)
+                tool.handleCreate(
+                  mouseX + window.scrollX,
+                  mouseY + window.scrollY,
+                  color,
+                  layerId,
+                  socket
+                )
                 setSelectedLayerId(layerId)
               } else {
                 setDragging(true)
