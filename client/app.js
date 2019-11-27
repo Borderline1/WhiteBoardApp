@@ -57,41 +57,47 @@ const App = () => {
 
   // cDM sets up socket on connection set cursors on recieving cursor data
   useEffect(() => {
-    // const socket = io(serverAddress)
-    const runSocket = () => {
-      setSocket(sockCon)
-    }
-    runSocket()
+    setSocket(sockCon)
+    socket.on('cursor', data => {
+      setCursors(data)
+    })
+    socket.on('create', elements => {
+      setLayers(elements)
+    })
+    socket.on('change', elements => {
+      setLayers(elements)
+    })
     //socket when we receive cursor data
   }, [])
 
-  useEffect(() => {
-    if (loaded) {
-      socket.on('cursor', data => {
-        setCursors(data)
-      })
-      socket.on('create', elements => {
-        setLayers(elements)
-      })
-      socket.on('change', elements => {
-        setLayers(elements)
-      })
-    }
-  }, [loaded])
+  // useEffect(() => {
+  //   if (loaded) {
+  //     socket.on('cursor', data => {
+  //       setCursors(data)
+  //     })
+  //     socket.on('create', elements => {
+  //       setLayers(elements)
+  //     })
+  //     socket.on('change', elements => {
+  //       setLayers(elements)
+  //     })
+  //   }
+  // }, [loaded])
 
-  useEffect(() => {
-    if (loaded) {
-      socket.on('cursor', data => {
-        setCursors(data)
-      })
-      socket.on('create', elements => {
-        setLayers(elements)
-      })
-      socket.on('change', elements => {
-        setLayers(elements)
-      })
-    }
-  }, [loaded])
+  // useEffect(() => {
+  //   if (loaded) {
+  //     socket.on('cursor', data => {
+  //       setCursors(data)
+  //     })
+  //     socket.on('create', elements => {
+  //       setLayers(elements)
+  //     })
+  //     socket.on('change', elements => {
+  //       setLayers(elements)
+  //     })
+  //   }
+  // }, [loaded])
+
   const handleColorChange = color => {
     setColor(color)
   }
