@@ -3,10 +3,10 @@ import React, {useEffect, useState} from 'react'
 import SideBar from './components/SideBar'
 import {types} from './components/tools'
 import useInterval from '@use-it/interval'
-import faker from 'faker'
+import uuidv1 from 'uuid/v1'
 import className from 'classnames'
-
 import io from 'socket.io-client'
+import Entry from './components/entry'
 
 const serverAddress = window.location.origin
 
@@ -64,46 +64,8 @@ const App = () => {
     socket.on('change', elements => {
       setLayers(elements)
     })
+    //socket when we receive cursor data
   }, [])
-
-  // useEffect(() => {
-  //   console.log("useEFFECT",loaded)
-  //   if (loaded) {
-  //     socket.on('cursor', data => {
-  //       setCursors(data)
-  //     })
-  //     socket.on('create', elements => {
-  //       setLayers(elements)
-  //     })
-  //     socket.on('change', elements => {
-  //       setLayers(elements)
-  //     })
-  //   }
-  // },[loaded])
-
-  const handleNameInput = e => {
-    const name = e.target.value
-    setName(name)
-  }
-  const handleJoin = e => {
-    fetch(serverAddress + '/create_user', {
-      body: JSON.stringify({
-        name
-      }),
-      method: 'post',
-      cache: 'no-cache',
-      headers: {
-        'Content-Type': 'application/json'
-      }
-    })
-      .then(response => response.json())
-      .then(json => {
-        if (json.success) {
-          localStorage.sessionKey = json.sessionKey
-          setLoaded(true)
-        }
-      })
-  }
 
   const handleColorChange = color => {
     setColor(color)
@@ -151,7 +113,7 @@ const App = () => {
     setprevX(mouseX)
     setprevY(mouseY)
     if (creating) {
-      const layerId = faker.random.uuid()
+      const layerId = uuidv1()
       tool.handleCreate(
         mouseX + window.scrollX,
         mouseY + window.scrollY,
@@ -282,19 +244,14 @@ const App = () => {
           </div>
         </div>
       ) : (
-        <div className="join-container">
-          <input
-            type="text"
-            value={name}
-            onChange={handleNameInput}
-            className="join-input"
-            placeholder="Enter a name to use ..."
-          />
-          <br />
-          <button className="join-button" onClick={handleJoin}>
-            Join
-          </button>
-        </div>
+        <Entry
+          loaded={loaded}
+          setLoaded={setLoaded}
+          name={name}
+          setName={setName}
+          socket={socket}
+          setSocket={setSocket}
+        />
       )}
     </div>
   )
