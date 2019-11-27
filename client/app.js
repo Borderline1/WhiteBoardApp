@@ -55,22 +55,31 @@ const App = () => {
   useEffect(() => {
     const socket = io(serverAddress)
     setSocket(socket)
-    //socket when we receive cursor data
+    socket.on('cursor', data => {
+      setCursors(data)
+    })
+    socket.on('create', elements => {
+      setLayers(elements)
+    })
+    socket.on('change', elements => {
+      setLayers(elements)
+    })
   }, [])
 
-  useEffect(() => {
-    if (loaded) {
-      socket.on('cursor', data => {
-        setCursors(data)
-      })
-      socket.on('create', elements => {
-        setLayers(elements)
-      })
-      socket.on('change', elements => {
-        setLayers(elements)
-      })
-    }
-  }, [loaded])
+  // useEffect(() => {
+  //   console.log("useEFFECT",loaded)
+  //   if (loaded) {
+  //     socket.on('cursor', data => {
+  //       setCursors(data)
+  //     })
+  //     socket.on('create', elements => {
+  //       setLayers(elements)
+  //     })
+  //     socket.on('change', elements => {
+  //       setLayers(elements)
+  //     })
+  //   }
+  // },[loaded])
 
   const handleNameInput = e => {
     const name = e.target.value
