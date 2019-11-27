@@ -152,17 +152,17 @@ const App = () => {
       })
     }
     if (dragging) {
-      console.log('dragging')
+      // console.log('dragging')
       // do things later with picker
     }
     if (creating && selectedLayerId) {
       console.log(clientX)
       tool.handleCreatingUpdate(
         selectedLayer,
-        prevX,
-        prevY,
-        clientX,
-        clientY,
+        prevX + window.scrollX,
+        prevY + window.scrollY,
+        clientX + window.scrollX,
+        clientY + window.scrollY,
         socket
       )
     }
@@ -206,7 +206,13 @@ const App = () => {
                 setprevX(mouseX)
                 setprevY(mouseY)
                 const layerId = faker.random.uuid()
-                tool.handleCreate(mouseX, mouseY, color, layerId, socket)
+                tool.handleCreate(
+                  mouseX + window.scrollX,
+                  mouseY + window.scrollY,
+                  color,
+                  layerId,
+                  socket
+                )
                 setSelectedLayerId(layerId)
               } else {
                 setDragging(true)
