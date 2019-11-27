@@ -48,7 +48,6 @@
     "cors": "^2.8.5",
     "express": "^4.16.4",
     "express-session": "^1.15.1",
-    "faker": "^4.1.0",
     "history": "^4.9.0",
     "mongodb": "^3.3.4",
     "mongoose": "^5.7.12",

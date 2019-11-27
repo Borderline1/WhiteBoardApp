@@ -3,7 +3,7 @@ import React, {useEffect, useState} from 'react'
 import SideBar from './components/SideBar'
 import {types} from './components/tools'
 import useInterval from '@use-it/interval'
-import faker from 'faker'
+import uuidv1 from 'uuid/v1'
 import className from 'classnames'
 import io from 'socket.io-client'
 import {Button} from 'semantic-ui-react'
@@ -187,7 +187,7 @@ const App = () => {
               if (creating) {
                 setprevX(mouseX)
                 setprevY(mouseY)
-                const layerId = faker.random.uuid()
+                const layerId = uuidv1()
                 tool.handleCreate(
                   mouseX + window.scrollX,
                   mouseY + window.scrollY,

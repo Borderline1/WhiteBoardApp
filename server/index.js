@@ -8,7 +8,7 @@ module.exports = app
 /*(http)*/
 const bodyParser = require('body-parser')
 const cors = require('cors')
-const faker = require('faker')
+const uuidv1 = require('uuid/v1')
 const socketWorks = require('./socket')
 
 const sessions = {}
@@ -28,7 +28,7 @@ app.use(express.static(path.join(__dirname, '..', 'public')))
 
 //replace with real uuid gen
 const generateId = () => {
-  return faker.random.uuid()
+  return uuidv1()
 }
 
 app.post('/create_user', (req, res) => {

@@ -3,7 +3,7 @@
 /* eslint-disable react/display-name */
 import React from 'react'
 
-let _id = 0
+// let _id = 0
 
 export const line = {
   name: 'line',
@@ -45,6 +45,7 @@ export const line = {
       x,
       y,
       id: uuid,
+      rotate: 0,
       props: {
         x1: 0,
         y1: 0,

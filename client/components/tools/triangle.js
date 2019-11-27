@@ -40,6 +40,7 @@ export const triangle = {
       id: uuid,
       x: x - 5, //relative to canvas mouseX
       y,
+      rotate: 0,
       props: {
         fill,
         base: 10,

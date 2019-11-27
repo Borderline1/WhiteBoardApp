@@ -36,6 +36,7 @@ export const circle = {
       x: x - 10,
       y: y - 10,
       id: uuid,
+      rotate: 0,
       props: {
         radius: 10,
         fill
