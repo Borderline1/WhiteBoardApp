@@ -40,22 +40,64 @@ export const textBox = {
       </div>
     )
   },
-  ElementComponent: (props, handleTextChange, selectedLayer, socket) => {
+  ElementComponent: (
+    props,
+    handleTextChange,
+    selectedLayer,
+    socket,
+    localText,
+    setLocalText,
+    useLocalText,
+    setUseLocalText
+  ) => {
     let styleObj = {
       width: props.width,
       height: props.height,
       color: props.textColor,
       backgroundColor: props.backgroundColor
     }
+    let inputStyleObj = {
+      width: props.width,
+      height: props.height,
+      color: props.textColor,
+      backgroundColor: props.backgroundColor,
+      overflowWrap: 'break-word',
+      hyphens: 'auto'
+    }
     // return <div style={styleObj}>{props.text === '' ? 'Text' : props.text}</div>
     return (
       <div style={styleObj}>
-        <input
-          style={styleObj}
-          type="text"
-          value={props.text}
-          onChange={e => handleTextChange(e, selectedLayer, socket)}
-        />
+        {useLocalText ? (
+          <input
+            style={inputStyleObj}
+            type="text"
+            value={localText}
+            onChange={e =>
+              handleTextChange(
+                e,
+                selectedLayer,
+                socket,
+                setLocalText,
+                setUseLocalText
+              )
+            }
+          />
+        ) : (
+          <input
+            style={inputStyleObj}
+            type="text"
+            value={props.text}
+            onChange={e =>
+              handleTextChange(
+                e,
+                selectedLayer,
+                socket,
+                setLocalText,
+                setUseLocalText
+              )
+            }
+          />
+        )}
       </div>
     )
   },
@@ -83,7 +125,31 @@ export const textBox = {
     }
     socket.emit('create', data)
   },
-  handleTextChange: (event, selectedLayer, socket) => {
+  handleTextChange: (
+    event,
+    selectedLayer,
+    socket,
+    setLocalText,
+    setUseLocalText
+  ) => {
+    // setUseLocalText(true)
+    // if (selectedLayer) {
+    //   let text = event.target.value
+    //   setLocalText(text)
+    // }
+    // function socketEmit() {
+    //   if (selectedLayer) {
+    //     let newText = event.target.value
+    //     socket.emit('change', {
+    //       ...selectedLayer,
+    //       props: {...selectedLayer.props, text: newText}
+    //     })
+    //     setUseLocalText(false)
+    //     setLocalText('Text')
+    //   }
+    // }
+    // window.addEventListener('click', socketEmit)
+    // window.removeEventListener('click', socketEmit)
     if (selectedLayer) {
       socket.emit('change', {
         ...selectedLayer,
