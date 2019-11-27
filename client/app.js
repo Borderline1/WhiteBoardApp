@@ -11,10 +11,8 @@ import io from 'socket.io-client'
 const serverAddress = window.location.origin
 
 const App = () => {
-  const canvas = document.querySelector('#canvas')
   const [socket, setSocket] = useState(null)
   const [color, setColor] = useState('#1133EE')
-  const pickerTool = types.picker
   const [tool, setTool] = useState(types.picker)
   const [mouseX, setMouseX] = useState(0)
   const [mouseY, setMouseY] = useState(0)
@@ -73,40 +71,40 @@ const App = () => {
     }
   }, [loaded])
 
-  useEffect(() => {
-    if (loaded) {
-      let notnow = false
-      const mouseDown = () => {
-        if (notnow) {
-          //Create element
-          console.log('hey')
-          tool.handleDoubleClick(
-            layers,
-            setLayers,
-            mouseX + window.scrollX - 8,
-            mouseY + window.scrollY - 22,
-            color,
-            faker.random.uuid(),
-            socket
-          )
-        } else {
-          //Moving element
-          setDragging(true)
-        }
-      }
-      const mouseUp = () => {
-        setDragging(false)
-      }
-      const canvasDiv = document.querySelector('#canvas')
-      if (!canvasDiv) return
-      canvasDiv.addEventListener('mousedown', mouseDown)
-      window.addEventListener('mouseup', mouseUp)
-      return () => {
-        canvasDiv.removeEventListener('mousedown', mouseDown)
-        window.removeEventListener('mouseup', mouseUp)
-      }
-    }
-  })
+  // useEffect(() => {
+  //   if (loaded) {
+  //     let notnow = false
+  //     const mouseDown = () => {
+  //       if (notnow) {
+  //         //Create element
+  //         console.log('hey')
+  //         tool.handleDoubleClick(
+  //           layers,
+  //           setLayers,
+  //           mouseX + window.scrollX - 8,
+  //           mouseY + window.scrollY - 22,
+  //           color,
+  //           faker.random.uuid(),
+  //           socket
+  //         )
+  //       } else {
+  //         //Moving element
+  //         setDragging(true)
+  //       }
+  //     }
+  //     const mouseUp = () => {
+  //       setDragging(false)
+  //     }
+  //     const canvasDiv = document.querySelector('#canvas')
+  //     if (!canvasDiv) return
+  //     canvasDiv.addEventListener('mousedown', mouseDown)
+  //     window.addEventListener('mouseup', mouseUp)
+  //     return () => {
+  //       canvasDiv.removeEventListener('mousedown', mouseDown)
+  //       window.removeEventListener('mouseup', mouseUp)
+  //     }
+  //   }
+  // })
 
   const handleNameInput = e => {
     const name = e.target.value
@@ -153,12 +151,17 @@ const App = () => {
         sessionKey: window.localStorage.getItem('sessionKey')
       })
     }
-    if (picking && dragging) {
-      console.log('dragging')
-      // do things later with picker
-    }
+    // if (picking && dragging) {
+    //   tool.handleDragging(
+    //     selectedLayer,
+    //     prevX,
+    //     prevY,
+    //     clientX,
+    //     clientY,
+    //     socket
+    //   )
+    // }
     if (creating && selectedLayerId) {
-      console.log(clientX)
       tool.handleCreatingUpdate(
         selectedLayer,
         prevX,
@@ -207,7 +210,10 @@ const App = () => {
                 const layerId = faker.random.uuid()
                 tool.handleCreate(mouseX, mouseY, color, layerId, socket)
                 setSelectedLayerId(layerId)
+              } else if (event.target.id !== 'canvas') {
+                setDragging(true)
               } else {
+                if (event.target.id === 'canvas') setSelectedLayerId(null)
                 // do things with picker for lasso
               }
             }}
@@ -239,7 +245,6 @@ const App = () => {
                       }}
                       onMouseUp={() => {
                         if (dragging) return
-                        // if (layer.id === selectedLayerId) setSelectedLayerId(null);
                         else setSelectedLayerId(layer.id)
                       }}
                       className={className('layer', {

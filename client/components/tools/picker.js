@@ -2,6 +2,6 @@ import React from 'react'
 
 export const picker = {
   name: 'picker',
-  handleDrag: () => {},
+  handleDragging: (selectedLayer, prevX, prevY, clientX, clientY, socket) => {},
   handleLasso: () => {}
 }
