@@ -64,6 +64,10 @@ const App = () => {
     socket.on('change', elements => {
       setLayers(elements)
     })
+    socket.on('delete', elements => {
+      console.log(elements)
+      setLayers(elements)
+    })
     //socket when we receive cursor data
   }, [])
 
@@ -138,6 +142,10 @@ const App = () => {
     } else {
       setCreating(true)
     }
+  }
+
+  const handleDelete = index => {
+    socket.emit('delete', clientLayers[index], index)
   }
 
   return (
@@ -215,7 +223,7 @@ const App = () => {
                         selectedLayer={selectedLayer}
                         socket={socket}
                         index={idx}
-                        clientLayers={clientLayers}
+                        handleDelete={handleDelete}
                       />
                     </div>
                   )

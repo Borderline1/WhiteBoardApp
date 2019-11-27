@@ -61,14 +61,15 @@ export const textBox = {
           onChange={e => handleTextChange(e, selectedLayer, socket, props.id)}
         />
         <button
+          name="X"
           type="button"
           className="deleteElement"
           onClick={() => {
             console.log('clicky clicky!')
-            props.clientLayers.splice(props.index, 1)
+            props.handleDelete(props.index)
           }}
         >
-          X
+          <p style={{position: 'absolute', left: '4px', top: '-4px'}}>x</p>
         </button>
       </div>
     )
