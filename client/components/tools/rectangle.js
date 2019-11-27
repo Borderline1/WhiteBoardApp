@@ -9,12 +9,14 @@ export const rectangle = {
       <div>
         <label>Width</label>
         <input
+          name="width"
           type="number"
           value={selectedLayer.props.width}
           onChange={handleChange}
         />
         <label>Height</label>
         <input
+          name="height"
           type="number"
           value={selectedLayer.props.height}
           onChange={handleChange}
