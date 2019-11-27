@@ -58,8 +58,8 @@ const App = () => {
   // cDM sets up socket on connection set cursors on recieving cursor data
   useEffect(() => {
     // const socket = io(serverAddress)
-    const runSocket = async () => {
-      await setSocket(sockCon)
+    const runSocket = () => {
+      setSocket(sockCon)
     }
     runSocket()
     //socket when we receive cursor data
