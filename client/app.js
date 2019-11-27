@@ -141,7 +141,8 @@ const App = () => {
         prevY + window.scrollY,
         clientX + window.scrollX,
         clientY + window.scrollY,
-        socket
+        socket,
+        handleSelectTool
       )
     }
   }
@@ -200,9 +201,17 @@ const App = () => {
                 setDragging(false)
               }
               if (creating) {
-                setSelectedLayerId(null)
-                setprevX(null)
-                setprevY(null)
+                if (tool.name === 'textBox') {
+                  setTool(types.picker)
+                  setCreating(false)
+                  setSelectedLayerId(null)
+                  setprevX(null)
+                  setprevY(null)
+                } else {
+                  setSelectedLayerId(null)
+                  setprevX(null)
+                  setprevY(null)
+                }
               }
             }}
           >
@@ -238,7 +247,12 @@ const App = () => {
                       }}
                     >
                       {/* this layers canvas component */}
-                      <layer.type.ElementComponent {...layer.props} />
+                      {layer.type.ElementComponent(
+                        layer.props,
+                        layer.type.handleTextChange,
+                        selectedLayer,
+                        socket
+                      )}
                     </div>
                   )
                 })

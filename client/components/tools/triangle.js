@@ -30,7 +30,7 @@ export const triangle = {
             props.height
           }`}
           fill={props.fill}
-         />
+        />
       </svg>
     )
   },
