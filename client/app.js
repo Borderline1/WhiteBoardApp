@@ -62,7 +62,6 @@ const App = () => {
       setLayers(elements)
     })
     socket.on('change', elements => {
-      console.log('change happeing')
       setLayers(elements)
     })
   }, [])

@@ -41,15 +41,14 @@ function socketWorks(server, elements, sessions) {
         session.setMouseY(data.y)
       }
     })
-    socket.on('create', data => {
+    socket.on('create', async data => {
       elements.push(data)
       let elem = new Elem({any: data})
-      // let res = await elem.save()
+      let res = await elem.save()
       socket.emit('create', elements)
       socket.broadcast.emit('create', elements)
     })
     socket.on('change', data => {
-      console.log('change happening in server')
       const element = elements.find(element => element.id === data.id)
       Object.keys(element).forEach(key => {
         if (key !== 'type') {
