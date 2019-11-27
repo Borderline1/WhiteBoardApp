@@ -29,6 +29,7 @@ function socketWorks(server, elements, sessions) {
         }
         // console.log(cursorPositions)
         socket.broadcast.emit('cursor', cursorPositions)
+        socket.emit('cursor', cursorPositions)
         // broadcast exludes the socket that the event came from
       }, Math.round(1000 / 30))
     }
@@ -44,6 +45,7 @@ function socketWorks(server, elements, sessions) {
       console.log('data', data)
       elements.push(data)
       socket.emit('create', elements)
+      socket.broadcast.emit('create', elements)
       let elem = new Elem({
         _id: data.id,
         type: data.type,
@@ -64,6 +66,7 @@ function socketWorks(server, elements, sessions) {
         }
       })
       socket.emit('change', elements)
+      socket.broadcast.emit('change', elements)
       Elem.findOneAndUpdate(
         {_id: data.id},
         {

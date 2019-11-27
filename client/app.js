@@ -10,6 +10,8 @@ import {Button} from 'semantic-ui-react'
 import sockCon from './socket'
 import Entry from './components/entry'
 
+const serverAddress = window.location.origin
+
 const App = () => {
   const [socket, setSocket] = useState(null)
   const [color, setColor] = useState('#1133EE')
@@ -77,30 +79,6 @@ const App = () => {
     }
   }, [loaded])
 
-  // const handleNameInput = e => {
-  //   const name = e.target.value
-  //   setName(name)
-  // }
-  // const handleJoin = async e => {
-  //   await setSocket(sockCon)
-  //   fetch(serverAddress + '/create_user', {
-  //     body: JSON.stringify({
-  //       name
-  //     }),
-  //     method: 'post',
-  //     cache: 'no-cache',
-  //     headers: {
-  //       'Content-Type': 'application/json'
-  //     }
-  //   })
-  //     .then(response => response.json())
-  //     .then(json => {
-  //       if (json.success) {
-  //         localStorage.sessionKey = json.sessionKey
-  //         setLoaded(true)
-  //       }
-  //     })
-  // }
   useEffect(() => {
     if (loaded) {
       socket.on('cursor', data => {
