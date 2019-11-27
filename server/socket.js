@@ -41,8 +41,7 @@ function socketWorks(server, elements, sessions) {
         session.setMouseY(data.y)
       }
     })
-    socket.on('create', async data => {
-      console.log('data', data)
+    socket.on('create', data => {
       elements.push(data)
       socket.emit('create', elements)
       socket.broadcast.emit('create', elements)
@@ -54,12 +53,10 @@ function socketWorks(server, elements, sessions) {
         rotate: data.rotate,
         props: data.props
       })
-      let res = await elem.save()
-      console.log('elements on 49', res)
+      elem.save()
     })
-    socket.on('change', async data => {
+    socket.on('change', data => {
       const element = elements.find(element => element.id === data.id)
-      console.log('elemid', element.id)
       Object.keys(element).forEach(key => {
         if (key !== 'type') {
           element[key] = data[key]

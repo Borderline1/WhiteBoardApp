@@ -1,17 +1,15 @@
-import React, {useEffect, useState} from 'react'
+import React from 'react'
 import {Button} from 'semantic-ui-react'
-import sockCon from '../socket'
-import io from 'socket.io-client'
 const serverAddress = window.location.origin
 
-const Entry = ({loaded, setLoaded, name, setName, socket, setSocket}) => {
+const Entry = ({loaded, setLoaded, name, setName}) => {
   const handleNameInput = e => {
     const name = e.target.value
     setName(name)
   }
-  const handleJoin = async e => {
+  const handleJoin = e => {
     console.log('running')
-    await setSocket(sockCon)
+
     fetch(serverAddress + '/create_user', {
       body: JSON.stringify({
         name

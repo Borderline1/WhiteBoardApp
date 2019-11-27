@@ -6,8 +6,6 @@ import useInterval from '@use-it/interval'
 import uuidv1 from 'uuid/v1'
 import className from 'classnames'
 import io from 'socket.io-client'
-import {Button} from 'semantic-ui-react'
-import sockCon from './socket'
 import Entry from './components/entry'
 
 const serverAddress = window.location.origin
