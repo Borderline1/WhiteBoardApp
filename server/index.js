@@ -26,6 +26,7 @@ app.use(compression())
 // static file-serving middleware
 app.use(express.static(path.join(__dirname, '..', 'public')))
 
+//replace with real uuid gen
 const generateId = () => {
   return faker.random.uuid()
 }

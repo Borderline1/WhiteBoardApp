@@ -41,6 +41,7 @@ const App = () => {
 
   //unneeded useInterval?
   useInterval(() => {
+    console.log('44', loaded)
     if (loaded) {
       socket.emit('cursor', {
         name: name,
@@ -52,11 +53,11 @@ const App = () => {
   }, 3000) // 3 seconds
 
   // cDM sets up socket on connection set cursors on recieving cursor data
-  // useEffect(async () => {
-  //   // const socket = io(serverAddress)
-  //  await setSocket(sockCon)
-  //   //socket when we receive cursor data
-  // }, [])
+  useEffect(async () => {
+    // const socket = io(serverAddress)
+    await setSocket(sockCon)
+    //socket when we receive cursor data
+  }, [])
 
   const handleNameInput = e => {
     const name = e.target.value
@@ -76,6 +77,7 @@ const App = () => {
     })
       .then(response => response.json())
       .then(json => {
+        console.log('80')
         if (json.success) {
           localStorage.sessionKey = json.sessionKey
           setLoaded(true)
