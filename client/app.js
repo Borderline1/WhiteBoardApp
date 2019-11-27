@@ -27,7 +27,6 @@ const App = () => {
   const [dragging, setDragging] = useState(false)
   const [creating, setCreating] = useState(false)
   const [picking, setPicking] = useState(true)
-  const [textBox, setTextBox] = useState('Text here')
 
   const clientLayers = layers.map(layer => {
     return {...layer, type: types[layer.type]}
@@ -99,6 +98,17 @@ const App = () => {
     setColor(color)
   }
 
+  const handleSelectTool = tool => {
+    setTool(tool)
+    if (tool.name === 'picker') {
+      setCreating(false)
+      setSelectedLayerId(null)
+    } else {
+      setCreating(true)
+      setSelectedLayerId(null)
+    }
+  }
+
   const handleDisplayMouseMove = e => {
     const [clientX, clientY] = [e.clientX, e.clientY]
     if (socket) {
@@ -130,19 +140,9 @@ const App = () => {
         prevY + window.scrollY,
         clientX + window.scrollX,
         clientY + window.scrollY,
-        socket
+        socket,
+        handleSelectTool
       )
-    }
-  }
-
-  const handleSelectTool = tool => {
-    setTool(tool)
-    if (tool.name === 'picker') {
-      setCreating(false)
-      setSelectedLayerId(null)
-    } else {
-      setCreating(true)
-      setSelectedLayerId(null)
     }
   }
 
@@ -188,9 +188,17 @@ const App = () => {
                 setDragging(false)
               }
               if (creating) {
-                setSelectedLayerId(null)
-                setprevX(null)
-                setprevY(null)
+                if (tool.name === 'textBox') {
+                  setTool(types.picker)
+                  setCreating(false)
+                  setSelectedLayerId(null)
+                  setprevX(null)
+                  setprevY(null)
+                } else {
+                  setSelectedLayerId(null)
+                  setprevX(null)
+                  setprevY(null)
+                }
               }
             }}
           >

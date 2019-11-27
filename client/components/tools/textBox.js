@@ -84,11 +84,7 @@ export const textBox = {
     socket.emit('create', data)
   },
   handleTextChange: (event, selectedLayer, socket) => {
-    // let text = event.target.value
-    console.log(event.target.value)
-    console.log(selectedLayer)
     if (selectedLayer) {
-      console.log('inside here')
       socket.emit('change', {
         ...selectedLayer,
         props: {...selectedLayer.props, text: event.target.value}
