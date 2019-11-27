@@ -161,7 +161,7 @@ const App = () => {
     setprevX(mouseX)
     setprevY(mouseY)
     if (creating) {
-      const layerId = faker.random.uuid()
+      const layerId = uuidv1()
       tool.handleCreate(
         mouseX + window.scrollX,
         mouseY + window.scrollY,

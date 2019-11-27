@@ -32,18 +32,20 @@ const Entry = () => {
   }
 
   return (
-    <div className="join-container">
-      <input
-        type="text"
-        value={name}
-        onChange={handleNameInput}
-        className="join-input"
-        placeholder="Enter a name to use ..."
-      />
-      <br />
-      <Button className="join-button" onClick={handleJoin}>
-        Join
-      </Button>
+    <div>
+      <div className="join-container">
+        <input
+          type="text"
+          value={name}
+          onChange={handleNameInput}
+          className="join-input"
+          placeholder="Enter a name to use ..."
+        />
+        <br />
+        <Button className="join-button" onClick={handleJoin}>
+          Join
+        </Button>
+      </div>
     </div>
   )
 }

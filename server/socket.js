@@ -67,7 +67,7 @@ function socketWorks(server, elements, sessions) {
       Elem.findOneAndUpdate(
         {_id: data.id},
         {
-          type: data.type,
+          type: data.type.name,
           x: data.x,
           y: data.y,
           rotate: data.rotate,
