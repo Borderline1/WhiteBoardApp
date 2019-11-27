@@ -65,7 +65,6 @@ export const textBox = {
           type="button"
           className="deleteElement"
           onClick={() => {
-            console.log('clicky clicky!')
             props.handleDelete(props.index)
           }}
         >

@@ -65,7 +65,6 @@ const App = () => {
       setLayers(elements)
     })
     socket.on('delete', elements => {
-      console.log(elements)
       setLayers(elements)
     })
     //socket when we receive cursor data

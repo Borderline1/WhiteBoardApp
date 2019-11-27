@@ -83,8 +83,6 @@ function socketWorks(server, elements, sessions) {
       )
     })
     socket.on('delete', (data, index) => {
-      // console.log(data)
-      // console.log(index)
       elements.splice(index, 1)
       socket.emit('delete', elements)
       socket.broadcast.emit('delete', elements)
