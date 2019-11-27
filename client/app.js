@@ -205,7 +205,12 @@ const App = () => {
                       }}
                     >
                       {/* this layers canvas component */}
-                      <layer.type.ElementComponent {...layer.props} />
+                      {layer.type.ElementComponent(
+                        layer.props,
+                        layer.type.handleTextChange,
+                        selectedLayer,
+                        socket
+                      )}
                     </div>
                   )
                 })

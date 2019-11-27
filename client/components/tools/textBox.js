@@ -40,14 +40,24 @@ export const textBox = {
       </div>
     )
   },
-  ElementComponent: props => {
+  ElementComponent: (props, handleTextChange, selectedLayer, socket) => {
     let styleObj = {
       width: props.width,
       height: props.height,
       color: props.textColor,
       backgroundColor: props.backgroundColor
     }
-    return <div style={styleObj}>{props.text === '' ? 'Text' : props.text}</div>
+    // return <div style={styleObj}>{props.text === '' ? 'Text' : props.text}</div>
+    return (
+      <div style={styleObj}>
+        <input
+          style={styleObj}
+          type="text"
+          value={props.text}
+          onChange={e => handleTextChange(e, selectedLayer, socket)}
+        />
+      </div>
+    )
   },
   handleCreate: (
     x,
@@ -66,18 +76,22 @@ export const textBox = {
       props: {
         width: 70,
         height: 50,
-        text,
+        text: 'Text',
         backgroundColor: '#ffffff',
         textColor
       }
     }
     socket.emit('create', data)
   },
-  handleTextChange: (text, selectedLayer, socket) => {
+  handleTextChange: (event, selectedLayer, socket) => {
+    // let text = event.target.value
+    console.log(event.target.value)
+    console.log(selectedLayer)
     if (selectedLayer) {
+      console.log('inside here')
       socket.emit('change', {
         ...selectedLayer,
-        props: {...selectedLayer.props, text}
+        props: {...selectedLayer.props, text: event.target.value}
       })
     }
   },
