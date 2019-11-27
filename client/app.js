@@ -71,41 +71,6 @@ const App = () => {
     }
   }, [loaded])
 
-  useEffect(() => {
-    if (loaded) {
-      let notnow = false
-      const mouseDown = () => {
-        if (notnow) {
-          //Create element
-          console.log('hey')
-          tool.handleDoubleClick(
-            layers,
-            setLayers,
-            mouseX + window.scrollX - 8,
-            mouseY + window.scrollY - 22,
-            color,
-            faker.random.uuid(),
-            socket
-          )
-        } else {
-          //Moving element
-          setDragging(true)
-        }
-      }
-      const mouseUp = () => {
-        setDragging(false)
-      }
-      const canvasDiv = document.querySelector('#canvas')
-      if (!canvasDiv) return
-      canvasDiv.addEventListener('mousedown', mouseDown)
-      window.addEventListener('mouseup', mouseUp)
-      return () => {
-        canvasDiv.removeEventListener('mousedown', mouseDown)
-        window.removeEventListener('mouseup', mouseUp)
-      }
-    }
-  })
-
   const handleNameInput = e => {
     const name = e.target.value
     setName(name)
@@ -132,10 +97,6 @@ const App = () => {
 
   const handleColorChange = color => {
     setColor(color)
-  }
-
-  const handleTextBoxChange = text => {
-    setTextBox(text)
   }
 
   const handleDisplayMouseMove = e => {
@@ -187,8 +148,6 @@ const App = () => {
             color={color}
             types={types}
             tool={tool}
-            textBoxVal={textBox}
-            handleTextBoxChange={handleTextBoxChange}
             handleColorChange={handleColorChange}
             handleSelectTool={handleSelectTool}
             selectedLayer={selectedLayer}

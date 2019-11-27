@@ -5,9 +5,7 @@ import ToolButton from './ToolButton'
 const SideBar = ({
   color,
   tool,
-  textBoxVal,
   selectedLayer,
-  handleTextBoxChange,
   handleColorChange,
   types,
   handleSelectTool,
@@ -37,11 +35,6 @@ const SideBar = ({
         props: {...selectedLayer.props, [e.target[0].name]: e.target[0].value}
       })
     }
-  }
-  const handleTextChange = e => {
-    const {type, name, value} = e.target
-    // console.log(type, name, value, e)
-    handleTextBoxChange(value)
   }
   return (
     <div
@@ -113,9 +106,7 @@ const SideBar = ({
             {selectedLayer.type.DimensionsComponent(
               selectedLayer,
               handleChange,
-              handleTextPropsChange,
-              handleTextChange,
-              textBoxVal
+              handleTextPropsChange
             )}
           </div>
         ) : null}

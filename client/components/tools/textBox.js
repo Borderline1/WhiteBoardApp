@@ -6,25 +6,9 @@ let _id = 0
 
 export const textBox = {
   name: 'textBox',
-  DimensionsComponent: (
-    selectedLayer,
-    handleChange,
-    handleTextPropsChange,
-    handleTextChange,
-    textBoxVal
-  ) => {
+  DimensionsComponent: (selectedLayer, handleChange, handleTextPropsChange) => {
     return (
       <div>
-        <form onSubmit={handleTextPropsChange}>
-          <label>Text</label>
-          <input
-            name="text"
-            type="text"
-            value={textBoxVal}
-            onChange={handleTextChange}
-          />
-          <button type="submit">Update Text</button>
-        </form>
         <label>Text Color</label>
         <input
           name="textColor"
@@ -61,7 +45,7 @@ export const textBox = {
       width: props.width,
       height: props.height,
       color: props.textColor,
-      'background-color': props.backgroundColor
+      backgroundColor: props.backgroundColor
     }
     return <div style={styleObj}>{props.text === '' ? 'Text' : props.text}</div>
   },
@@ -88,6 +72,14 @@ export const textBox = {
       }
     }
     socket.emit('create', data)
+  },
+  handleTextChange: (text, selectedLayer, socket) => {
+    if (selectedLayer) {
+      socket.emit('change', {
+        ...selectedLayer,
+        props: {...selectedLayer.props, text}
+      })
+    }
   },
   handleCreatingUpdate: (
     selectedLayer,
