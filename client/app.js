@@ -26,7 +26,9 @@ const App = () => {
   const [selectedLayerId, setSelectedLayerId] = useState(null)
   const [dragging, setDragging] = useState(false)
   const [creating, setCreating] = useState(false)
-  const [picking, setPicking] = useState(true)
+  const [textBox, setTextBox] = useState('Text here')
+  const [layerInitialPositionX, setLayerInitialPositionX] = useState(null)
+  const [layerInitialPositionY, setLayerInitialPositionY] = useState(null)
 
   const clientLayers = layers.map(layer => {
     return {...layer, type: types[layer.type]}
@@ -53,22 +55,31 @@ const App = () => {
   useEffect(() => {
     const socket = io(serverAddress)
     setSocket(socket)
-    //socket when we receive cursor data
+    socket.on('cursor', data => {
+      setCursors(data)
+    })
+    socket.on('create', elements => {
+      setLayers(elements)
+    })
+    socket.on('change', elements => {
+      setLayers(elements)
+    })
   }, [])
 
-  useEffect(() => {
-    if (loaded) {
-      socket.on('cursor', data => {
-        setCursors(data)
-      })
-      socket.on('create', elements => {
-        setLayers(elements)
-      })
-      socket.on('change', elements => {
-        setLayers(elements)
-      })
-    }
-  }, [loaded])
+  // useEffect(() => {
+  //   console.log("useEFFECT",loaded)
+  //   if (loaded) {
+  //     socket.on('cursor', data => {
+  //       setCursors(data)
+  //     })
+  //     socket.on('create', elements => {
+  //       setLayers(elements)
+  //     })
+  //     socket.on('change', elements => {
+  //       setLayers(elements)
+  //     })
+  //   }
+  // },[loaded])
 
   const handleNameInput = e => {
     const name = e.target.value
@@ -98,17 +109,6 @@ const App = () => {
     setColor(color)
   }
 
-  const handleSelectTool = tool => {
-    setTool(tool)
-    if (tool.name === 'picker') {
-      setCreating(false)
-      setSelectedLayerId(null)
-    } else {
-      setCreating(true)
-      setSelectedLayerId(null)
-    }
-  }
-
   const handleDisplayMouseMove = e => {
     const [clientX, clientY] = [e.clientX, e.clientY]
     if (socket) {
@@ -122,17 +122,18 @@ const App = () => {
         sessionKey: window.localStorage.getItem('sessionKey')
       })
     }
-    // if (picking && dragging) {
-    //   tool.handleDragging(
-    //     selectedLayer,
-    //     prevX,
-    //     prevY,
-    //     clientX,
-    //     clientY,
-    //     socket
-    //   )
-    // }
-
+    if (tool.name === 'picker' && dragging) {
+      tool.handleDragging(
+        selectedLayer,
+        layerInitialPositionX,
+        layerInitialPositionY,
+        prevX,
+        prevY,
+        clientX,
+        clientY,
+        socket
+      )
+    }
     if (creating && selectedLayerId) {
       tool.handleCreatingUpdate(
         selectedLayer,
@@ -143,6 +144,37 @@ const App = () => {
         socket,
         handleSelectTool
       )
+    }
+  }
+
+  const handleDisplayMouseDown = event => {
+    setprevX(mouseX)
+    setprevY(mouseY)
+    if (creating) {
+      const layerId = faker.random.uuid()
+      tool.handleCreate(
+        mouseX + window.scrollX,
+        mouseY + window.scrollY,
+        color,
+        layerId,
+        socket
+      )
+      setSelectedLayerId(layerId)
+    } else if (event.target.id !== 'canvas') {
+      setDragging(true)
+    } else {
+      if (event.target.id === 'canvas') setSelectedLayerId(null)
+      // do things with picker for lasso
+    }
+  }
+
+  const handleSelectTool = tool => {
+    setTool(tool)
+    setSelectedLayerId(null)
+    if (tool.name === 'picker') {
+      setCreating(false)
+    } else {
+      setCreating(true)
     }
   }
 
@@ -162,27 +194,8 @@ const App = () => {
           <div
             id="canvas"
             style={{position: 'absolute', width: 1800, height: 1800}}
-            onMouseMove={e => handleDisplayMouseMove(e)}
-            onMouseDown={event => {
-              if (creating) {
-                setprevX(mouseX)
-                setprevY(mouseY)
-                const layerId = faker.random.uuid()
-                tool.handleCreate(
-                  mouseX + window.scrollX,
-                  mouseY + window.scrollY,
-                  color,
-                  layerId,
-                  socket
-                )
-                setSelectedLayerId(layerId)
-              } else if (event.target.id !== 'canvas') {
-                setDragging(true)
-              } else {
-                if (event.target.id === 'canvas') setSelectedLayerId(null)
-                // do things with picker for lasso
-              }
-            }}
+            onMouseMove={handleDisplayMouseMove}
+            onMouseDown={handleDisplayMouseDown}
             onMouseUp={event => {
               if (dragging) {
                 setDragging(false)
@@ -208,7 +221,7 @@ const App = () => {
                     <div
                       key={layer.id}
                       onMouseEnter={() => {
-                        if (picking) {
+                        if (tool.name === 'picker') {
                           setIndicatedLayerId(layer.id)
                         }
                       }}
@@ -216,6 +229,8 @@ const App = () => {
                       onMouseDown={() => {
                         setSelectedLayerId(layer.id)
                         setDragging(true)
+                        setLayerInitialPositionX(layer.x)
+                        setLayerInitialPositionY(layer.y)
                       }}
                       onMouseUp={() => {
                         if (dragging) return
