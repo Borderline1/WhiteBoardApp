@@ -1,3 +1,4 @@
+/* eslint-disable max-statements */
 import React, {useEffect, useState} from 'react'
 import SideBar from './components/SideBar'
 import {types} from './components/tools'
@@ -14,7 +15,7 @@ const serverAddress = window.location.origin
 const App = () => {
   const canvas = document.querySelector('#canvas')
   const [socket, setSocket] = useState(null)
-  const [color, setColor] = useState('#ff0000')
+  const [color, setColor] = useState('#000000')
   const [tool, setTool] = useState(types.circle)
   const [mouseX, setMouseX] = useState(0)
   const [mouseY, setMouseY] = useState(0)
@@ -28,6 +29,7 @@ const App = () => {
   const [selectedLayerId, setSelectedLayerId] = useState(null)
   const [dragging, setDragging] = useState(false)
   const [creating, setCreating] = useState(false)
+  const [textBox, setTextBox] = useState('Text here')
 
   const clientLayers = layers.map(layer => {
     return {...layer, type: types[layer.type]}
@@ -58,6 +60,55 @@ const App = () => {
     await setSocket(sockCon)
     //socket when we receive cursor data
   }, [])
+
+  useEffect(() => {
+    if (loaded) {
+      socket.on('cursor', data => {
+        setCursors(data)
+      })
+      socket.on('create', elements => {
+        setLayers(elements)
+      })
+      socket.on('change', elements => {
+        setLayers(elements)
+      })
+    }
+  }, [loaded])
+
+  useEffect(() => {
+    if (loaded) {
+      let notnow = false
+      const mouseDown = () => {
+        if (notnow) {
+          //Create element
+          console.log('hey')
+          tool.handleDoubleClick(
+            layers,
+            setLayers,
+            mouseX + window.scrollX - 8,
+            mouseY + window.scrollY - 22,
+            color,
+            faker.random.uuid(),
+            socket
+          )
+        } else {
+          //Moving element
+          setDragging(true)
+        }
+      }
+      const mouseUp = () => {
+        setDragging(false)
+      }
+      const canvasDiv = document.querySelector('#canvas')
+      if (!canvasDiv) return
+      canvasDiv.addEventListener('mousedown', mouseDown)
+      window.addEventListener('mouseup', mouseUp)
+      return () => {
+        canvasDiv.removeEventListener('mousedown', mouseDown)
+        window.removeEventListener('mouseup', mouseUp)
+      }
+    }
+  })
 
   const handleNameInput = e => {
     const name = e.target.value
@@ -101,6 +152,10 @@ const App = () => {
     setColor(color)
   }
 
+  const handleTextBoxChange = text => {
+    setTextBox(text)
+  }
+
   const handleDisplayMouseMove = e => {
     const [clientX, clientY] = [e.clientX, e.clientY]
     if (socket) {
@@ -119,6 +174,7 @@ const App = () => {
       // do things later with picker
     }
     if (creating && selectedLayerId) {
+      console.log(clientX)
       tool.handleCreatingUpdate(
         selectedLayer,
         prevX,
@@ -149,6 +205,8 @@ const App = () => {
             color={color}
             types={types}
             tool={tool}
+            textBoxVal={textBox}
+            handleTextBoxChange={handleTextBoxChange}
             handleColorChange={handleColorChange}
             handleSelectTool={handleSelectTool}
             selectedLayer={selectedLayer}
