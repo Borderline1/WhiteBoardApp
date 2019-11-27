@@ -216,7 +216,7 @@ const App = () => {
             }}
           >
             {layers
-              ? clientLayers.map(layer => {
+              ? clientLayers.map((layer, idx) => {
                   return (
                     <div
                       key={layer.id}
@@ -247,12 +247,14 @@ const App = () => {
                       }}
                     >
                       {/* this layers canvas component */}
-                      {layer.type.ElementComponent(
-                        layer.props,
-                        layer.type.handleTextChange,
-                        selectedLayer,
-                        socket
-                      )}
+                      <layer.type.ElementComponent
+                        {...layer.props}
+                        handleTextChange={layer.type.handleTextChange}
+                        selectedLayer={selectedLayer}
+                        socket={socket}
+                        index={idx}
+                        clientLayers={clientLayers}
+                      />
                     </div>
                   )
                 })
