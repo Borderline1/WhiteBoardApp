@@ -1,9 +1,10 @@
 import React, {useEffect, useState} from 'react'
 import {Button} from 'semantic-ui-react'
+import sockCon from '../socket'
 import io from 'socket.io-client'
 const serverAddress = window.location.origin
 
-const Entry = () => {
+const Entry = ({loaded, setLoaded, name, setName, socket, setSocket}) => {
   // const [name, setName] = useState('')
   // const [loaded, setLoaded] = useState(false)
 
@@ -11,7 +12,9 @@ const Entry = () => {
     const name = e.target.value
     setName(name)
   }
-  const handleJoin = e => {
+  const handleJoin = async e => {
+    console.log('running')
+    await setSocket(sockCon)
     fetch(serverAddress + '/create_user', {
       body: JSON.stringify({
         name

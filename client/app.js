@@ -79,30 +79,30 @@ const App = () => {
     }
   }, [loaded])
 
-  const handleNameInput = e => {
-    const name = e.target.value
-    setName(name)
-  }
-  const handleJoin = async e => {
-    await setSocket(sockCon)
-    fetch(serverAddress + '/create_user', {
-      body: JSON.stringify({
-        name
-      }),
-      method: 'post',
-      cache: 'no-cache',
-      headers: {
-        'Content-Type': 'application/json'
-      }
-    })
-      .then(response => response.json())
-      .then(json => {
-        if (json.success) {
-          localStorage.sessionKey = json.sessionKey
-          setLoaded(true)
-        }
-      })
-  }
+  // const handleNameInput = e => {
+  //   const name = e.target.value
+  //   setName(name)
+  // }
+  // const handleJoin = async e => {
+  //   await setSocket(sockCon)
+  //   fetch(serverAddress + '/create_user', {
+  //     body: JSON.stringify({
+  //       name
+  //     }),
+  //     method: 'post',
+  //     cache: 'no-cache',
+  //     headers: {
+  //       'Content-Type': 'application/json'
+  //     }
+  //   })
+  //     .then(response => response.json())
+  //     .then(json => {
+  //       if (json.success) {
+  //         localStorage.sessionKey = json.sessionKey
+  //         setLoaded(true)
+  //       }
+  //     })
+  // }
   useEffect(() => {
     if (loaded) {
       socket.on('cursor', data => {
@@ -279,21 +279,14 @@ const App = () => {
           </div>
         </div>
       ) : (
-        <div>
-          <div className="join-container">
-            <input
-              type="text"
-              value={name}
-              onChange={handleNameInput}
-              className="join-input"
-              placeholder="Enter a name to use ..."
-            />
-            <br />
-            <Button className="join-button" onClick={handleJoin}>
-              Join
-            </Button>
-          </div>
-        </div>
+        <Entry
+          loaded={loaded}
+          setLoaded={setLoaded}
+          name={name}
+          setName={setName}
+          socket={socket}
+          setSocket={setSocket}
+        />
       )}
     </div>
   )

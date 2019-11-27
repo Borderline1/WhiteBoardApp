@@ -1,8 +1,6 @@
 /* eslint-disable react/display-name */
 import React from 'react'
 
-let _id = 0
-
 export const circle = {
   name: 'circle',
   DimensionsComponent: (selectedLayer, handleChange) => {
