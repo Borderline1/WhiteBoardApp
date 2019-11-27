@@ -1,22 +1,20 @@
-/* eslint-disable max-params */
-/* eslint-disable react/display-name */
 import React from 'react'
 
-let _id = 0
-
-export const rectangle = {
-  name: 'rectangle',
+export const triangle = {
+  name: 'triangle',
   DimensionsComponent: (selectedLayer, handleChange) => {
     return (
       <div>
-        <label>Width</label>
+        <label>Base</label>
         <input
+          name="base"
           type="number"
-          value={selectedLayer.props.width}
+          value={selectedLayer.props.base}
           onChange={handleChange}
         />
         <label>Height</label>
         <input
+          name="height"
           type="number"
           value={selectedLayer.props.height}
           onChange={handleChange}
@@ -26,21 +24,26 @@ export const rectangle = {
   },
   ElementComponent: props => {
     return (
-      <svg width={props.width} height={props.height}>
-        <rect width={props.width} height={props.height} fill={props.fill} />
+      <svg width={props.base} height={props.height}>
+        <polygon
+          points={`${props.base / 2} 0, 0 ${props.height}, ${props.base} ${
+            props.height
+          }`}
+          fill={props.fill}
+        />
       </svg>
     )
   },
   handleCreate: (x, y, fill = 'black', uuid, socket) => {
     const data = {
-      type: 'rectangle',
-      x,
-      y,
+      type: 'triangle',
       id: uuid,
+      x: x - 5, //relative to canvas mouseX
+      y,
       props: {
-        width: 10,
-        height: 10,
-        fill
+        fill,
+        base: 10,
+        height: 10
       }
     }
     socket.emit('create', data)
@@ -53,16 +56,19 @@ export const rectangle = {
     clientY,
     socket
   ) => {
-    const xPos = Math.min(prevX, clientX)
+    const xdiff = Math.abs(prevX - clientX)
+    const ydiff = Math.abs(prevY - clientY)
+    let base = xdiff * 2
+    let height = ydiff
+    const xPos = prevX - xdiff
     const yPos = Math.min(prevY, clientY)
-    const width = Math.abs(prevX - clientX)
-    const height = Math.abs(prevY - clientY)
+
     if (selectedLayer) {
       socket.emit('change', {
         ...selectedLayer,
         x: xPos,
         y: yPos,
-        props: {...selectedLayer.props, width, height}
+        props: {...selectedLayer.props, base, height}
       })
     }
   }
