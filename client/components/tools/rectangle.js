@@ -2,8 +2,6 @@
 /* eslint-disable react/display-name */
 import React from 'react'
 
-let _id = 0
-
 export const rectangle = {
   name: 'rectangle',
   DimensionsComponent: (selectedLayer, handleChange) => {
@@ -39,6 +37,7 @@ export const rectangle = {
       x,
       y,
       id: uuid,
+      rotate: 0,
       props: {
         width: 10,
         height: 10,

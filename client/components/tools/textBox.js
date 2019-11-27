@@ -2,7 +2,7 @@
 /* eslint-disable react/display-name */
 import React from 'react'
 
-let _id = 0
+// let _id = 0
 
 export const textBox = {
   name: 'textBox',
@@ -87,6 +87,7 @@ export const textBox = {
       x,
       y,
       id: uuid,
+      rotate: 0,
       props: {
         width: 70,
         height: 50,

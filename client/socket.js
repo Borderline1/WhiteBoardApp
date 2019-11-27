@@ -1,9 +1,9 @@
 // import io from 'socket.io-client'
 
-// const socket = io(window.location.origin)
+// const sockCon = io(window.location.origin)
 
-// socket.on('connect', () => {
+// sockCon.on('connect', () => {
 //   console.log('Connected!')
 // })
 
-// export default socket
+// export default sockCon
