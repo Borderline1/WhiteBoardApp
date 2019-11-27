@@ -5,9 +5,6 @@ import io from 'socket.io-client'
 const serverAddress = window.location.origin
 
 const Entry = ({loaded, setLoaded, name, setName, socket, setSocket}) => {
-  // const [name, setName] = useState('')
-  // const [loaded, setLoaded] = useState(false)
-
   const handleNameInput = e => {
     const name = e.target.value
     setName(name)

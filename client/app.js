@@ -42,9 +42,7 @@ const App = () => {
     layer => layer.id === indicatedLayerId
   )
 
-  //unneeded useInterval?
   useInterval(() => {
-    console.log('44', loaded)
     if (loaded) {
       socket.emit('cursor', {
         name: name,
@@ -57,7 +55,8 @@ const App = () => {
 
   // cDM sets up socket on connection set cursors on recieving cursor data
   useEffect(() => {
-    setSocket(sockCon)
+    const socket = io(serverAddress)
+    setSocket(socket)
     socket.on('cursor', data => {
       setCursors(data)
     })
@@ -69,34 +68,6 @@ const App = () => {
     })
     //socket when we receive cursor data
   }, [])
-
-  // useEffect(() => {
-  //   if (loaded) {
-  //     socket.on('cursor', data => {
-  //       setCursors(data)
-  //     })
-  //     socket.on('create', elements => {
-  //       setLayers(elements)
-  //     })
-  //     socket.on('change', elements => {
-  //       setLayers(elements)
-  //     })
-  //   }
-  // }, [loaded])
-
-  // useEffect(() => {
-  //   if (loaded) {
-  //     socket.on('cursor', data => {
-  //       setCursors(data)
-  //     })
-  //     socket.on('create', elements => {
-  //       setLayers(elements)
-  //     })
-  //     socket.on('change', elements => {
-  //       setLayers(elements)
-  //     })
-  //   }
-  // }, [loaded])
 
   const handleColorChange = color => {
     setColor(color)
