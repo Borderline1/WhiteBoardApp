@@ -27,8 +27,6 @@ const App = () => {
   const [dragging, setDragging] = useState(false)
   const [creating, setCreating] = useState(false)
   const [picking, setPicking] = useState(true)
-  const [useLocalText, setUseLocalText] = useState(false)
-  const [localText, setLocalText] = useState('Text')
 
   const clientLayers = layers.map(layer => {
     return {...layer, type: types[layer.type]}
@@ -238,11 +236,7 @@ const App = () => {
                         layer.props,
                         layer.type.handleTextChange,
                         selectedLayer,
-                        socket,
-                        localText,
-                        setLocalText,
-                        useLocalText,
-                        setUseLocalText
+                        socket
                       )}
                     </div>
                   )

@@ -54,51 +54,16 @@ export const textBox = {
       width: props.width,
       height: props.height,
       color: props.textColor,
-      backgroundColor: props.backgroundColor
-    }
-    let inputStyleObj = {
-      width: props.width,
-      height: props.height,
-      color: props.textColor,
       backgroundColor: props.backgroundColor,
-      overflowWrap: 'break-word',
+      whiteSpace: 'unset',
       hyphens: 'auto'
     }
-    // return <div style={styleObj}>{props.text === '' ? 'Text' : props.text}</div>
     return (
-      <div style={styleObj}>
-        {useLocalText ? (
-          <input
-            style={inputStyleObj}
-            type="text"
-            value={localText}
-            onChange={e =>
-              handleTextChange(
-                e,
-                selectedLayer,
-                socket,
-                setLocalText,
-                setUseLocalText
-              )
-            }
-          />
-        ) : (
-          <input
-            style={inputStyleObj}
-            type="text"
-            value={props.text}
-            onChange={e =>
-              handleTextChange(
-                e,
-                selectedLayer,
-                socket,
-                setLocalText,
-                setUseLocalText
-              )
-            }
-          />
-        )}
-      </div>
+      <textarea
+        style={styleObj}
+        value={props.text}
+        onChange={e => handleTextChange(e, selectedLayer, socket)}
+      />
     )
   },
   handleCreate: (
@@ -125,31 +90,7 @@ export const textBox = {
     }
     socket.emit('create', data)
   },
-  handleTextChange: (
-    event,
-    selectedLayer,
-    socket,
-    setLocalText,
-    setUseLocalText
-  ) => {
-    // setUseLocalText(true)
-    // if (selectedLayer) {
-    //   let text = event.target.value
-    //   setLocalText(text)
-    // }
-    // function socketEmit() {
-    //   if (selectedLayer) {
-    //     let newText = event.target.value
-    //     socket.emit('change', {
-    //       ...selectedLayer,
-    //       props: {...selectedLayer.props, text: newText}
-    //     })
-    //     setUseLocalText(false)
-    //     setLocalText('Text')
-    //   }
-    // }
-    // window.addEventListener('click', socketEmit)
-    // window.removeEventListener('click', socketEmit)
+  handleTextChange: (event, selectedLayer, socket) => {
     if (selectedLayer) {
       socket.emit('change', {
         ...selectedLayer,
