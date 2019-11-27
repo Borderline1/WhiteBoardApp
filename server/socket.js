@@ -41,13 +41,16 @@ function socketWorks(server, elements, sessions) {
       }
     })
     socket.on('create', async data => {
+      console.log('data', data)
       elements.push(data)
+      socket.emit('create', elements)
       let elem = new Elem({any: data})
       let res = await elem.save()
-      socket.emit('create', elements)
+      console.log('elements on 49', elements)
     })
     socket.on('change', data => {
       const element = elements.find(element => element.id === data.id)
+      console.log('elemid', element.id)
       Object.keys(element).forEach(key => {
         if (key !== 'type') {
           element[key] = data[key]

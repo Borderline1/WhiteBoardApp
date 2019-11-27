@@ -55,25 +55,14 @@ const App = () => {
   }, 3000) // 3 seconds
 
   // cDM sets up socket on connection set cursors on recieving cursor data
-  useEffect(async () => {
+  useEffect(() => {
     // const socket = io(serverAddress)
-    await setSocket(sockCon)
+    const runSocket = async () => {
+      await setSocket(sockCon)
+    }
+    runSocket()
     //socket when we receive cursor data
   }, [])
-
-  useEffect(() => {
-    if (loaded) {
-      socket.on('cursor', data => {
-        setCursors(data)
-      })
-      socket.on('create', elements => {
-        setLayers(elements)
-      })
-      socket.on('change', elements => {
-        setLayers(elements)
-      })
-    }
-  }, [loaded])
 
   useEffect(() => {
     if (loaded) {
@@ -128,7 +117,6 @@ const App = () => {
     })
       .then(response => response.json())
       .then(json => {
-        console.log('80')
         if (json.success) {
           localStorage.sessionKey = json.sessionKey
           setLoaded(true)
