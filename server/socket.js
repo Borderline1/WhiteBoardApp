@@ -29,6 +29,7 @@ function socketWorks(server, elements, sessions) {
         }
         // console.log(cursorPositions)
         socket.broadcast.emit('cursor', cursorPositions)
+        socket.emit('cursor', cursorPositions)
         // broadcast exludes the socket that the event came from
       }, Math.round(1000 / 30))
     }
@@ -40,13 +41,15 @@ function socketWorks(server, elements, sessions) {
         session.setMouseY(data.y)
       }
     })
-    socket.on('create', async data => {
+    socket.on('create', data => {
       elements.push(data)
       let elem = new Elem({any: data})
-      let res = await elem.save()
+      // let res = await elem.save()
       socket.emit('create', elements)
+      socket.broadcast.emit('create', elements)
     })
     socket.on('change', data => {
+      console.log('change happening in server')
       const element = elements.find(element => element.id === data.id)
       Object.keys(element).forEach(key => {
         if (key !== 'type') {
@@ -54,6 +57,7 @@ function socketWorks(server, elements, sessions) {
         }
       })
       socket.emit('change', elements)
+      socket.broadcast.emit('change', elements)
     })
     socket.on('disconnect', socket => {
       --socketCount
