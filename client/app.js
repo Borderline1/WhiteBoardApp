@@ -10,8 +10,6 @@ import {Button} from 'semantic-ui-react'
 import sockCon from './socket'
 import Entry from './components/entry'
 
-const serverAddress = window.location.origin
-
 const App = () => {
   const [socket, setSocket] = useState(null)
   const [color, setColor] = useState('#1133EE')
