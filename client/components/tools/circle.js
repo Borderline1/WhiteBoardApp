@@ -33,11 +33,11 @@ export const circle = {
   handleCreate: (x, y, fill, uuid, socket) => {
     const data = {
       type: 'circle',
-      x: x - 30,
-      y: y - 30,
+      x: x - 10,
+      y: y - 10,
       id: uuid,
       props: {
-        radius: 30,
+        radius: 10,
         fill
       }
     }
