@@ -64,7 +64,23 @@ function socketWorks(server, elements, sessions) {
         }
       })
       socket.emit('change', elements)
-      // Elem.findOneAndUpdate()
+      Elem.findOneAndUpdate(
+        {_id: data.id},
+        {
+          type: data.type,
+          x: data.x,
+          y: data.y,
+          rotate: data.rotate,
+          props: data.props
+        },
+        {new: true},
+        (error, elem) => {
+          if (error) {
+            console.log(elem)
+            throw error
+          }
+        }
+      )
     })
     socket.on('disconnect', socket => {
       --socketCount
