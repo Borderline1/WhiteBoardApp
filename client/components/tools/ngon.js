@@ -2,10 +2,9 @@ import React from 'react'
 //svg then circle then shape.
 //the circle's radius will be based off of the width and height
 //and the shape will be based off of the radius and width and height. thats all we need.
-//this also ensures that the shape will always be within the div.
+//this also ensures that the shape will always be within the div due to its bounding circle
 //based off number of sides we can calculate all the necessary points
-//we can use an array to store all the coordinates and join it etc to fit the format of the points attribute
-//on the polygon svg element.
+//the polygon points attribute is passed a coordinate string that is generated using some quick maths.
 //prevx&y calculations might get a little hairy.
 //loop through the sides and then push to coords array
 //angle = 2 * pi / numPoints
@@ -13,12 +12,12 @@ import React from 'react'
 // {
 //     x = centerX + radius * sin(i * angle);
 //     y = centerY + radius * cos(i * angle);
-// } where centerXY are coordinates for center of circle.
+// } where centerXY are coordinates for center of circle. I am going to use selectedLayer.x and y for now.
 export const ngon = {
   name: 'polygon',
   // coords: [], //subject to move
   // converted: ``,
-  makeConverted: () => {
+  handlePoints: () => {
     let coordinateStr = ''
     let sides = selectedLayer.props.sides
     //am i using this context properly for getAngle?
@@ -59,7 +58,6 @@ export const ngon = {
     )
   },
   ElementsComponent: props => {
-    console.log(name) //if works we can use coords
     return (
       <svg width={props.radius * 2} height={props.radius * 2}>
         <circle
@@ -69,7 +67,7 @@ export const ngon = {
           fill="none"
           stroke="none"
         >
-          <polygon points={this.makeConverted()} fill={props.fill} />
+          <polygon points={this.handlePoints()} fill={props.fill} />
         </circle>
       </svg>
     )
