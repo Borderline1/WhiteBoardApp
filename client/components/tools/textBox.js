@@ -2,29 +2,13 @@
 /* eslint-disable react/display-name */
 import React from 'react'
 
-let _id = 0
+// let _id = 0
 
 export const textBox = {
   name: 'textBox',
-  DimensionsComponent: (
-    selectedLayer,
-    handleChange,
-    handleTextPropsChange,
-    handleTextChange,
-    textBoxVal
-  ) => {
+  DimensionsComponent: (selectedLayer, handleChange, handleTextPropsChange) => {
     return (
       <div>
-        <form onSubmit={handleTextPropsChange}>
-          <label>Text</label>
-          <input
-            name="text"
-            type="text"
-            value={textBoxVal}
-            onChange={handleTextChange}
-          />
-          <button type="submit">Update Text</button>
-        </form>
         <label>Text Color</label>
         <input
           name="textColor"
@@ -56,14 +40,31 @@ export const textBox = {
       </div>
     )
   },
-  ElementComponent: props => {
+  ElementComponent: (
+    props,
+    handleTextChange,
+    selectedLayer,
+    socket,
+    localText,
+    setLocalText,
+    useLocalText,
+    setUseLocalText
+  ) => {
     let styleObj = {
       width: props.width,
       height: props.height,
       color: props.textColor,
-      'background-color': props.backgroundColor
+      backgroundColor: props.backgroundColor,
+      whiteSpace: 'unset',
+      hyphens: 'auto'
     }
-    return <div style={styleObj}>{props.text === '' ? 'Text' : props.text}</div>
+    return (
+      <textarea
+        style={styleObj}
+        value={props.text}
+        onChange={e => handleTextChange(e, selectedLayer, socket)}
+      />
+    )
   },
   handleCreate: (
     x,
@@ -79,15 +80,24 @@ export const textBox = {
       x,
       y,
       id: uuid,
+      rotate: 0,
       props: {
         width: 70,
         height: 50,
-        text,
+        text: 'Text',
         backgroundColor: '#ffffff',
         textColor
       }
     }
     socket.emit('create', data)
+  },
+  handleTextChange: (event, selectedLayer, socket) => {
+    if (selectedLayer) {
+      socket.emit('change', {
+        ...selectedLayer,
+        props: {...selectedLayer.props, text: event.target.value}
+      })
+    }
   },
   handleCreatingUpdate: (
     selectedLayer,

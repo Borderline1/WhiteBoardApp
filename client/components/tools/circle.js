@@ -1,8 +1,6 @@
 /* eslint-disable react/display-name */
 import React from 'react'
 
-let _id = 0
-
 export const circle = {
   name: 'circle',
   DimensionsComponent: (selectedLayer, handleChange) => {
@@ -33,11 +31,12 @@ export const circle = {
   handleCreate: (x, y, fill, uuid, socket) => {
     const data = {
       type: 'circle',
-      x: x - 30,
-      y: y - 30,
+      x: x - 10,
+      y: y - 10,
       id: uuid,
+      rotate: 0,
       props: {
-        radius: 30,
+        radius: 10,
         fill
       }
     }

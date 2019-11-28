@@ -6,7 +6,8 @@ const databaseName = pkg.name + (process.env.NODE_ENV === 'test' ? '-test' : '')
 mongoose
   .connect(process.env.DATABASE_URL || `mongodb://localhost/${databaseName}`, {
     useUnifiedTopology: true,
-    useNewUrlParser: true
+    useNewUrlParser: true,
+    useFindAndModify: false
   })
   .catch(console.error.bind(console, 'connection error:'))
 

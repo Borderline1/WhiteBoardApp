@@ -1,7 +1,7 @@
 const socketio = require('socket.io')
 const mongoose = require('mongoose')
 const db = require('./db/index')
-const Elem = require('./db/schemas/sampleSchema')
+const Elem = require('./db/schemas/shapeSchema')
 
 function socketWorks(server, elements, sessions) {
   const io = socketio(server)
@@ -29,6 +29,7 @@ function socketWorks(server, elements, sessions) {
         }
         // console.log(cursorPositions)
         socket.broadcast.emit('cursor', cursorPositions)
+        socket.emit('cursor', cursorPositions)
         // broadcast exludes the socket that the event came from
       }, Math.round(1000 / 30))
     }
@@ -40,11 +41,19 @@ function socketWorks(server, elements, sessions) {
         session.setMouseY(data.y)
       }
     })
-    socket.on('create', async data => {
+    socket.on('create', data => {
       elements.push(data)
-      let elem = new Elem({any: data})
-      let res = await elem.save()
       socket.emit('create', elements)
+      socket.broadcast.emit('create', elements)
+      let elem = new Elem({
+        _id: data.id,
+        type: data.type,
+        x: data.x,
+        y: data.y,
+        rotate: data.rotate,
+        props: data.props
+      })
+      elem.save()
     })
     socket.on('change', data => {
       const element = elements.find(element => element.id === data.id)
@@ -54,6 +63,24 @@ function socketWorks(server, elements, sessions) {
         }
       })
       socket.emit('change', elements)
+      socket.broadcast.emit('change', elements)
+      Elem.findOneAndUpdate(
+        {_id: data.id},
+        {
+          type: data.type.name,
+          x: data.x,
+          y: data.y,
+          rotate: data.rotate,
+          props: data.props
+        },
+        {new: true},
+        (error, elem) => {
+          if (error) {
+            console.log(elem)
+            throw error
+          }
+        }
+      )
     })
     socket.on('disconnect', socket => {
       --socketCount

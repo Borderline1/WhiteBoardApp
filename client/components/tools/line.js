@@ -3,7 +3,7 @@
 /* eslint-disable react/display-name */
 import React from 'react'
 
-let _id = 0
+// let _id = 0
 
 export const line = {
   name: 'line',
@@ -45,6 +45,7 @@ export const line = {
       x,
       y,
       id: uuid,
+      rotate: 0,
       props: {
         x1: 0,
         y1: 0,
@@ -87,9 +88,6 @@ export const line = {
     const yPos = Math.min(prevY, clientY)
     const width = Math.abs(prevX - clientX)
     const height = Math.abs(prevY - clientY)
-    console.log('xPos:', xPos, 'yPos:', yPos)
-    console.log('prevX:', prevX, 'prevY:', prevY) // THESE ALWAYS STAY THE SAME
-    console.log('clientX:', clientX, 'clientY:', clientY)
 
     if (selectedLayer) {
       if (clientX > prevX && clientY > prevY) {
