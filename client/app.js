@@ -155,6 +155,7 @@ const App = () => {
           />
           <div
             id="canvas"
+            //lets think about changing canvas width height soon; note to self - Henry
             style={{position: 'absolute', width: 1800, height: 1800}}
             onMouseMove={handleDisplayMouseMove}
             onMouseDown={handleDisplayMouseDown}
@@ -163,6 +164,7 @@ const App = () => {
                 setDragging(false)
               }
               if (creating) {
+                //make DRY vv; note to self - Henry
                 if (tool.name === 'textBox') {
                   setTool(types.picker)
                   setCreating(false)

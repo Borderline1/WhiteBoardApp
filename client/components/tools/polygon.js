@@ -5,38 +5,14 @@ import React from 'react'
 //this also ensures that the shape will always be within the div due to its bounding circle
 //based off number of sides we can calculate all the necessary points
 //the polygon points attribute is passed a coordinate string that is generated using some quick maths.
-//prevx&y calculations might get a little hairy.
-//loop through the sides and then push to coords array
 //angle = 2 * pi / numPoints
 // for (let i = 0; i < numPoints; i++)
 // {
 //     x = centerX + radius * sin(i * angle);
 //     y = centerY + radius * cos(i * angle);
 // } where centerXY are coordinates for center of circle. I am going to use selectedLayer.x and y for now.
-export const ngon = {
+export const polygon = {
   name: 'polygon',
-  // coords: [], //subject to move
-  // converted: ``,
-  handlePoints: () => {
-    let coordinateStr = ''
-    let sides = selectedLayer.props.sides
-    //am i using this context properly for getAngle?
-    for (let i = 0; i < sides; i++) {
-      coordinateStr += (
-        selectedLayer.x +
-        props.radius * Math.sin(i * ((2 * Math.PI) / sides))
-      ).toString()
-
-      coordinateStr += ' '
-
-      coordinateStr += (
-        selectedLayer.y +
-        props.radius * Math.cos(i * ((2 * Math.PI) / sides))
-      ).toString()
-      if (i < sides - 1) coordinateStr += ', '
-    }
-    return coordinateStr
-  },
   DimensionsComponent: (selectedLayer, handleChange) => {
     return (
       <div>
@@ -67,10 +43,30 @@ export const ngon = {
           fill="none"
           stroke="none"
         >
-          <polygon points={this.handlePoints()} fill={props.fill} />
+          <polygon points={this.generatePoints()} fill={props.fill} />
         </circle>
       </svg>
     )
+  },
+  generatePoints: () => {
+    let coordinateStr = ''
+    let sides = selectedLayer.props.sides
+    //am i using this context properly for getAngle?
+    for (let i = 0; i < sides; i++) {
+      coordinateStr += (
+        selectedLayer.x +
+        props.radius * Math.sin(i * ((2 * Math.PI) / sides))
+      ).toString()
+
+      coordinateStr += ' '
+
+      coordinateStr += (
+        selectedLayer.y +
+        props.radius * Math.cos(i * ((2 * Math.PI) / sides))
+      ).toString()
+      if (i < sides - 1) coordinateStr += ', '
+    }
+    return coordinateStr
   },
   handleCreate: (x, y, fill, uuid, socket) => {
     const data = {
