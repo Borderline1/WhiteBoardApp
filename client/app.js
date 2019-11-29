@@ -64,6 +64,9 @@ const App = () => {
     socket.on('change', elements => {
       setLayers(elements)
     })
+    socket.on('delete', elements => {
+      setLayers(elements)
+    })
     //socket when we receive cursor data
   }, [])
 
@@ -140,6 +143,10 @@ const App = () => {
     }
   }
 
+  const handleDelete = index => {
+    socket.emit('delete', clientLayers[index], index)
+  }
+
   return (
     <div className="App">
       {loaded ? (
@@ -178,7 +185,7 @@ const App = () => {
             }}
           >
             {layers
-              ? clientLayers.map(layer => {
+              ? clientLayers.map((layer, idx) => {
                   return (
                     <div
                       key={layer.id}
@@ -209,12 +216,14 @@ const App = () => {
                       }}
                     >
                       {/* this layers canvas component */}
-                      {layer.type.ElementComponent(
-                        layer.props,
-                        layer.type.handleTextChange,
-                        selectedLayer,
-                        socket
-                      )}
+                      <layer.type.ElementComponent
+                        {...layer.props}
+                        handleTextChange={layer.type.handleTextChange}
+                        selectedLayer={selectedLayer}
+                        socket={socket}
+                        index={idx}
+                        handleDelete={handleDelete}
+                      />
                     </div>
                   )
                 })

@@ -26,9 +26,21 @@ export const rectangle = {
   },
   ElementComponent: props => {
     return (
-      <svg width={props.width} height={props.height}>
-        <rect width={props.width} height={props.height} fill={props.fill} />
-      </svg>
+      <div>
+        <svg width={props.width} height={props.height}>
+          <rect width={props.width} height={props.height} fill={props.fill} />
+        </svg>
+        <button
+          name="X"
+          type="button"
+          className="deleteElement"
+          onClick={() => {
+            props.handleDelete(props.index)
+          }}
+        >
+          <p style={{position: 'absolute', left: '4px', top: '-4px'}}>x</p>
+        </button>
+      </div>
     )
   },
   handleCreate: (x, y, fill = 'black', uuid, socket) => {
