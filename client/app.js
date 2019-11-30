@@ -19,6 +19,7 @@ const App = () => {
   const [prevX, setprevX] = useState(0)
   const [prevY, setprevY] = useState(0)
   const [cursors, setCursors] = useState([])
+  const [roomName, setRoomName] = useState('')
   const [name, setName] = useState('')
   const [loaded, setLoaded] = useState(false)
   const [layers, setLayers] = useState([])
@@ -251,6 +252,8 @@ const App = () => {
           setName={setName}
           socket={socket}
           setSocket={setSocket}
+          roomName={roomName}
+          setRoomName={setRoomName}
         />
       )}
     </div>
