@@ -55,16 +55,12 @@ export const polygon = {
     const points = polygon.generatePoints(props, x, y)
     console.log(points)
     return (
-      <svg width={props.radius * 2} height={props.radius * 2}>
-        {/* <circle
-          cx={props.radius}
-          cy={props.radius}
-          r={props.radius}
-          fill="none"
-          stroke="none"
-        > */}
+      <svg
+        width={props.radius * 2}
+        height={props.radius * 2}
+        className="polygon"
+      >
         <polygon points={points} fill={props.fill} stroke={props.stroke} />
-        {/* </circle> */}
       </svg>
     )
   },

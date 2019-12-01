@@ -82,6 +82,12 @@ function socketWorks(server, elements, sessions) {
         }
       )
     })
+    socket.on('delete', (data, index) => {
+      elements.splice(index, 1)
+      socket.emit('delete', elements)
+      socket.broadcast.emit('delete', elements)
+      Elem.deleteOne({_id: data.id})
+    })
     socket.on('disconnect', socket => {
       --socketCount
       console.log('socket disconnected:', socket)

@@ -40,16 +40,8 @@ export const textBox = {
       </div>
     )
   },
-  ElementComponent: (
-    props,
-    handleTextChange,
-    selectedLayer,
-    socket,
-    localText,
-    setLocalText,
-    useLocalText,
-    setUseLocalText
-  ) => {
+  ElementComponent: props => {
+    const {handleTextChange, selectedLayer, socket} = props
     let styleObj = {
       width: props.width,
       height: props.height,
@@ -59,11 +51,26 @@ export const textBox = {
       hyphens: 'auto'
     }
     return (
-      <textarea
-        style={styleObj}
-        value={props.text}
-        onChange={e => handleTextChange(e, selectedLayer, socket)}
-      />
+      <div style={styleObj}>
+        <textarea
+          id={props.id}
+          style={styleObj}
+          value={props.text}
+          selectionstart={props.selectionStart}
+          selectionend={props.selectionEnd}
+          onChange={e => handleTextChange(e, selectedLayer, socket, props.id)}
+        />
+        <button
+          name="X"
+          type="button"
+          className="deleteElement"
+          onClick={() => {
+            props.handleDelete(props.index)
+          }}
+        >
+          <p style={{position: 'absolute', left: '4px', top: '-4px'}}>x</p>
+        </button>
+      </div>
     )
   },
   handleCreate: (
@@ -86,7 +93,10 @@ export const textBox = {
         height: 50,
         text: 'Text',
         backgroundColor: '#ffffff',
-        textColor
+        textColor,
+        selectionStart: 0,
+        selectionEnd: 0,
+        id: uuid
       }
     }
     socket.emit('create', data)
@@ -95,7 +105,10 @@ export const textBox = {
     if (selectedLayer) {
       socket.emit('change', {
         ...selectedLayer,
-        props: {...selectedLayer.props, text: event.target.value}
+        props: {
+          ...selectedLayer.props,
+          text: event.target.value
+        }
       })
     }
   },

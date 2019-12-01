@@ -1,3 +1,4 @@
+/* eslint-disable react/display-name */
 import React from 'react'
 
 export const triangle = {
@@ -24,14 +25,26 @@ export const triangle = {
   },
   ElementComponent: props => {
     return (
-      <svg width={props.base} height={props.height}>
-        <polygon
-          points={`${props.base / 2} 0, 0 ${props.height}, ${props.base} ${
-            props.height
-          }`}
-          fill={props.fill}
-        />
-      </svg>
+      <div>
+        <svg width={props.base} height={props.height}>
+          <polygon
+            points={`${props.base / 2} 0, 0 ${props.height}, ${props.base} ${
+              props.height
+            }`}
+            fill={props.fill}
+          />
+        </svg>
+        <button
+          name="X"
+          type="button"
+          className="deleteElement"
+          onClick={() => {
+            props.handleDelete(props.index)
+          }}
+        >
+          <p style={{position: 'absolute', left: '4px', top: '-4px'}}>x</p>
+        </button>
+      </div>
     )
   },
   handleCreate: (x, y, fill = 'black', uuid, socket) => {
