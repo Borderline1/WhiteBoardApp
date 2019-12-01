@@ -215,7 +215,9 @@ const App = () => {
                         layer.props,
                         layer.type.handleTextChange,
                         selectedLayer,
-                        socket
+                        socket,
+                        layer.x,
+                        layer.y
                       )}
                     </div>
                   )

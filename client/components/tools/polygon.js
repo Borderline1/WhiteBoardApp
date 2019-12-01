@@ -13,6 +13,24 @@ import React from 'react'
 // } where centerXY are coordinates for center of circle. I am going to use selectedLayer.x and y for now.
 export const polygon = {
   name: 'polygon',
+  generatePoints: (props, x, y) => {
+    let coordinateStr = ''
+    let sides = props.sides
+    let r = props.radius
+
+    for (let i = 0; i < sides; i++) {
+      coordinateStr += Math.round(
+        r + r * Math.sin(i * ((2 * Math.PI) / sides))
+      ).toString()
+      coordinateStr += ' '
+
+      coordinateStr += Math.round(
+        r + r * Math.cos(i * ((2 * Math.PI) / sides))
+      ).toString()
+      if (i < sides - 1) coordinateStr += ', '
+    }
+    return coordinateStr
+  },
   DimensionsComponent: (selectedLayer, handleChange) => {
     return (
       <div>
@@ -33,46 +51,29 @@ export const polygon = {
       </div>
     )
   },
-  ElementsComponent: props => {
+  ElementComponent: (props, handleChange, selectedLayer, socket, x, y) => {
+    const points = polygon.generatePoints(props, x, y)
+    console.log(points)
     return (
       <svg width={props.radius * 2} height={props.radius * 2}>
-        <circle
+        {/* <circle
           cx={props.radius}
           cy={props.radius}
           r={props.radius}
           fill="none"
           stroke="none"
-        >
-          <polygon points={this.generatePoints()} fill={props.fill} />
-        </circle>
+        > */}
+        <polygon points={points} fill={props.fill} stroke={props.stroke} />
+        {/* </circle> */}
       </svg>
     )
   },
-  generatePoints: () => {
-    let coordinateStr = ''
-    let sides = selectedLayer.props.sides
-    //am i using this context properly for getAngle?
-    for (let i = 0; i < sides; i++) {
-      coordinateStr += (
-        selectedLayer.x +
-        props.radius * Math.sin(i * ((2 * Math.PI) / sides))
-      ).toString()
 
-      coordinateStr += ' '
-
-      coordinateStr += (
-        selectedLayer.y +
-        props.radius * Math.cos(i * ((2 * Math.PI) / sides))
-      ).toString()
-      if (i < sides - 1) coordinateStr += ', '
-    }
-    return coordinateStr
-  },
   handleCreate: (x, y, fill, uuid, socket) => {
     const data = {
       type: 'polygon',
       id: uuid,
-      x: x - props.radius,
+      x: x - 10,
       y,
       props: {
         radius: 10,
