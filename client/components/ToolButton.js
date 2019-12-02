@@ -23,6 +23,16 @@ const ToolButton = ({tool, types, name, handleSelectTool}) => {
     >
       {toolIcons[name] ? (
         <Icon name={toolIcons[name]} size="large" style={{marginLeft: 11}} />
+      ) : name === 'triangle' ? (
+        <img
+          src="https://img.icons8.com/material/17.5/000000/triangle-stroked--v1.png"
+          alt={name}
+        />
+      ) : name === 'polygon' ? (
+        <img
+          src="https://img.icons8.com/ios-filled/17.5/000000/pentagon.png"
+          alt={name}
+        />
       ) : (
         name
       )}
