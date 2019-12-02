@@ -1,18 +1,32 @@
 import React from 'react'
-import {Button} from 'semantic-ui-react'
+import {Button, Input, Card, Container} from 'semantic-ui-react'
 const serverAddress = window.location.origin
 
-const Entry = ({loaded, setLoaded, name, setName}) => {
+const Entry = ({
+  loaded,
+  setLoaded,
+  name,
+  setName,
+  socket,
+  roomName,
+  setRoomName
+}) => {
   const handleNameInput = e => {
-    const name = e.target.value
+    name = e.target.value
     setName(name)
+  }
+
+  const handleRoomInput = e => {
+    roomName = e.target.value
+    setRoomName(roomName)
   }
   const handleJoin = e => {
     console.log('running')
-
+    socket.emit('joinRoom', roomName)
     fetch(serverAddress + '/create_user', {
       body: JSON.stringify({
-        name
+        name,
+        roomName
       }),
       method: 'post',
       cache: 'no-cache',
@@ -30,20 +44,25 @@ const Entry = ({loaded, setLoaded, name, setName}) => {
   }
 
   return (
-    <div>
-      <div className="join-container">
-        <input
-          type="text"
-          value={name}
-          onChange={handleNameInput}
-          className="join-input"
-          placeholder="Enter a name to use ..."
-        />
-        <br />
-        <Button className="join-button" onClick={handleJoin}>
-          Join
-        </Button>
-      </div>
+    <div className="join-container">
+      <Input
+        type="text"
+        value={roomName}
+        onChange={handleRoomInput}
+        className="join-input"
+        placeholder="Enter a room to use ..."
+      />
+      <Input
+        type="text"
+        value={name}
+        onChange={handleNameInput}
+        className="join-input"
+        placeholder="Enter a name to use ..."
+      />
+      <br />
+      <Button className="join-button" onClick={handleJoin}>
+        Join
+      </Button>
     </div>
   )
 }
