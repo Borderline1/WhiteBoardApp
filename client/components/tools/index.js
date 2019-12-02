@@ -4,6 +4,7 @@ import {line} from './line'
 import {picker} from './picker'
 import {triangle} from './triangle'
 import {textBox} from './textBox'
+import {polygon} from './polygon'
 // import types here
 
 export const types = {
@@ -13,5 +14,6 @@ export const types = {
   rectangle,
   line,
   triangle,
-  textBox
+  textBox,
+  polygon
 }
