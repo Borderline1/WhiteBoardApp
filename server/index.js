@@ -13,6 +13,8 @@ const socketWorks = require('./socket')
 
 const sessions = {}
 const elements = {}
+const roomRefs = {}
+const cursorRefs = {}
 
 // logging middleware
 // body parsing middleware
@@ -109,7 +111,7 @@ const startListening = () => {
     console.log(`listening on port http://localhost:${PORT}`))
 
   // set up our socket control center
-  socketWorks(server, elements, sessions)
+  socketWorks(server, elements, sessions, roomRefs, cursorRefs)
 }
 
 async function bootApp() {

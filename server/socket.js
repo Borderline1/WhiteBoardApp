@@ -3,18 +3,16 @@ const mongoose = require('mongoose')
 const db = require('./db/index')
 const Elem = require('./db/schemas/shapeSchema')
 
-function socketWorks(server, elements, sessions) {
+function socketWorks(server, elements, sessions, roomRefs, cursorRefs) {
   const io = socketio(server)
   let socketCount = 0
   io.on('connection', socket => {
     socket.on('joinRoom', function(roomName) {
       socket.join(roomName)
-      // console.log('sessions 12', sessions)
-      // console.log('sOCKET', socket)
       if (!elements[roomName]) {
         elements[roomName] = []
-        // console.log('sessions 17', sessions)
       }
+      roomRefs[socket.id] = roomName
       socket.emit('create', elements[roomName])
     })
     // socket.emit('create', elements) //not working? should render previously created elements on connect
@@ -24,13 +22,15 @@ function socketWorks(server, elements, sessions) {
     socketCount++
 
     if (socketCount === 1) {
+      let roomId = roomRefs[socket.id]
       interval = setInterval(() => {
         const sessionKeys = Object.keys(sessions)
-        const cursorPositions = []
+        // const cursorPositions = []
+        cursorRefs[roomId] = []
         for (let i = 0, n = sessionKeys.length; i < n; i++) {
           const key = sessionKeys[i]
           const session = sessions[key]
-          cursorPositions.push({
+          cursorRefs[roomId].push({
             x: session.getMouseX(),
             y: session.getMouseY(),
             name: session.getName(),
@@ -38,8 +38,8 @@ function socketWorks(server, elements, sessions) {
           })
         }
         // console.log(cursorPositions)
-        socket.broadcast.emit('cursor', cursorPositions)
-        socket.emit('cursor', cursorPositions)
+        socket.emit('cursor', cursorRefs[roomId])
+        socket.to(roomId).emit('cursor', cursorRefs[roomId])
         // broadcast exludes the socket that the event came from
       }, Math.round(1000 / 30))
     }
@@ -52,51 +52,57 @@ function socketWorks(server, elements, sessions) {
       }
     })
     socket.on('create', data => {
-      elements.push(data)
-      socket.emit('create', elements)
-      socket.broadcast.emit('create', elements)
-      let elem = new Elem({
-        _id: data.id,
-        type: data.type,
-        x: data.x,
-        y: data.y,
-        rotate: data.rotate,
-        props: data.props
-      })
-      elem.save()
+      let roomId = roomRefs[socket.id]
+      elements[roomId].push(data)
+      socket.emit('create', elements[roomId])
+      socket.to(roomId).emit('create', elements[roomId])
+      //add room structure to db
+      // let elem = new Elem({
+      //   _id: data.id,
+      //   type: data.type,
+      //   x: data.x,
+      //   y: data.y,
+      //   rotate: data.rotate,
+      //   props: data.props
+      // })
+      // elem.save()
     })
     socket.on('change', data => {
-      const element = elements.find(element => element.id === data.id)
+      let roomId = roomRefs[socket.id]
+      const element = elements[roomId].find(element => element.id === data.id)
       Object.keys(element).forEach(key => {
         if (key !== 'type') {
           element[key] = data[key]
         }
       })
-      socket.emit('change', elements)
-      socket.broadcast.emit('change', elements)
-      Elem.findOneAndUpdate(
-        {_id: data.id},
-        {
-          type: data.type.name,
-          x: data.x,
-          y: data.y,
-          rotate: data.rotate,
-          props: data.props
-        },
-        {new: true},
-        (error, elem) => {
-          if (error) {
-            console.log(elem)
-            throw error
-          }
-        }
-      )
+      socket.emit('change', elements[roomId])
+      socket.to(roomId).emit('change', elements[roomId])
+      //update db and db code!
+      // Elem.findOneAndUpdate(
+      //   {_id: data.id},
+      //   {
+      //     type: data.type.name,
+      //     x: data.x,
+      //     y: data.y,
+      //     rotate: data.rotate,
+      //     props: data.props
+      //   },
+      //   {new: true},
+      //   (error, elem) => {
+      //     if (error) {
+      //       console.log(elem)
+      //       throw error
+      //     }
+      //   }
+      // )
     })
     socket.on('delete', (data, index) => {
-      elements.splice(index, 1)
-      socket.emit('delete', elements)
-      socket.broadcast.emit('delete', elements)
-      Elem.deleteOne({_id: data.id})
+      let roomId = roomRefs[socket.id]
+      elements[roomId].splice(index, 1)
+      socket.emit('delete', elements[roomId])
+      socket.to(roomId).emit('delete', elements[roomId])
+      //fix db datastructures and such
+      // Elem.deleteOne({_id: data.id})
     })
     socket.on('disconnect', socket => {
       --socketCount
