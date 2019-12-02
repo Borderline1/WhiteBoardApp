@@ -15,8 +15,6 @@ function socketWorks(server, elements, sessions, roomRefs) {
       roomRefs[socket.id] = roomName
       socket.emit('create', elements[roomName])
     })
-    // socket.emit('create', elements) //not working? should render previously created elements on connect
-    //maybe bc we are broadcasting on create.
     console.log(`socket ${socket.id} connected`)
     let interval
     socketCount++
