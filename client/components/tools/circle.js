@@ -1,5 +1,15 @@
 /* eslint-disable react/display-name */
 import React from 'react'
+import {Dropdown, Input, Select} from 'semantic-ui-react'
+
+const selectOptions = [
+  {key: 0, value: 'none', text: 'No Border'}
+  // { key: 1, value: "white", text: "white" },
+  // { key: 2, value: "red", text: "red" },
+  // { key: 3, value: "yellow", text: "yellow" },
+  // { key: 4, value: "green", text: "green" },
+  // { key: 5, value: "black", text: "black" }
+]
 
 export const circle = {
   name: 'circle',
@@ -7,32 +17,67 @@ export const circle = {
     return (
       <div>
         <label>Radius</label>
-        <input
+        <Input
           name="radius"
           type="number"
+          width="4"
           value={selectedLayer.props.radius}
+          onChange={handleChange}
+        />
+        {/* <label>Stroke</label>
+        <Select
+          name="stroke"
+          width='4'
+          options={selectOptions}
+          placeholder='Choose a Color'
+          value={selectedLayer.props.stroke}
+          onSelect={handleChange}
+        /> */}
+        <label>Stroke Width</label>
+        <Input
+          name="strokeWidth"
+          type="number"
+          value={selectedLayer.props.strokeWidth}
           onChange={handleChange}
         />
       </div>
     )
   },
-  ElementComponent: props => {
+  ElementComponent: ({
+    selectedLayer,
+    radius,
+    fill,
+    stroke,
+    strokeWidth,
+    id,
+    handleDelete,
+    index
+  }) => {
+    let deleteButtonDisplay = 'none'
+    if (selectedLayer && selectedLayer.id === id) {
+      deleteButtonDisplay = 'inline'
+    }
+    const containerSize = radius * 2 + strokeWidth
+    const center = radius + strokeWidth / 2
     return (
       <div>
-        <svg width={props.radius * 2} height={props.radius * 2}>
+        <svg width={containerSize} height={containerSize}>
           <circle
-            cx={props.radius}
-            cy={props.radius}
-            r={props.radius}
-            fill={props.fill}
+            cx={center}
+            cy={center}
+            r={radius}
+            fill={fill}
+            stroke={stroke}
+            strokeWidth={strokeWidth}
           />
         </svg>
         <button
           name="X"
           type="button"
           className="deleteElement"
+          style={{display: deleteButtonDisplay}}
           onClick={() => {
-            props.handleDelete(props.index)
+            handleDelete(index)
           }}
         >
           <p style={{position: 'absolute', left: '4px', top: '-4px'}}>x</p>
@@ -48,8 +93,10 @@ export const circle = {
       id: uuid,
       rotate: 0,
       props: {
-        radius: 10,
-        fill
+        radius: 9,
+        fill,
+        stroke: '#000',
+        strokeWidth: 5
       }
     }
     socket.emit('create', data)
@@ -62,11 +109,12 @@ export const circle = {
     clientY,
     socket
   ) => {
+    const strokeAdd = selectedLayer.props.strokeWidth / 2
     const xdiff = prevX - clientX
     const ydiff = prevY - clientY
     const radius = Math.round(Math.sqrt(xdiff * xdiff + ydiff * ydiff))
-    const xPos = prevX - radius
-    const yPos = prevY - radius
+    const xPos = prevX - radius - strokeAdd
+    const yPos = prevY - radius - strokeAdd
 
     if (selectedLayer) {
       socket.emit('change', {

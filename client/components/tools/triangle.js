@@ -20,26 +20,50 @@ export const triangle = {
           value={selectedLayer.props.height}
           onChange={handleChange}
         />
+        <label>Stroke Width</label>
+        <input
+          name="strokeWidth"
+          type="number"
+          value={selectedLayer.props.strokeWidth}
+          onChange={handleChange}
+        />
       </div>
     )
   },
-  ElementComponent: props => {
+  ElementComponent: ({
+    selectedLayer,
+    base,
+    height,
+    fill,
+    stroke,
+    strokeWidth,
+    handleDelete,
+    id,
+    index
+  }) => {
+    let deleteButtonDisplay = 'none'
+    if (selectedLayer && selectedLayer.id === id) {
+      deleteButtonDisplay = 'inline'
+    }
     return (
       <div>
-        <svg width={props.base} height={props.height}>
+        <svg width={base + strokeWidth} height={height + strokeWidth}>
           <polygon
-            points={`${props.base / 2} 0, 0 ${props.height}, ${props.base} ${
-              props.height
-            }`}
-            fill={props.fill}
+            stroke={stroke}
+            strokeWidth={strokeWidth}
+            points={`${base / 2 + strokeWidth / 4} ${strokeWidth /
+              2}, ${strokeWidth / 2} ${height + strokeWidth / 2}, ${base +
+              strokeWidth / 2} ${height + strokeWidth / 2}`}
+            fill={fill}
           />
         </svg>
         <button
           name="X"
           type="button"
           className="deleteElement"
+          style={{display: deleteButtonDisplay}}
           onClick={() => {
-            props.handleDelete(props.index)
+            handleDelete(index)
           }}
         >
           <p style={{position: 'absolute', left: '4px', top: '-4px'}}>x</p>
@@ -57,7 +81,9 @@ export const triangle = {
       props: {
         fill,
         base: 10,
-        height: 10
+        height: 10,
+        stroke: 'black',
+        strokeWidth: 5
       }
     }
     socket.emit('create', data)
