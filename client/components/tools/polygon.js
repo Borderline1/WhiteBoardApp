@@ -53,7 +53,6 @@ export const polygon = {
   },
   ElementComponent: (props, handleChange, selectedLayer, socket, x, y) => {
     const points = polygon.generatePoints(props, x, y)
-    console.log(points)
     return (
       <svg
         width={props.radius * 2}

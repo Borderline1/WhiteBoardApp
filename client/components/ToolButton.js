@@ -9,8 +9,8 @@ const ToolButton = ({tool, types, name, handleSelectTool}) => {
   return (
     <Button
       onClick={handleOnClick}
-      className={className('tool-container', {
-        toolContainerSelected: tool.name === name
+      className={className('tool-button', {
+        toolButtonSelected: tool.name === name
       })}
     >
       {name}
