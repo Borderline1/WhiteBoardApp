@@ -32,11 +32,7 @@ export const iframe = {
   ElementComponent: props => {
     return (
       <div width={props.width} height={props.height}>
-        <iframe
-          src={props.source}
-          width={props.width}
-          height={props.height}
-         />
+        <iframe src={props.source} width={props.width} height={props.height} />
         <button
           name="X"
           type="button"
