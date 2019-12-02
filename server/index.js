@@ -12,7 +12,8 @@ const uuidv1 = require('uuid/v1')
 const socketWorks = require('./socket')
 
 const sessions = {}
-const elements = []
+const elements = {}
+const roomRefs = {}
 
 // logging middleware
 // body parsing middleware
@@ -33,7 +34,7 @@ const generateId = () => {
 
 app.post('/create_user', (req, res) => {
   const sessionKey = generateId()
-  sessions[sessionKey] = new Session(req.body.name)
+  sessions[sessionKey] = new Session(req.body.name, req.body.roomName)
   res.json({success: true, sessionKey})
 })
 setInterval(() => {
@@ -48,8 +49,9 @@ setInterval(() => {
 }, 1000)
 
 class Session {
-  constructor(name) {
+  constructor(name, roomName) {
     this._name = name
+    this._room = roomName
     this._mouseX = 0
     this._mouseY = 0
     this._timer = 10
@@ -109,7 +111,7 @@ const startListening = () => {
     console.log(`listening on port http://localhost:${PORT}`))
 
   // set up our socket control center
-  socketWorks(server, elements, sessions)
+  socketWorks(server, elements, sessions, roomRefs)
 }
 
 async function bootApp() {
