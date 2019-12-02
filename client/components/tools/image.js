@@ -1,9 +1,7 @@
-/* eslint-disable max-params */
-/* eslint-disable react/display-name */
 import React from 'react'
 
-export const rectangle = {
-  name: 'rectangle',
+export const image = {
+  name: 'image',
   DimensionsComponent: (selectedLayer, handleChange) => {
     return (
       <div>
@@ -21,51 +19,32 @@ export const rectangle = {
           value={selectedLayer.props.height}
           onChange={handleChange}
         />
-        <label>Stroke Width</label>
+        <label>Source</label>
         <input
-          name="strokeWidth"
-          type="number"
-          value={selectedLayer.props.strokeWidth}
+          name="source"
+          type="text"
+          value={selectedLayer.props.source}
           onChange={handleChange}
         />
       </div>
     )
   },
-  ElementComponent: ({
-    selectedLayer,
-    width,
-    height,
-    fill,
-    stroke,
-    strokeWidth,
-    handleDelete,
-    id,
-    index
-  }) => {
-    let deleteButtonDisplay = 'none'
-    if (selectedLayer && selectedLayer.id === id) {
-      deleteButtonDisplay = 'inline'
-    }
+  ElementComponent: props => {
     return (
       <div>
-        <svg width={width + strokeWidth} height={height + strokeWidth}>
-          <rect
-            x={strokeWidth / 2}
-            y={strokeWidth / 2}
-            width={width}
-            height={height}
-            fill={fill}
-            stroke={stroke}
-            strokeWidth={strokeWidth}
+        <svg width={props.width} height={props.height}>
+          <image
+            href={props.source}
+            // width={props.width}
+            // height={props.height}
           />
         </svg>
         <button
           name="X"
           type="button"
           className="deleteElement"
-          style={{display: deleteButtonDisplay}}
           onClick={() => {
-            handleDelete(index)
+            props.handleDelete(props.index)
           }}
         >
           <p style={{position: 'absolute', left: '4px', top: '-4px'}}>x</p>
@@ -75,17 +54,17 @@ export const rectangle = {
   },
   handleCreate: (x, y, fill = 'black', uuid, socket) => {
     const data = {
-      type: 'rectangle',
+      type: 'image',
       x,
       y,
       id: uuid,
       rotate: 0,
       props: {
-        width: 10,
-        height: 10,
+        width: 100,
+        height: 100,
         fill,
-        stroke: 'black',
-        strokeWidth: 5
+        source:
+          'https://lakelandescaperoom.com/wp-content/uploads/2016/09/image-placeholder-500x500.jpg'
       }
     }
     socket.emit('create', data)
@@ -107,7 +86,7 @@ export const rectangle = {
         ...selectedLayer,
         x: xPos,
         y: yPos,
-        props: {...selectedLayer.props, width, height}
+        props: {...selectedLayer.props, width, height, source}
       })
     }
   }

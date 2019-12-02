@@ -114,7 +114,8 @@ const SideBar = ({
               value={selectedLayer.y}
               onChange={handleChange}
             />
-            {selectedLayer.type.name === 'textBox' ? null : (
+            {selectedLayer.type.name === 'textBox' ||
+            selectedLayer.type.name === 'image' ? null : (
               <div>
                 <label>Fill</label>
                 <input

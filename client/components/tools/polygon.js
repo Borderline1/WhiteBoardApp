@@ -54,13 +54,25 @@ export const polygon = {
   ElementComponent: (props, handleChange, selectedLayer, socket, x, y) => {
     const points = polygon.generatePoints(props, x, y)
     return (
-      <svg
-        width={props.radius * 2}
-        height={props.radius * 2}
-        className="polygon"
-      >
-        <polygon points={points} fill={props.fill} stroke={props.stroke} />
-      </svg>
+      <div>
+        <svg
+          width={props.radius * 2}
+          height={props.radius * 2}
+          className="polygon"
+        >
+          <polygon points={points} fill={props.fill} stroke={props.stroke} />
+        </svg>
+        <button
+          name="X"
+          type="button"
+          className="deleteElement"
+          onClick={() => {
+            props.handleDelete(props.index)
+          }}
+        >
+          <p style={{position: 'absolute', left: '4px', top: '-4px'}}>x</p>
+        </button>
+      </div>
     )
   },
 
