@@ -1,10 +1,17 @@
 import React, {Component} from 'react'
 import className from 'classnames'
-import {Button} from 'semantic-ui-react'
+import {Button, Icon} from 'semantic-ui-react'
 
 const ToolButton = ({tool, types, name, handleSelectTool}) => {
   const handleOnClick = () => {
     handleSelectTool(types[name])
+  }
+  const toolIcons = {
+    picker: 'mouse pointer',
+    circle: 'circle',
+    rectangle: 'square',
+    textBox: 'font',
+    line: 'minus'
   }
   return (
     <Button
@@ -13,7 +20,11 @@ const ToolButton = ({tool, types, name, handleSelectTool}) => {
         toolButtonSelected: tool.name === name
       })}
     >
-      {name}
+      {toolIcons[name] ? (
+        <Icon name={toolIcons[name]} size="big" style={{marginLeft: 11}} />
+      ) : (
+        name
+      )}
     </Button>
   )
 }

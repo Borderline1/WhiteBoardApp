@@ -62,7 +62,7 @@ const SideBar = ({
       <input name="color" type="color" value={color} onChange={handleChange} />
       <div className="toolbox">
         <Segment className="tool-table">
-          <h5 className="tools-header">Tools</h5>
+          <h4 className="tools-header">TOOLS</h4>
           <Grid columns={2}>
             <Grid.Column id="tools-column-1">
               {firstHalf.map(typeKey => {
