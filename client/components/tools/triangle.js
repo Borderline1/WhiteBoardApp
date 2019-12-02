@@ -71,18 +71,40 @@ export const triangle = {
         >
           <p style={{position: 'absolute', left: '4px', top: '-4px'}}>x</p>
         </button>
+        <div
+          className="changeElement"
+          style={{display: deleteButtonDisplay}}
+          onMouseDown={() => {
+            setSelectedLayerId(id)
+            setChanging(true)
+          }}
+          onMouseUp={() => {
+            setChanging(false)
+          }}
+        />
       </div>
     )
   },
-  handleChange: (clientX, clientY, prevX, prevY, socket, selectedLayer) => {
+  handleChange: (
+    clientX,
+    clientY,
+    prevX,
+    prevY,
+    socket,
+    selectedLayer,
+    layerInitialPositionX,
+    layerInitialPositionY
+  ) => {
+    const oldBase = prevX - layerInitialPositionX
+    const oldHeight = prevY - layerInitialPositionY
     const movementX = clientX - prevX
     const movementY = clientY - prevY
     socket.emit('change', {
       ...selectedLayer,
       props: {
         ...selectedLayer.props,
-        width: movementX,
-        height: movementY
+        base: oldBase + movementX,
+        height: oldHeight + movementY
       }
     })
   },

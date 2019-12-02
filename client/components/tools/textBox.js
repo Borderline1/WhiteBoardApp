@@ -42,7 +42,14 @@ export const textBox = {
     )
   },
   ElementComponent: props => {
-    const {handleTextChange, selectedLayer, socket, id} = props
+    const {
+      handleTextChange,
+      selectedLayer,
+      socket,
+      id,
+      setSelectedLayerId,
+      setChanging
+    } = props
     let deleteButtonDisplay = 'none'
     if (selectedLayer && selectedLayer.id === id) {
       deleteButtonDisplay = 'inline'
@@ -76,8 +83,42 @@ export const textBox = {
         >
           <p style={{position: 'absolute', left: '4px', top: '-4px'}}>x</p>
         </button>
+        <div
+          className="changeElement"
+          style={{display: deleteButtonDisplay}}
+          onMouseDown={() => {
+            setSelectedLayerId(id)
+            setChanging(true)
+          }}
+          onMouseUp={() => {
+            setChanging(false)
+          }}
+        />
       </div>
     )
+  },
+  handleChange: (
+    clientX,
+    clientY,
+    prevX,
+    prevY,
+    socket,
+    selectedLayer,
+    layerInitialPositionX,
+    layerInitialPositionY
+  ) => {
+    const oldWidth = prevX - layerInitialPositionX
+    const oldHeight = prevY - layerInitialPositionY
+    const movementX = clientX - prevX
+    const movementY = clientY - prevY
+    socket.emit('change', {
+      ...selectedLayer,
+      props: {
+        ...selectedLayer.props,
+        width: oldWidth + movementX,
+        height: oldHeight + movementY
+      }
+    })
   },
   handleCreate: (
     x,

@@ -76,10 +76,6 @@ export const rectangle = {
         <div
           className="changeElement"
           style={{display: deleteButtonDisplay}}
-          // onClick={() => {
-          //   props.setSelectedLayerId(props.id)
-          //   console.log('clicky')
-          // }}
           onMouseDown={() => {
             setSelectedLayerId(id)
             setChanging(true)
