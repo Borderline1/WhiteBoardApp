@@ -21,7 +21,7 @@ const ToolButton = ({tool, types, name, handleSelectTool}) => {
       })}
     >
       {toolIcons[name] ? (
-        <Icon name={toolIcons[name]} size="big" style={{marginLeft: 11}} />
+        <Icon name={toolIcons[name]} size="large" style={{marginLeft: 11}} />
       ) : (
         name
       )}
