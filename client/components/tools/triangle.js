@@ -1,5 +1,6 @@
 /* eslint-disable react/display-name */
 import React from 'react'
+import className from 'classnames'
 
 export const triangle = {
   name: 'triangle',
@@ -37,7 +38,9 @@ export const triangle = {
         <button
           name="X"
           type="button"
-          className="deleteElement"
+          className={className('deleteElement', {
+            visible: props.id === props.selectedLayerId
+          })}
           onClick={() => {
             props.handleDelete(props.index)
           }}
@@ -46,6 +49,18 @@ export const triangle = {
         </button>
       </div>
     )
+  },
+  handleChange: (clientX, clientY, prevX, prevY, socket, selectedLayer) => {
+    const movementX = clientX - prevX
+    const movementY = clientY - prevY
+    socket.emit('change', {
+      ...selectedLayer,
+      props: {
+        ...selectedLayer.props,
+        width: movementX,
+        height: movementY
+      }
+    })
   },
   handleCreate: (x, y, fill = 'black', uuid, socket) => {
     const data = {

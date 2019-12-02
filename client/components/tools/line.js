@@ -2,6 +2,7 @@
 /* eslint-disable max-params */
 /* eslint-disable react/display-name */
 import React from 'react'
+import className from 'classnames'
 
 // let _id = 0
 
@@ -37,37 +38,114 @@ export const line = {
         <button
           name="X"
           type="button"
-          className="deleteElement"
+          className={className('deleteElement', {
+            visible: props.id === props.selectedLayerId
+          })}
           onClick={() => {
             props.handleDelete(props.index)
           }}
         >
           <p style={{position: 'absolute', left: '4px', top: '-4px'}}>x</p>
         </button>
+        <div
+          id="canvas"
+          className="changeLine"
+          // onClick={() => {
+          //   props.setSelectedLayerId(props.id)
+          //   console.log('clicky')
+          // }}
+          onMouseDown={() => {
+            props.setSelectedLayerId(props.id)
+            props.setChanging(true)
+            console.log('down')
+          }}
+          onMouseUp={() => {
+            props.setChanging(false)
+            console.log('up')
+          }}
+        />
       </div>
     )
   },
-  handleDoubleClick: function(layers, setLayers, x, y, color, uuid, socket) {
-    this.create(x, y, x + 40, y + 30, color, uuid, socket)
-  },
-  create: (x, y, x2, y2, fill = '#000000', uuid, socket, strokeWidth = 3) => {
-    // console.log(fill)
-    const data = {
-      type: 'line',
-      x,
-      y,
-      id: uuid,
-      rotate: 0,
-      props: {
-        x1: 0,
-        y1: 0,
-        x2: 40,
-        y2: 30,
-        fill,
-        strokeWidth
-      }
+  handleChange: (
+    clientX,
+    clientY,
+    prevX,
+    prevY,
+    socket,
+    selectedLayer,
+    layerInitialPositionX,
+    layerInitialPositionY
+  ) => {
+    const xPos = Math.min(layerInitialPositionX, clientX)
+    const yPos = Math.min(layerInitialPositionY, clientY)
+    const width = Math.abs(layerInitialPositionX - clientX)
+    const height = Math.abs(layerInitialPositionY - clientY)
+
+    if (clientX > layerInitialPositionX && clientY > layerInitialPositionY) {
+      socket.emit('change', {
+        ...selectedLayer,
+        x: xPos,
+        y: yPos,
+        props: {
+          ...selectedLayer.props,
+          width,
+          height,
+          x1: 0,
+          y1: 0,
+          x2: width,
+          y2: height
+        }
+      })
     }
-    socket.emit('create', data)
+    if (clientX < layerInitialPositionX && clientY < layerInitialPositionY) {
+      socket.emit('change', {
+        ...selectedLayer,
+        x: xPos,
+        y: yPos,
+        props: {
+          ...selectedLayer.props,
+          width,
+          height,
+          x1: width,
+          y1: height,
+          x2: 0,
+          y2: 0
+        }
+      })
+    }
+    if (clientX > layerInitialPositionX && clientY < layerInitialPositionY) {
+      socket.emit('change', {
+        ...selectedLayer,
+        x: xPos,
+        y: yPos,
+        props: {
+          ...selectedLayer.props,
+          width,
+          height,
+          x1: width,
+          y1: 0,
+          x2: 0,
+          y2: height
+        }
+      })
+    }
+    if (clientX < layerInitialPositionX && clientY > layerInitialPositionY) {
+      socket.emit('change', {
+        ...selectedLayer,
+        x: xPos,
+        y: yPos,
+        props: {
+          ...selectedLayer.props,
+          width,
+          height,
+          x1: 0,
+          y1: height,
+          x2: width,
+          y2: 0
+        }
+      })
+    }
   },
   handleCreate: (x, y, fill = '#000000', uuid, socket) => {
     const data = {

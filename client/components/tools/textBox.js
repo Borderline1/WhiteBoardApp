@@ -1,6 +1,7 @@
 /* eslint-disable max-params */
 /* eslint-disable react/display-name */
 import React from 'react'
+import className from 'classnames'
 
 // let _id = 0
 
@@ -63,7 +64,9 @@ export const textBox = {
         <button
           name="X"
           type="button"
-          className="deleteElement"
+          className={className('deleteElement', {
+            visible: props.id === props.selectedLayerId
+          })}
           onClick={() => {
             props.handleDelete(props.index)
           }}

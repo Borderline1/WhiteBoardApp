@@ -119,6 +119,40 @@ button.deleteElement {
   background-color: rgb(255, 247, 238);
   border: 2px solid black;
   border-radius: 50%;
+  visibility: hidden;
+}
+button.deleteElement.visible {
+  position: absolute;
+  right: -8px;
+  top: -6px;
+  width: 0.5rem;
+  height: 1.2rem;
+  background-color: rgb(255, 247, 238);
+  border: 2px solid black;
+  border-radius: 50%;
+  visibility: visible;
+}
+div.changeElement {
+  position: absolute;
+  right: -8px;
+  bottom: -6px;
+  width: 1rem;
+  height: 1rem;
+  background-color: rgb(255, 247, 238);
+  border: 2px solid black;
+  border-radius: 100% 100% 0 100%;
+  /* visibility: hidden */
+}
+div.changeLine {
+  position: absolute;
+  right: -8px;
+  bottom: -6px;
+  width: 1rem;
+  height: 1rem;
+  background-color: rgb(255, 247, 238);
+  border: 2px solid black;
+  border-radius: 100% 100% 0 100%;
+  /* visibility: hidden */
 }
 /* This is the delete button
 
