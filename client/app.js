@@ -90,6 +90,7 @@ const App = () => {
       })
     }
     if (tool.name === 'picker' && changing) {
+      console.log(selectedLayer)
       selectedLayer.type.handleChange(
         clientX,
         clientY,
@@ -227,7 +228,8 @@ const App = () => {
                       style={{
                         position: 'absolute',
                         top: layer.y,
-                        left: layer.x
+                        left: layer.x,
+                        transform: `rotate(${layer.props.rotate}deg)`
                       }}
                     >
                       {/* this layers canvas component */}

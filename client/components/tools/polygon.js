@@ -49,6 +49,13 @@ export const polygon = {
           value={selectedLayer.props.radius}
           onChange={handleChange}
         />
+        <label>Rotate</label>
+        <input
+          name="rotate"
+          type="number"
+          value={selectedLayer.props.rotate}
+          onChange={handleChange}
+        />
       </div>
     )
   },
@@ -124,7 +131,8 @@ export const polygon = {
         ...selectedLayer.props,
         radius: oldRadius + newRadius,
         width: oldWidth + movementX,
-        height: oldHeight + movementY
+        height: oldHeight + movementY,
+        rotate: +movementX
       }
     })
   },
@@ -139,11 +147,29 @@ export const polygon = {
         fill,
         sides: 5,
         width: 20,
-        height: 20
+        height: 20,
+        rotate: 0
       }
     }
     socket.emit('create', data)
   },
+  // handleRotate: (
+  //   selectedLayer,
+  //   socket,
+  //   prevX,
+  //   prevY,
+  //   clientX,
+  //   clientY,
+  // ) => {
+  //   const movementX = clientX - prevX
+  //   socket.emit('change', {
+  //     ...selectedLayer,
+  //     props: {
+  //       ...selectedLayer.props,
+  //       rotate: movementX
+  //     }
+  //   })
+  // },
   handleCreatingUpdate: (
     selectedLayer,
     prevX,

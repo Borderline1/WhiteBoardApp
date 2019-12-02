@@ -134,10 +134,10 @@ export const textBox = {
       x,
       y,
       id: uuid,
-      rotate: 0,
       props: {
         width: 70,
         height: 50,
+        rotate: 0,
         text: 'Text',
         backgroundColor: '#ffffff',
         textColor,

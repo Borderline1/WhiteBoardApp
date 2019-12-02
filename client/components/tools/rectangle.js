@@ -116,10 +116,10 @@ export const rectangle = {
       x,
       y,
       id: uuid,
-      rotate: 0,
       props: {
         width: 10,
         height: 10,
+        rotate: 0,
         fill,
         stroke: 'black',
         strokeWidth: 5
