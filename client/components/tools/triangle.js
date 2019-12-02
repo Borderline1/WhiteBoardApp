@@ -1,5 +1,6 @@
 /* eslint-disable react/display-name */
 import React from 'react'
+import className from 'classnames'
 
 export const triangle = {
   name: 'triangle',
@@ -39,7 +40,9 @@ export const triangle = {
     strokeWidth,
     handleDelete,
     id,
-    index
+    index,
+    setSelectedLayerId,
+    setChanging
   }) => {
     let deleteButtonDisplay = 'none'
     if (selectedLayer && selectedLayer.id === id) {
@@ -68,8 +71,42 @@ export const triangle = {
         >
           <p style={{position: 'absolute', left: '4px', top: '-4px'}}>x</p>
         </button>
+        <div
+          className="changeElement"
+          style={{display: deleteButtonDisplay}}
+          onMouseDown={() => {
+            setSelectedLayerId(id)
+            setChanging(true)
+          }}
+          onMouseUp={() => {
+            setChanging(false)
+          }}
+        />
       </div>
     )
+  },
+  handleChange: (
+    clientX,
+    clientY,
+    prevX,
+    prevY,
+    socket,
+    selectedLayer,
+    layerInitialPositionX,
+    layerInitialPositionY
+  ) => {
+    const oldBase = prevX - layerInitialPositionX
+    const oldHeight = prevY - layerInitialPositionY
+    const movementX = clientX - prevX
+    const movementY = clientY - prevY
+    socket.emit('change', {
+      ...selectedLayer,
+      props: {
+        ...selectedLayer.props,
+        base: oldBase + movementX,
+        height: oldHeight + movementY
+      }
+    })
   },
   handleCreate: (x, y, fill = 'black', uuid, socket) => {
     const data = {

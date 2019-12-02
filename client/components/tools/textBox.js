@@ -1,6 +1,7 @@
 /* eslint-disable max-params */
 /* eslint-disable react/display-name */
 import React from 'react'
+import className from 'classnames'
 
 // let _id = 0
 
@@ -41,7 +42,18 @@ export const textBox = {
     )
   },
   ElementComponent: props => {
-    const {handleTextChange, selectedLayer, socket} = props
+    const {
+      handleTextChange,
+      selectedLayer,
+      socket,
+      id,
+      setSelectedLayerId,
+      setChanging
+    } = props
+    let deleteButtonDisplay = 'none'
+    if (selectedLayer && selectedLayer.id === id) {
+      deleteButtonDisplay = 'inline'
+    }
     let styleObj = {
       width: props.width,
       height: props.height,
@@ -64,14 +76,49 @@ export const textBox = {
           name="X"
           type="button"
           className="deleteElement"
+          style={{display: deleteButtonDisplay}}
           onClick={() => {
             props.handleDelete(props.index)
           }}
         >
           <p style={{position: 'absolute', left: '4px', top: '-4px'}}>x</p>
         </button>
+        <div
+          className="changeElement"
+          style={{display: deleteButtonDisplay}}
+          onMouseDown={() => {
+            setSelectedLayerId(id)
+            setChanging(true)
+          }}
+          onMouseUp={() => {
+            setChanging(false)
+          }}
+        />
       </div>
     )
+  },
+  handleChange: (
+    clientX,
+    clientY,
+    prevX,
+    prevY,
+    socket,
+    selectedLayer,
+    layerInitialPositionX,
+    layerInitialPositionY
+  ) => {
+    const oldWidth = prevX - layerInitialPositionX
+    const oldHeight = prevY - layerInitialPositionY
+    const movementX = clientX - prevX
+    const movementY = clientY - prevY
+    socket.emit('change', {
+      ...selectedLayer,
+      props: {
+        ...selectedLayer.props,
+        width: oldWidth + movementX,
+        height: oldHeight + movementY
+      }
+    })
   },
   handleCreate: (
     x,
