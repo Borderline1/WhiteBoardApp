@@ -1,6 +1,7 @@
 import React, {Component} from 'react'
 import {ChromePicker} from 'react-color'
 import ToolButton from './ToolButton'
+import {Segment, Grid} from 'semantic-ui-react'
 
 const SideBar = ({
   color,
@@ -36,6 +37,11 @@ const SideBar = ({
       })
     }
   }
+  const firstHalf = Object.keys(types).slice(
+    0,
+    Object.keys(types).length / 2 + 1
+  )
+  const secondHalf = Object.keys(types).slice(Object.keys(types).length / 2 + 1)
   return (
     <div
       style={{
@@ -51,29 +57,45 @@ const SideBar = ({
         zIndex: 100000
       }}
     >
-      <div
-        className="toolbox"
-        style={{display: 'flex', flexDirection: 'column'}}
-      >
-        {/* iterate over all tools instead of hard coding */}
-        <label htmlFor="color" />
-        <input
-          name="color"
-          type="color"
-          value={color}
-          onChange={handleChange}
-        />
-
-        {Object.keys(types).map(typeKey => (
-          <ToolButton
-            key={types[typeKey].name}
-            name={types[typeKey].name}
-            tool={tool}
-            types={types}
-            handleSelectTool={handleSelectTool}
-          />
-        ))}
-
+      {/* iterate over all tools instead of hard coding */}
+      <label htmlFor="color" />
+      <input name="color" type="color" value={color} onChange={handleChange} />
+      <div className="toolbox">
+        <Segment className="tool-table">
+          <h4 className="tools-header">TOOLS</h4>
+          <Grid columns={2}>
+            <Grid.Column id="tools-column-1">
+              {firstHalf.map(typeKey => {
+                return (
+                  <Grid.Row>
+                    <ToolButton
+                      key={types[typeKey].name}
+                      name={types[typeKey].name}
+                      tool={tool}
+                      types={types}
+                      handleSelectTool={handleSelectTool}
+                    />
+                  </Grid.Row>
+                )
+              })}
+            </Grid.Column>
+            <Grid.Column id="tools-column-2">
+              {secondHalf.map(typeKey => {
+                return (
+                  <Grid.Row>
+                    <ToolButton
+                      key={types[typeKey].name}
+                      name={types[typeKey].name}
+                      tool={tool}
+                      types={types}
+                      handleSelectTool={handleSelectTool}
+                    />
+                  </Grid.Row>
+                )
+              })}
+            </Grid.Column>
+          </Grid>
+        </Segment>
         {/* Form Stuff */}
         {selectedLayer ? (
           <div>
@@ -92,7 +114,8 @@ const SideBar = ({
               value={selectedLayer.y}
               onChange={handleChange}
             />
-            {selectedLayer.type.name === 'textBox' ? null : (
+            {selectedLayer.type.name === 'textBox' ||
+            selectedLayer.type.name === 'image' ? null : (
               <div>
                 <label>Fill</label>
                 <input

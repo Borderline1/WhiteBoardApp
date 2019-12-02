@@ -51,7 +51,9 @@ export const circle = {
     strokeWidth,
     id,
     handleDelete,
-    index
+    index,
+    setChanging,
+    setSelectedLayerId
   }) => {
     let deleteButtonDisplay = 'none'
     if (selectedLayer && selectedLayer.id === id) {
@@ -82,8 +84,39 @@ export const circle = {
         >
           <p style={{position: 'absolute', left: '4px', top: '-4px'}}>x</p>
         </button>
+        <div
+          className="changeElement"
+          style={{display: deleteButtonDisplay}}
+          onMouseDown={() => {
+            setSelectedLayerId(id)
+            setChanging(true)
+          }}
+          onMouseUp={() => {
+            setChanging(false)
+          }}
+        />
       </div>
     )
+  },
+  handleChange: (
+    clientX,
+    clientY,
+    prevX,
+    prevY,
+    socket,
+    selectedLayer,
+    layerInitialPositionX
+  ) => {
+    const oldRadius = (prevX - layerInitialPositionX) / 2
+    const movementX = clientX - prevX
+    const newRadius = movementX / 2
+    socket.emit('change', {
+      ...selectedLayer,
+      props: {
+        ...selectedLayer.props,
+        radius: oldRadius + newRadius
+      }
+    })
   },
   handleCreate: (x, y, fill, uuid, socket) => {
     const data = {

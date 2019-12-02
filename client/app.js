@@ -1,3 +1,4 @@
+/* eslint-disable complexity */
 /* eslint-disable max-statements */
 import React, {useEffect, useState} from 'react'
 import SideBar from './components/SideBar'
@@ -27,7 +28,7 @@ const App = () => {
   const [selectedLayerId, setSelectedLayerId] = useState(null)
   const [dragging, setDragging] = useState(false)
   const [creating, setCreating] = useState(false)
-  const [textBox, setTextBox] = useState('Text here')
+  const [changing, setChanging] = useState(false)
   const [layerInitialPositionX, setLayerInitialPositionX] = useState(null)
   const [layerInitialPositionY, setLayerInitialPositionY] = useState(null)
 
@@ -88,7 +89,18 @@ const App = () => {
         sessionKey: window.localStorage.getItem('sessionKey')
       })
     }
-    if (tool.name === 'picker' && dragging) {
+    if (tool.name === 'picker' && changing) {
+      selectedLayer.type.handleChange(
+        clientX,
+        clientY,
+        prevX,
+        prevY,
+        socket,
+        selectedLayer,
+        layerInitialPositionX,
+        layerInitialPositionY
+      )
+    } else if (tool.name === 'picker' && dragging) {
       tool.handleDragging(
         selectedLayer,
         layerInitialPositionX,
@@ -99,8 +111,7 @@ const App = () => {
         clientY,
         socket
       )
-    }
-    if (creating && selectedLayerId) {
+    } else if (creating && selectedLayerId) {
       tool.handleCreatingUpdate(
         selectedLayer,
         prevX + window.scrollX,
@@ -168,6 +179,7 @@ const App = () => {
             onMouseMove={handleDisplayMouseMove}
             onMouseDown={handleDisplayMouseDown}
             onMouseUp={event => {
+              setChanging(false)
               if (dragging) {
                 setDragging(false)
               }
@@ -188,7 +200,7 @@ const App = () => {
             }}
           >
             {layers
-              ? clientLayers.map((layer, idx) => {
+              ? clientLayers.map((layer, index) => {
                   return (
                     <div
                       key={layer.id}
@@ -224,9 +236,12 @@ const App = () => {
                         handleTextChange={layer.type.handleTextChange}
                         selectedLayer={selectedLayer}
                         socket={socket}
-                        id={layer.id}
-                        index={idx}
+                        index={index}
                         handleDelete={handleDelete}
+                        setChanging={setChanging}
+                        id={layer.id}
+                        setSelectedLayerId={setSelectedLayerId}
+                        selectedLayerId={selectedLayerId}
                         x={layer.x}
                         y={layer.y}
                       />
