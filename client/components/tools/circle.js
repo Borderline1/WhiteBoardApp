@@ -107,7 +107,6 @@ export const circle = {
     selectedLayer,
     layerInitialPositionX
   ) => {
-    // const oldRadius = selectedLayer.props.radius
     const oldRadius = (prevX - layerInitialPositionX) / 2
     const movementX = clientX - prevX
     const newRadius = movementX / 2

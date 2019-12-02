@@ -1,3 +1,4 @@
+/* eslint-disable react/display-name */
 import React from 'react'
 //svg then circle then shape.
 //the circle's radius will be based off of the width and height
@@ -51,20 +52,83 @@ export const polygon = {
       </div>
     )
   },
-  ElementComponent: (props, handleChange, selectedLayer, socket, x, y) => {
+  ElementComponent: props => {
+    const {
+      selectedLayer,
+      handleDelete,
+      x,
+      y,
+      id,
+      index,
+      setSelectedLayerId,
+      setChanging
+    } = props
     const points = polygon.generatePoints(props, x, y)
+    let deleteButtonDisplay = 'none'
+    if (selectedLayer && selectedLayer.id === id) {
+      deleteButtonDisplay = 'inline'
+    }
     console.log(points)
     return (
-      <svg
-        width={props.radius * 2}
-        height={props.radius * 2}
-        className="polygon"
-      >
-        <polygon points={points} fill={props.fill} stroke={props.stroke} />
-      </svg>
+      <div>
+        <svg
+          width={props.radius * 2}
+          height={props.radius * 2}
+          className="polygon"
+        >
+          <polygon points={points} fill={props.fill} stroke={props.stroke} />
+        </svg>
+        <button
+          name="X"
+          type="button"
+          className="deleteElement"
+          style={{display: deleteButtonDisplay}}
+          onClick={() => {
+            handleDelete(index)
+          }}
+        >
+          <p style={{position: 'absolute', left: '4px', top: '-4px'}}>x</p>
+        </button>
+        <div
+          className="changeElement"
+          style={{display: deleteButtonDisplay}}
+          onMouseDown={() => {
+            setSelectedLayerId(id)
+            setChanging(true)
+          }}
+          onMouseUp={() => {
+            setChanging(false)
+          }}
+        />
+      </div>
     )
   },
-
+  handleChange: (
+    clientX,
+    clientY,
+    prevX,
+    prevY,
+    socket,
+    selectedLayer,
+    layerInitialPositionX,
+    layerInitialPositionY
+  ) => {
+    const oldRadius = (prevX - layerInitialPositionX) / 2
+    const oldWidth = prevX - layerInitialPositionX
+    const oldHeight = prevY - layerInitialPositionY
+    const movementX = clientX - prevX
+    const movementY = clientY - prevY
+    const newRadius = movementX / 2
+    socket.emit('change', {
+      ...selectedLayer,
+      props: {
+        ...selectedLayer.props,
+        radius: oldRadius + newRadius,
+        width: oldWidth + movementX,
+        height: oldHeight + movementY
+      }
+    })
+  },
   handleCreate: (x, y, fill, uuid, socket) => {
     const data = {
       type: 'polygon',
