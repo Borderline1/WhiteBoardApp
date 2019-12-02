@@ -2,7 +2,15 @@ import React from 'react'
 import {Button, Input, Card, Container} from 'semantic-ui-react'
 const serverAddress = window.location.origin
 
-const Entry = ({loaded, setLoaded, name, setName, roomName, setRoomName}) => {
+const Entry = ({
+  loaded,
+  setLoaded,
+  name,
+  setName,
+  socket,
+  roomName,
+  setRoomName
+}) => {
   const handleNameInput = e => {
     name = e.target.value
     setName(name)
@@ -14,7 +22,7 @@ const Entry = ({loaded, setLoaded, name, setName, roomName, setRoomName}) => {
   }
   const handleJoin = e => {
     console.log('running')
-
+    socket.emit('joinRoom', roomName)
     fetch(serverAddress + '/create_user', {
       body: JSON.stringify({
         name

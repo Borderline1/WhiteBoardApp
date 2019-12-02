@@ -7,7 +7,15 @@ function socketWorks(server, elements, sessions) {
   const io = socketio(server)
   let socketCount = 0
   io.on('connection', socket => {
-    socket.emit('create', elements) //not working? should render previously created elements on connect
+    socket.on('joinRoom', function(roomName) {
+      socket.join(roomName)
+      if (!elements[roomName]) {
+        elements[roomName] = []
+        socket.emit('create', elements[roomName])
+        console.log('sessions 16', sessions)
+      }
+    })
+    // socket.emit('create', elements) //not working? should render previously created elements on connect
     //maybe bc we are broadcasting on create.
     console.log(`socket ${socket.id} connected`)
     let interval

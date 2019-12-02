@@ -12,7 +12,7 @@ const uuidv1 = require('uuid/v1')
 const socketWorks = require('./socket')
 
 const sessions = {}
-const elements = []
+const elements = {}
 
 // logging middleware
 // body parsing middleware
