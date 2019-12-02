@@ -32,7 +32,13 @@ export const image = {
   ElementComponent: props => {
     return (
       <div width={props.width} height={props.height}>
-        <img src={props.source} width={props.width} height={props.height} />
+        <img
+          src={props.source}
+          width={props.width}
+          height={props.height}
+          // style={{draggable: false}}
+          onDragStart={() => false}
+        />
         <button
           name="X"
           type="button"
