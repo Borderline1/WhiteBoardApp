@@ -8,41 +8,56 @@ import className from 'classnames'
 
 export const line = {
   name: 'line',
-  DimensionsComponent: selectedLayer => {
+  DimensionsComponent: (selectedLayer, handleChange) => {
     return (
       <div>
         <label>Stroke Width</label>
         <input
+          name="strokeWidth"
           type="number"
-          value={selectedLayer.strokeWidth}
-          onChange={event => {
-            selectedLayer.onChange('strokeWidth', event.target.value)
-          }}
+          value={selectedLayer.props.strokeWidth}
+          onChange={handleChange}
         />
       </div>
     )
   },
-  ElementComponent: props => {
+  ElementComponent: ({
+    selectedLayer,
+    width,
+    height,
+    stroke,
+    strokeWidth,
+    handleDelete,
+    id,
+    index,
+    x1,
+    x2,
+    y1,
+    y2
+  }) => {
+    let deleteButtonDisplay = 'none'
+    if (selectedLayer && selectedLayer.id === id) {
+      deleteButtonDisplay = 'inline'
+    }
     return (
       <div>
-        <svg width={props.width} height={props.height}>
+        <svg width={width} height={height}>
           <line
-            x1={props.x1}
-            x2={props.x2}
-            y1={props.y1}
-            y2={props.y2}
-            stroke={props.fill}
-            strokeWidth={props.strokeWidth}
+            x1={x1}
+            x2={x2}
+            y1={y1}
+            y2={y2}
+            stroke={stroke}
+            strokeWidth={strokeWidth}
           />
         </svg>
         <button
           name="X"
           type="button"
-          className={className('deleteElement', {
-            visible: props.id === props.selectedLayerId
-          })}
+          className="deleteElement"
+          style={{display: deleteButtonDisplay}}
           onClick={() => {
-            props.handleDelete(props.index)
+            handleDelete(index)
           }}
         >
           <p style={{position: 'absolute', left: '4px', top: '-4px'}}>x</p>
@@ -158,7 +173,7 @@ export const line = {
         y1: 0,
         x2: 3,
         y2: 3,
-        fill,
+        stroke: 'black',
         strokeWidth: 3,
         height: 3,
         width: 3

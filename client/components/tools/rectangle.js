@@ -22,23 +22,51 @@ export const rectangle = {
           value={selectedLayer.props.height}
           onChange={handleChange}
         />
+        <label>Stroke Width</label>
+        <input
+          name="strokeWidth"
+          type="number"
+          value={selectedLayer.props.strokeWidth}
+          onChange={handleChange}
+        />
       </div>
     )
   },
-  ElementComponent: props => {
+  ElementComponent: ({
+    selectedLayer,
+    width,
+    height,
+    fill,
+    stroke,
+    strokeWidth,
+    handleDelete,
+    id,
+    index
+  }) => {
+    let deleteButtonDisplay = 'none'
+    if (selectedLayer && selectedLayer.id === id) {
+      deleteButtonDisplay = 'inline'
+    }
     return (
       <div>
-        <svg width={props.width} height={props.height}>
-          <rect width={props.width} height={props.height} fill={props.fill} />
+        <svg width={width + strokeWidth} height={height + strokeWidth}>
+          <rect
+            x={strokeWidth / 2}
+            y={strokeWidth / 2}
+            width={width}
+            height={height}
+            fill={fill}
+            stroke={stroke}
+            strokeWidth={strokeWidth}
+          />
         </svg>
         <button
           name="X"
           type="button"
-          className={className('deleteElement', {
-            visible: props.id === props.selectedLayerId
-          })}
+          className="deleteElement"
+          style={{display: deleteButtonDisplay}}
           onClick={() => {
-            props.handleDelete(props.index)
+            handleDelete(index)
           }}
         >
           <p style={{position: 'absolute', left: '4px', top: '-4px'}}>x</p>
@@ -85,7 +113,9 @@ export const rectangle = {
       props: {
         width: 10,
         height: 10,
-        fill
+        fill,
+        stroke: 'black',
+        strokeWidth: 5
       }
     }
     socket.emit('create', data)
