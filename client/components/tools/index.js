@@ -5,7 +5,8 @@ import {picker} from './picker'
 import {triangle} from './triangle'
 import {textBox} from './textBox'
 import {polygon} from './polygon'
-import {image} from './image'
+// import {image} from './image'
+// import {iframe} from './iframe'
 // import types here
 
 export const types = {
@@ -16,6 +17,7 @@ export const types = {
   line,
   triangle,
   textBox,
-  polygon,
-  image
+  polygon
+  // image,
+  // iframe
 }
