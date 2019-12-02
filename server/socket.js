@@ -9,11 +9,13 @@ function socketWorks(server, elements, sessions) {
   io.on('connection', socket => {
     socket.on('joinRoom', function(roomName) {
       socket.join(roomName)
+      console.log('sessions 12', sessions)
+      console.log('sOCKET', socket)
       if (!elements[roomName]) {
         elements[roomName] = []
-        socket.emit('create', elements[roomName])
-        console.log('sessions 16', sessions)
+        console.log('sessions 17', sessions)
       }
+      socket.emit('create', elements[roomName])
     })
     // socket.emit('create', elements) //not working? should render previously created elements on connect
     //maybe bc we are broadcasting on create.
