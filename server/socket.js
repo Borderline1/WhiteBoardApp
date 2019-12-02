@@ -3,7 +3,7 @@ const mongoose = require('mongoose')
 const db = require('./db/index')
 const Elem = require('./db/schemas/shapeSchema')
 
-function socketWorks(server, elements, sessions, roomRefs, cursorRefs) {
+function socketWorks(server, elements, sessions, roomRefs) {
   const io = socketio(server)
   let socketCount = 0
   io.on('connection', socket => {
@@ -25,7 +25,7 @@ function socketWorks(server, elements, sessions, roomRefs, cursorRefs) {
       let roomId = roomRefs[socket.id]
       interval = setInterval(() => {
         const sessionKeys = Object.keys(sessions)
-        // const cursorPositions = []
+        const cursorRefs = {}
         cursorRefs[roomId] = []
         for (let i = 0, n = sessionKeys.length; i < n; i++) {
           const key = sessionKeys[i]

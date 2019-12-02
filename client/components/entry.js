@@ -25,7 +25,8 @@ const Entry = ({
     socket.emit('joinRoom', roomName)
     fetch(serverAddress + '/create_user', {
       body: JSON.stringify({
-        name
+        name,
+        roomName
       }),
       method: 'post',
       cache: 'no-cache',
