@@ -130,3 +130,7 @@ button.deleteElement {
     }}>
     X
     </button> */
+
+.polygon {
+  transform: rotate(180deg);
+}
