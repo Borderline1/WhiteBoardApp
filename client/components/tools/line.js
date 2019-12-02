@@ -28,6 +28,15 @@ export const line = {
     stroke,
     strokeWidth,
     handleDelete,
+    deleteTop,
+    deleteBottom,
+    deleteRight,
+    deleteLeft,
+    changeTop,
+    changeBottom,
+    changeRight,
+    changeLeft,
+    changeRadius,
     id,
     index,
     x1,
@@ -56,8 +65,14 @@ export const line = {
         <button
           name="X"
           type="button"
-          className="deleteElement"
-          style={{display: deleteButtonDisplay}}
+          className="deleteLine"
+          style={{
+            display: deleteButtonDisplay,
+            top: deleteTop,
+            bottom: deleteBottom,
+            right: deleteRight,
+            left: deleteLeft
+          }}
           onClick={() => {
             handleDelete(index)
           }}
@@ -66,7 +81,14 @@ export const line = {
         </button>
         <div
           className="changeLine"
-          style={{display: deleteButtonDisplay}}
+          style={{
+            display: deleteButtonDisplay,
+            top: changeTop,
+            bottom: changeBottom,
+            right: changeRight,
+            left: changeLeft,
+            borderRadius: changeRadius
+          }}
           onMouseDown={() => {
             setSelectedLayerId(id)
             setChanging(true)
@@ -105,7 +127,16 @@ export const line = {
           x1: 0,
           y1: 0,
           x2: width,
-          y2: height
+          y2: height,
+          deleteTop: '-6px',
+          deleteBottom: '',
+          deleteRight: '-8px',
+          deleteLeft: '',
+          changeTop: '',
+          changeBottom: '-6px',
+          changeRight: '-8px',
+          changeLeft: '',
+          changeRadius: '100% 100% 0 100%'
         }
       })
     }
@@ -121,7 +152,16 @@ export const line = {
           x1: width,
           y1: height,
           x2: 0,
-          y2: 0
+          y2: 0,
+          deleteTop: '-6px',
+          deleteBottom: '',
+          deleteRight: '-8px',
+          deleteLeft: '',
+          changeTop: '-6px',
+          changeBottom: '',
+          changeRight: '',
+          changeLeft: '-8px',
+          changeRadius: '0 100% 100% 100%'
         }
       })
     }
@@ -137,7 +177,16 @@ export const line = {
           x1: width,
           y1: 0,
           x2: 0,
-          y2: height
+          y2: height,
+          deleteTop: '',
+          deleteBottom: '-6px',
+          deleteRight: '-8px',
+          deleteLeft: '',
+          changeTop: '-6px',
+          changeBottom: '',
+          changeRight: '-8px',
+          changeLeft: '',
+          changeRadius: '100% 0 100% 100%'
         }
       })
     }
@@ -153,7 +202,16 @@ export const line = {
           x1: 0,
           y1: height,
           x2: width,
-          y2: 0
+          y2: 0,
+          deleteTop: '-6px',
+          deleteBottom: '',
+          deleteRight: '-8px',
+          deleteLeft: '',
+          changeTop: '',
+          changeBottom: '-6px',
+          changeRight: '',
+          changeLeft: '-8px',
+          changeRadius: '100% 100% 100% 0%'
         }
       })
     }
@@ -172,7 +230,16 @@ export const line = {
         stroke: 'black',
         strokeWidth: 3,
         height: 3,
-        width: 3
+        width: 3,
+        deleteTop: '-6px',
+        deleteBottom: '',
+        deleteRight: '-8px',
+        deleteLeft: '',
+        changeTop: '',
+        changeBottom: '-6px',
+        changeRight: '-8px',
+        changeLeft: '',
+        changeRadius: '100% 100% 0 100%'
       }
     }
     socket.emit('create', data)
@@ -203,7 +270,16 @@ export const line = {
             x1: 0,
             y1: 0,
             x2: width,
-            y2: height
+            y2: height,
+            deleteTop: '-6px',
+            deleteBottom: '',
+            deleteRight: '-8px',
+            deleteLeft: '',
+            changeTop: '',
+            changeBottom: '-6px',
+            changeRight: '-8px',
+            changeLeft: '',
+            changeRadius: '100% 100% 0 100%'
           }
         })
       }
@@ -219,7 +295,16 @@ export const line = {
             x1: width,
             y1: height,
             x2: 0,
-            y2: 0
+            y2: 0,
+            deleteTop: '-6px',
+            deleteBottom: '',
+            deleteRight: '-8px',
+            deleteLeft: '',
+            changeTop: '-6px',
+            changeBottom: '',
+            changeRight: '',
+            changeLeft: '-8px',
+            changeRadius: '0 100% 100% 100%'
           }
         })
       }
@@ -235,7 +320,16 @@ export const line = {
             x1: width,
             y1: 0,
             x2: 0,
-            y2: height
+            y2: height,
+            deleteTop: '',
+            deleteBottom: '-6px',
+            deleteRight: '-8px',
+            deleteLeft: '',
+            changeTop: '-6px',
+            changeBottom: '',
+            changeRight: '-8px',
+            changeLeft: '',
+            changeRadius: '100% 0 100% 100%'
           }
         })
       }
@@ -251,7 +345,16 @@ export const line = {
             x1: 0,
             y1: height,
             x2: width,
-            y2: 0
+            y2: 0,
+            deleteTop: '-6px',
+            deleteBottom: '',
+            deleteRight: '-8px',
+            deleteLeft: '',
+            changeTop: '',
+            changeBottom: '-6px',
+            changeRight: '',
+            changeLeft: '-8px',
+            changeRadius: '100% 100% 100% 0%'
           }
         })
       }

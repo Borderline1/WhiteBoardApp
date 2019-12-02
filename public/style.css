@@ -39,10 +39,10 @@ form div {
   width: 15vw !important;
 }
 .ui.button.tool-button:hover {
-  background: rgb(250, 160, 176) !important;
+  background: rgb(191, 243, 139) !important;
 }
 .ui.button.toolButtonSelected {
-  background: rgb(247, 87, 116) !important;
+  background: rgb(139, 232, 46) !important;
 }
 .toolbox {
   display: 'flex';
@@ -168,29 +168,24 @@ div.changeElement {
   background-color: rgb(255, 247, 238);
   border: 2px solid black;
   border-radius: 100% 100% 0 100%;
-  /* visibility: hidden */
+}
+button.deleteLine {
+  position: absolute;
+  width: 0.5rem;
+  height: 1.2rem;
+  background-color: rgb(255, 247, 238);
+  border: 2px solid black;
+  border-radius: 50%;
 }
 div.changeLine {
   position: absolute;
-  right: -8px;
-  bottom: -6px;
+  /* right: -8px;
+  bottom: -6px; */
   width: 1rem;
   height: 1rem;
   background-color: rgb(255, 247, 238);
   border: 2px solid black;
-  border-radius: 100% 100% 0 100%;
-  /* visibility: hidden */
 }
-/* This is the delete button
-
-    <button
-    type="button"
-    className="deleteElement"
-    onClick={() => {
-        layersRef.child(layer.id).remove();
-    }}>
-    X
-    </button> */
 
 .polygon {
   transform: rotate(180deg);
