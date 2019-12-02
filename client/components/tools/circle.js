@@ -18,14 +18,26 @@ export const circle = {
   },
   ElementComponent: props => {
     return (
-      <svg width={props.radius * 2} height={props.radius * 2}>
-        <circle
-          cx={props.radius}
-          cy={props.radius}
-          r={props.radius}
-          fill={props.fill}
-        />
-      </svg>
+      <div>
+        <svg width={props.radius * 2} height={props.radius * 2}>
+          <circle
+            cx={props.radius}
+            cy={props.radius}
+            r={props.radius}
+            fill={props.fill}
+          />
+        </svg>
+        <button
+          name="X"
+          type="button"
+          className="deleteElement"
+          onClick={() => {
+            props.handleDelete(props.index)
+          }}
+        >
+          <p style={{position: 'absolute', left: '4px', top: '-4px'}}>x</p>
+        </button>
+      </div>
     )
   },
   handleCreate: (x, y, fill, uuid, socket) => {

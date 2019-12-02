@@ -23,16 +23,28 @@ export const line = {
   },
   ElementComponent: props => {
     return (
-      <svg width={props.width} height={props.height}>
-        <line
-          x1={props.x1}
-          x2={props.x2}
-          y1={props.y1}
-          y2={props.y2}
-          stroke={props.fill}
-          strokeWidth={props.strokeWidth}
-        />
-      </svg>
+      <div>
+        <svg width={props.width} height={props.height}>
+          <line
+            x1={props.x1}
+            x2={props.x2}
+            y1={props.y1}
+            y2={props.y2}
+            stroke={props.fill}
+            strokeWidth={props.strokeWidth}
+          />
+        </svg>
+        <button
+          name="X"
+          type="button"
+          className="deleteElement"
+          onClick={() => {
+            props.handleDelete(props.index)
+          }}
+        >
+          <p style={{position: 'absolute', left: '4px', top: '-4px'}}>x</p>
+        </button>
+      </div>
     )
   },
   handleDoubleClick: function(layers, setLayers, x, y, color, uuid, socket) {

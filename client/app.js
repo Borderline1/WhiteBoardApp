@@ -65,6 +65,9 @@ const App = () => {
     socket.on('change', elements => {
       setLayers(elements)
     })
+    socket.on('delete', elements => {
+      setLayers(elements)
+    })
     //socket when we receive cursor data
   }, [])
 
@@ -141,6 +144,10 @@ const App = () => {
     }
   }
 
+  const handleDelete = index => {
+    socket.emit('delete', clientLayers[index], index)
+  }
+
   return (
     <div className="App">
       {loaded ? (
@@ -156,6 +163,7 @@ const App = () => {
           />
           <div
             id="canvas"
+            //lets think about changing canvas width height soon; note to self - Henry
             style={{position: 'absolute', width: 1800, height: 1800}}
             onMouseMove={handleDisplayMouseMove}
             onMouseDown={handleDisplayMouseDown}
@@ -164,6 +172,7 @@ const App = () => {
                 setDragging(false)
               }
               if (creating) {
+                //make DRY vv; note to self - Henry
                 if (tool.name === 'textBox') {
                   setTool(types.picker)
                   setCreating(false)
@@ -179,7 +188,7 @@ const App = () => {
             }}
           >
             {layers
-              ? clientLayers.map(layer => {
+              ? clientLayers.map((layer, idx) => {
                   return (
                     <div
                       key={layer.id}
@@ -210,12 +219,16 @@ const App = () => {
                       }}
                     >
                       {/* this layers canvas component */}
-                      {layer.type.ElementComponent(
-                        layer.props,
-                        layer.type.handleTextChange,
-                        selectedLayer,
-                        socket
-                      )}
+                      <layer.type.ElementComponent
+                        {...layer.props}
+                        handleTextChange={layer.type.handleTextChange}
+                        selectedLayer={selectedLayer}
+                        socket={socket}
+                        index={idx}
+                        handleDelete={handleDelete}
+                        x={layer.x}
+                        y={layer.y}
+                      />
                     </div>
                   )
                 })
