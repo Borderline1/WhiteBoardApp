@@ -221,6 +221,7 @@ const App = () => {
                         handleTextChange={layer.type.handleTextChange}
                         selectedLayer={selectedLayer}
                         socket={socket}
+                        id={layer.id}
                         index={idx}
                         handleDelete={handleDelete}
                       />
