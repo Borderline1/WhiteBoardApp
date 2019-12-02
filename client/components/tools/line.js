@@ -2,6 +2,7 @@
 /* eslint-disable max-params */
 /* eslint-disable react/display-name */
 import React from 'react'
+import className from 'classnames'
 
 // let _id = 0
 
@@ -32,7 +33,9 @@ export const line = {
     x1,
     x2,
     y1,
-    y2
+    y2,
+    setSelectedLayerId,
+    setChanging
   }) => {
     let deleteButtonDisplay = 'none'
     if (selectedLayer && selectedLayer.id === id) {
@@ -61,8 +64,99 @@ export const line = {
         >
           <p style={{position: 'absolute', left: '4px', top: '-4px'}}>x</p>
         </button>
+        <div
+          className="changeLine"
+          style={{display: deleteButtonDisplay}}
+          onMouseDown={() => {
+            setSelectedLayerId(id)
+            setChanging(true)
+          }}
+          onMouseUp={() => {
+            setChanging(false)
+          }}
+        />
       </div>
     )
+  },
+  handleChange: (
+    clientX,
+    clientY,
+    prevX,
+    prevY,
+    socket,
+    selectedLayer,
+    layerInitialPositionX,
+    layerInitialPositionY
+  ) => {
+    const xPos = Math.min(layerInitialPositionX, clientX)
+    const yPos = Math.min(layerInitialPositionY, clientY)
+    const width = Math.abs(layerInitialPositionX - clientX)
+    const height = Math.abs(layerInitialPositionY - clientY)
+
+    if (clientX > layerInitialPositionX && clientY > layerInitialPositionY) {
+      socket.emit('change', {
+        ...selectedLayer,
+        x: xPos,
+        y: yPos,
+        props: {
+          ...selectedLayer.props,
+          width,
+          height,
+          x1: 0,
+          y1: 0,
+          x2: width,
+          y2: height
+        }
+      })
+    }
+    if (clientX < layerInitialPositionX && clientY < layerInitialPositionY) {
+      socket.emit('change', {
+        ...selectedLayer,
+        x: xPos,
+        y: yPos,
+        props: {
+          ...selectedLayer.props,
+          width,
+          height,
+          x1: width,
+          y1: height,
+          x2: 0,
+          y2: 0
+        }
+      })
+    }
+    if (clientX > layerInitialPositionX && clientY < layerInitialPositionY) {
+      socket.emit('change', {
+        ...selectedLayer,
+        x: xPos,
+        y: yPos,
+        props: {
+          ...selectedLayer.props,
+          width,
+          height,
+          x1: width,
+          y1: 0,
+          x2: 0,
+          y2: height
+        }
+      })
+    }
+    if (clientX < layerInitialPositionX && clientY > layerInitialPositionY) {
+      socket.emit('change', {
+        ...selectedLayer,
+        x: xPos,
+        y: yPos,
+        props: {
+          ...selectedLayer.props,
+          width,
+          height,
+          x1: 0,
+          y1: height,
+          x2: width,
+          y2: 0
+        }
+      })
+    }
   },
   handleCreate: (x, y, fill = '#000000', uuid, socket) => {
     const data = {

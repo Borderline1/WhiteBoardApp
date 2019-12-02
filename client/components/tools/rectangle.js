@@ -1,6 +1,7 @@
 /* eslint-disable max-params */
 /* eslint-disable react/display-name */
 import React from 'react'
+import className from 'classnames'
 
 export const rectangle = {
   name: 'rectangle',
@@ -40,7 +41,9 @@ export const rectangle = {
     strokeWidth,
     handleDelete,
     id,
-    index
+    index,
+    setSelectedLayerId,
+    setChanging
   }) => {
     let deleteButtonDisplay = 'none'
     if (selectedLayer && selectedLayer.id === id) {
@@ -70,8 +73,42 @@ export const rectangle = {
         >
           <p style={{position: 'absolute', left: '4px', top: '-4px'}}>x</p>
         </button>
+        <div
+          className="changeElement"
+          style={{display: deleteButtonDisplay}}
+          onMouseDown={() => {
+            setSelectedLayerId(id)
+            setChanging(true)
+          }}
+          onMouseUp={() => {
+            setChanging(false)
+          }}
+        />
       </div>
     )
+  },
+  handleChange: (
+    clientX,
+    clientY,
+    prevX,
+    prevY,
+    socket,
+    selectedLayer,
+    layerInitialPositionX,
+    layerInitialPositionY
+  ) => {
+    const oldWidth = prevX - layerInitialPositionX
+    const oldHeight = prevY - layerInitialPositionY
+    const movementX = clientX - prevX
+    const movementY = clientY - prevY
+    socket.emit('change', {
+      ...selectedLayer,
+      props: {
+        ...selectedLayer.props,
+        width: oldWidth + movementX,
+        height: oldHeight + movementY
+      }
+    })
   },
   handleCreate: (x, y, fill = 'black', uuid, socket) => {
     const data = {
