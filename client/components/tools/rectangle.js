@@ -41,7 +41,9 @@ export const rectangle = {
     strokeWidth,
     handleDelete,
     id,
-    index
+    index,
+    setSelectedLayerId,
+    setChanging
   }) => {
     let deleteButtonDisplay = 'none'
     if (selectedLayer && selectedLayer.id === id) {
@@ -72,34 +74,43 @@ export const rectangle = {
           <p style={{position: 'absolute', left: '4px', top: '-4px'}}>x</p>
         </button>
         <div
-          id="canvas"
           className="changeElement"
+          style={{display: deleteButtonDisplay}}
           // onClick={() => {
           //   props.setSelectedLayerId(props.id)
           //   console.log('clicky')
           // }}
           onMouseDown={() => {
-            props.setSelectedLayerId(props.id)
-            props.setChanging(true)
-            console.log('down')
+            setSelectedLayerId(id)
+            setChanging(true)
           }}
           onMouseUp={() => {
-            props.setChanging(false)
-            console.log('up')
+            setChanging(false)
           }}
         />
       </div>
     )
   },
-  handleChange: (clientX, clientY, prevX, prevY, socket, selectedLayer) => {
+  handleChange: (
+    clientX,
+    clientY,
+    prevX,
+    prevY,
+    socket,
+    selectedLayer,
+    layerInitialPositionX,
+    layerInitialPositionY
+  ) => {
+    const oldWidth = prevX - layerInitialPositionX
+    const oldHeight = prevY - layerInitialPositionY
     const movementX = clientX - prevX
     const movementY = clientY - prevY
     socket.emit('change', {
       ...selectedLayer,
       props: {
         ...selectedLayer.props,
-        width: movementX,
-        height: movementY
+        width: oldWidth + movementX,
+        height: oldHeight + movementY
       }
     })
   },

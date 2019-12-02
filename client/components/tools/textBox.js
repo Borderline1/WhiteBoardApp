@@ -42,7 +42,11 @@ export const textBox = {
     )
   },
   ElementComponent: props => {
-    const {handleTextChange, selectedLayer, socket} = props
+    const {handleTextChange, selectedLayer, socket, id} = props
+    let deleteButtonDisplay = 'none'
+    if (selectedLayer && selectedLayer.id === id) {
+      deleteButtonDisplay = 'inline'
+    }
     let styleObj = {
       width: props.width,
       height: props.height,
@@ -64,9 +68,8 @@ export const textBox = {
         <button
           name="X"
           type="button"
-          className={className('deleteElement', {
-            visible: props.id === props.selectedLayerId
-          })}
+          className="deleteElement"
+          style={{display: deleteButtonDisplay}}
           onClick={() => {
             props.handleDelete(props.index)
           }}

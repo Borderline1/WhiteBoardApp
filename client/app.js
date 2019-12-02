@@ -89,7 +89,6 @@ const App = () => {
       })
     }
     if (tool.name === 'picker' && changing) {
-      console.log(selectedLayer)
       selectedLayer.type.handleChange(
         clientX,
         clientY,
@@ -179,6 +178,7 @@ const App = () => {
             onMouseMove={handleDisplayMouseMove}
             onMouseDown={handleDisplayMouseDown}
             onMouseUp={event => {
+              setChanging(false)
               if (dragging) {
                 setDragging(false)
               }

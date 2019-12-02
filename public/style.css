@@ -109,7 +109,6 @@ form div {
   border: dashed 2px red;
 }
 
-/* This is for a probable delete button on each element */
 button.deleteElement {
   position: absolute;
   right: -8px;
@@ -119,7 +118,6 @@ button.deleteElement {
   background-color: rgb(255, 247, 238);
   border: 2px solid black;
   border-radius: 50%;
-  visibility: hidden;
 }
 button.deleteElement.visible {
   position: absolute;
@@ -130,7 +128,6 @@ button.deleteElement.visible {
   background-color: rgb(255, 247, 238);
   border: 2px solid black;
   border-radius: 50%;
-  visibility: visible;
 }
 div.changeElement {
   position: absolute;

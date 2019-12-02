@@ -51,7 +51,9 @@ export const circle = {
     strokeWidth,
     id,
     handleDelete,
-    index
+    index,
+    setChanging,
+    setSelectedLayerId
   }) => {
     let deleteButtonDisplay = 'none'
     if (selectedLayer && selectedLayer.id === id) {
@@ -83,36 +85,37 @@ export const circle = {
           <p style={{position: 'absolute', left: '4px', top: '-4px'}}>x</p>
         </button>
         <div
-          id="canvas"
           className="changeElement"
-          // onClick={() => {
-          //   props.setSelectedLayerId(props.id)
-          //   console.log('clicky')
-          // }}
+          style={{display: deleteButtonDisplay}}
           onMouseDown={() => {
-            props.setSelectedLayerId(props.id)
-            props.setChanging(true)
-            console.log('down')
+            setSelectedLayerId(id)
+            setChanging(true)
           }}
           onMouseUp={() => {
-            props.setChanging(false)
-            console.log('up')
+            setChanging(false)
           }}
         />
       </div>
     )
   },
-  handleChange: (clientX, clientY, prevX, prevY, socket, selectedLayer) => {
+  handleChange: (
+    clientX,
+    clientY,
+    prevX,
+    prevY,
+    socket,
+    selectedLayer,
+    layerInitialPositionX
+  ) => {
+    // const oldRadius = selectedLayer.props.radius
+    const oldRadius = (prevX - layerInitialPositionX) / 2
     const movementX = clientX - prevX
-    const movementY = clientY - prevY
     const newRadius = movementX / 2
     socket.emit('change', {
       ...selectedLayer,
       props: {
         ...selectedLayer.props,
-        radius: newRadius,
-        width: movementX,
-        height: movementY
+        radius: oldRadius + newRadius
       }
     })
   },

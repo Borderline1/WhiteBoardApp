@@ -40,7 +40,9 @@ export const triangle = {
     strokeWidth,
     handleDelete,
     id,
-    index
+    index,
+    setSelectedLayerId,
+    setChanging
   }) => {
     let deleteButtonDisplay = 'none'
     if (selectedLayer && selectedLayer.id === id) {
