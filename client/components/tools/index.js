@@ -6,6 +6,7 @@ import {triangle} from './triangle'
 import {textBox} from './textBox'
 import {polygon} from './polygon'
 import {image} from './image'
+import {iframe} from './iframe'
 // import types here
 
 export const types = {
@@ -17,5 +18,6 @@ export const types = {
   triangle,
   textBox,
   polygon,
-  image
+  image,
+  iframe
 }
