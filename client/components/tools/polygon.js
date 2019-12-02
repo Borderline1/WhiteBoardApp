@@ -68,7 +68,6 @@ export const polygon = {
     if (selectedLayer && selectedLayer.id === id) {
       deleteButtonDisplay = 'inline'
     }
-    console.log(points)
     return (
       <div>
         <svg
