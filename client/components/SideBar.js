@@ -1,7 +1,7 @@
 import React, {Component} from 'react'
 import {ChromePicker} from 'react-color'
 import ToolButton from './ToolButton'
-import {Container, Segment, Grid} from 'semantic-ui-react'
+import {Segment, Grid} from 'semantic-ui-react'
 
 const SideBar = ({
   color,

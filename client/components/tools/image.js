@@ -31,14 +31,8 @@ export const image = {
   },
   ElementComponent: props => {
     return (
-      <div>
-        <svg width={props.width} height={props.height}>
-          <image
-            href={props.source}
-            // width={props.width}
-            // height={props.height}
-          />
-        </svg>
+      <div width={props.width} height={props.height}>
+        <img src={props.source} width={props.width} height={props.height} />
         <button
           name="X"
           type="button"
@@ -64,7 +58,7 @@ export const image = {
         height: 100,
         fill,
         source:
-          'https://lakelandescaperoom.com/wp-content/uploads/2016/09/image-placeholder-500x500.jpg'
+          'https://www.schiffner.com/wp-content/themes/schiff-responsive/images/noimage.jpg'
       }
     }
     socket.emit('create', data)
