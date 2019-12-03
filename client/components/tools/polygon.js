@@ -1,5 +1,6 @@
 /* eslint-disable react/display-name */
 import React from 'react'
+import {Input} from 'semantic-ui-react'
 //svg then circle then shape.
 //the circle's radius will be based off of the width and height
 //and the shape will be based off of the radius and width and height. thats all we need.
@@ -36,17 +37,24 @@ export const polygon = {
     return (
       <div>
         <label>Sides</label>
-        <input
+        <Input
           name="sides"
           type="number"
           value={selectedLayer.props.sides}
           onChange={handleChange}
         />
         <label>Radius</label>
-        <input
+        <Input
           name="radius"
           type="number"
           value={selectedLayer.props.radius}
+          onChange={handleChange}
+        />
+        <label>Stroke Width</label>
+        <Input
+          name="strokeWidth"
+          type="number"
+          value={selectedLayer.props.strokeWidth}
           onChange={handleChange}
         />
       </div>
@@ -55,6 +63,9 @@ export const polygon = {
   ElementComponent: props => {
     const {
       selectedLayer,
+      stroke,
+      strokeWidth,
+      fill,
       handleDelete,
       x,
       y,
@@ -75,7 +86,12 @@ export const polygon = {
           height={props.radius * 2}
           className="polygon"
         >
-          <polygon points={points} fill={props.fill} stroke={props.stroke} />
+          <polygon
+            points={points}
+            fill={fill}
+            stroke={stroke}
+            strokeWidth={strokeWidth}
+          />
         </svg>
         <button
           name="X"
@@ -128,7 +144,7 @@ export const polygon = {
       }
     })
   },
-  handleCreate: (x, y, fill, uuid, socket) => {
+  handleCreate: (x, y, fill, uuid, socket, strokeColor) => {
     const data = {
       type: 'polygon',
       id: uuid,
@@ -136,6 +152,8 @@ export const polygon = {
       y,
       props: {
         radius: 10,
+        stroke: strokeColor,
+        strokeWidth: 3,
         fill,
         sides: 5,
         width: 20,
