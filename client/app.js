@@ -14,6 +14,8 @@ const serverAddress = window.location.origin
 const App = () => {
   const [socket, setSocket] = useState(null)
   const [color, setColor] = useState('#1133EE')
+  const [strokeColor, setStrokeColor] = useState('#000000')
+  const [filling, setFilling] = useState(true)
   const [tool, setTool] = useState(types.picker)
   const [mouseX, setMouseX] = useState(0)
   const [mouseY, setMouseY] = useState(0)
@@ -78,8 +80,14 @@ const App = () => {
     //socket when we receive cursor data
   }, [])
 
+  const toggleFilling = bool => {
+    setFilling(bool)
+  }
   const handleColorChange = color => {
     setColor(color)
+  }
+  const handleStrokeColorChange = stroke => {
+    setStrokeColor(stroke)
   }
 
   const handleDisplayMouseMove = e => {
@@ -152,7 +160,8 @@ const App = () => {
         mouseY + window.scrollY,
         color,
         layerId,
-        socket
+        socket,
+        strokeColor
       )
       setSelectedLayerIds([layerId])
     } else if (event.target.id !== 'canvas') {
@@ -223,10 +232,14 @@ const App = () => {
       {loaded ? (
         <div>
           <SideBar
-            color={color}
             types={types}
             tool={tool}
+            color={color}
+            strokeColor={strokeColor}
             handleColorChange={handleColorChange}
+            handleStrokeColorChange={handleStrokeColorChange}
+            toggleFilling={toggleFilling}
+            filling={filling}
             handleSelectTool={handleSelectTool}
             selectedLayer={selectedLayer}
             socket={socket}
@@ -239,58 +252,56 @@ const App = () => {
             onMouseDown={handleDisplayMouseDown}
             onMouseUp={handleDisplayMouseUp}
           >
-            {layers
-              ? clientLayers.map((layer, index) => {
-                  return (
-                    <div
-                      key={layer.id}
-                      onMouseEnter={() => {
-                        if (tool.name === 'picker') {
-                          setIndicatedLayerIds([layer.id])
-                        }
-                      }}
-                      onMouseLeave={() => setIndicatedLayerIds([])}
-                      onMouseDown={() => {
-                        setDragging(true)
-                        if (selectedLayerIds.length <= 1) {
-                          setSelectedLayerIds([layer.id])
-                          setLayerInitialPositionsXs([layer.x])
-                          setLayerInitialPositionsYs([layer.y])
-                        }
-                      }}
-                      onMouseUp={() => {
-                        if (dragging) return
-                        else setSelectedLayerIds([layer.id])
-                      }}
-                      className={className('layer', {
-                        indicated: indicatedLayerIds.includes(layer.id),
-                        selected: selectedLayerIds.includes(layer.id)
-                      })}
-                      style={{
-                        position: 'absolute',
-                        top: layer.y,
-                        left: layer.x
-                      }}
-                    >
-                      {/* this layers canvas component */}
-                      <layer.type.ElementComponent
-                        {...layer.props}
-                        handleTextChange={layer.type.handleTextChange}
-                        selectedLayer={selectedLayer}
-                        socket={socket}
-                        index={index}
-                        handleDelete={handleDelete}
-                        setChanging={setChanging}
-                        id={layer.id}
-                        setSelectedLayerIds={setSelectedLayerIds} //tagg
-                        selectedLayerIds={selectedLayerIds}
-                        x={layer.x}
-                        y={layer.y}
-                      />
-                    </div>
-                  )
-                })
-              : null}
+            {clientLayers.map((layer, index) => {
+              return (
+                <div
+                  key={layer.id}
+                  onMouseEnter={() => {
+                    if (tool.name === 'picker') {
+                      setIndicatedLayerIds([layer.id])
+                    }
+                  }}
+                  onMouseLeave={() => setIndicatedLayerIds([])}
+                  onMouseDown={() => {
+                    setDragging(true)
+                    if (selectedLayerIds.length <= 1) {
+                      setSelectedLayerIds([layer.id])
+                      setLayerInitialPositionsXs([layer.x])
+                      setLayerInitialPositionsYs([layer.y])
+                    }
+                  }}
+                  onMouseUp={() => {
+                    if (dragging) return
+                    else setSelectedLayerIds([layer.id])
+                  }}
+                  className={className('layer', {
+                    indicated: indicatedLayerIds.includes(layer.id),
+                    selected: selectedLayerIds.includes(layer.id)
+                  })}
+                  style={{
+                    position: 'absolute',
+                    top: layer.y,
+                    left: layer.x
+                  }}
+                >
+                  {/* this layers canvas component */}
+                  <layer.type.ElementComponent
+                    {...layer.props}
+                    handleTextChange={layer.type.handleTextChange}
+                    selectedLayer={selectedLayer}
+                    socket={socket}
+                    index={index}
+                    handleDelete={handleDelete}
+                    setChanging={setChanging}
+                    id={layer.id}
+                    setSelectedLayerIds={setSelectedLayerIds} //tagg
+                    selectedLayerIds={selectedLayerIds}
+                    x={layer.x}
+                    y={layer.y}
+                  />
+                </div>
+              )
+            })}
             {cursors.map(cursor => (
               <div
                 key={cursor.sessionKey}

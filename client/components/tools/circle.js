@@ -1,15 +1,6 @@
 /* eslint-disable react/display-name */
 import React from 'react'
-import {Dropdown, Input, Select} from 'semantic-ui-react'
-
-const selectOptions = [
-  {key: 0, value: 'none', text: 'No Border'}
-  // { key: 1, value: "white", text: "white" },
-  // { key: 2, value: "red", text: "red" },
-  // { key: 3, value: "yellow", text: "yellow" },
-  // { key: 4, value: "green", text: "green" },
-  // { key: 5, value: "black", text: "black" }
-]
+import {Input} from 'semantic-ui-react'
 
 export const circle = {
   name: 'circle',
@@ -24,15 +15,6 @@ export const circle = {
           value={selectedLayer.props.radius}
           onChange={handleChange}
         />
-        {/* <label>Stroke</label>
-        <Select
-          name="stroke"
-          width='4'
-          options={selectOptions}
-          placeholder='Choose a Color'
-          value={selectedLayer.props.stroke}
-          onSelect={handleChange}
-        /> */}
         <label>Stroke Width</label>
         <Input
           name="strokeWidth"
@@ -118,7 +100,7 @@ export const circle = {
       }
     })
   },
-  handleCreate: (x, y, fill, uuid, socket) => {
+  handleCreate: (x, y, fill, uuid, socket, strokeColor) => {
     const data = {
       type: 'circle',
       x: x - 10,
@@ -128,7 +110,7 @@ export const circle = {
       props: {
         radius: 9,
         fill,
-        stroke: '#000',
+        stroke: strokeColor,
         strokeWidth: 6
       }
     }
