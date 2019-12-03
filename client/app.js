@@ -31,8 +31,8 @@ const App = () => {
   const [dragging, setDragging] = useState(false)
   const [creating, setCreating] = useState(false)
   const [changing, setChanging] = useState(false)
-  const [layerInitialPositionX, setLayerInitialPositionX] = useState(null)
-  const [layerInitialPositionY, setLayerInitialPositionY] = useState(null)
+  const [layerInitialPositionsXs, setLayerInitialPositionsXs] = useState(null)
+  const [layerInitialPositionsYs, setLayerInitialPositionsYs] = useState(null)
   const [lasso, setLasso] = useState(null)
   const [lassoing, setLassoing] = useState(false)
 
@@ -112,14 +112,14 @@ const App = () => {
           prevY,
           socket,
           selectedLayer,
-          layerInitialPositionX,
-          layerInitialPositionY
+          layerInitialPositionsXs,
+          layerInitialPositionsYs
         )
       } else if (dragging) {
         tool.handleDragging(
           selectedLayers,
-          layerInitialPositionX,
-          layerInitialPositionY,
+          layerInitialPositionsXs,
+          layerInitialPositionsYs,
           prevX,
           prevY,
           clientX,
@@ -198,6 +198,16 @@ const App = () => {
         return acc
       }, [])
       setSelectedLayerIds(layersToSelectIds)
+      const xPositions = []
+      const yPositions = []
+      const layersToUpdate = clientLayers.filter(layer =>
+        layersToSelectIds.includes(layer.id))
+      for (let layer of layersToUpdate) {
+        xPositions.push(layer.x)
+        yPositions.push(layer.y)
+      }
+      setLayerInitialPositionsXs(xPositions)
+      setLayerInitialPositionsYs(yPositions)
       setLasso(null)
       setLassoing(false)
     }
@@ -231,7 +241,7 @@ const App = () => {
             toggleFilling={toggleFilling}
             filling={filling}
             handleSelectTool={handleSelectTool}
-            selectedLayer={selectedLayer} //taggg
+            selectedLayer={selectedLayer}
             socket={socket}
           />
           <div
@@ -253,7 +263,6 @@ const App = () => {
                   }}
                   onMouseLeave={() => setIndicatedLayerIds([])}
                   onMouseDown={() => {
-                    setSelectedLayerIds([layer.id])
                     setDragging(true)
                     setLayerInitialPositionX(layer.x)
                     setLayerInitialPositionY(layer.y)
@@ -286,7 +295,7 @@ const App = () => {
                     handleDelete={handleDelete}
                     setChanging={setChanging}
                     id={layer.id}
-                    setSelectedLayerIds={setSelectedLayerIds} //tagg
+                    setSelectedLayerIds={setSelectedLayerIds}
                     selectedLayerIds={selectedLayerIds}
                     x={layer.x}
                     y={layer.y}
