@@ -87,8 +87,9 @@ export const circle = {
     prevY,
     socket,
     selectedLayer,
-    layerInitialPositionX
+    layerInitialPositionsXs
   ) => {
+    const layerInitialPositionX = layerInitialPositionsXs[0]
     const oldRadius = (prevX - layerInitialPositionX) / 2
     const movementX = clientX - prevX
     const newRadius = movementX / 2
