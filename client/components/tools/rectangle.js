@@ -52,7 +52,7 @@ export const rectangle = {
     changeRadius,
     id,
     index,
-    setSelectedLayerId,
+    setSelectedLayerIds,
     setChanging
   }) => {
     let deleteButtonDisplay = 'none'
@@ -100,7 +100,7 @@ export const rectangle = {
             borderRadius: changeRadius
           }}
           onMouseDown={() => {
-            setSelectedLayerId(id)
+            setSelectedLayerIds([id])
             setChanging(true)
           }}
           onMouseUp={() => {
@@ -117,9 +117,11 @@ export const rectangle = {
     prevY,
     socket,
     selectedLayer,
-    layerInitialPositionX,
-    layerInitialPositionY
+    layerInitialPositionXs,
+    layerInitialPositionYs
   ) => {
+    const layerInitialPositionX = layerInitialPositionXs[0]
+    const layerInitialPositionY = layerInitialPositionYs[0]
     const xPos = Math.min(layerInitialPositionX, clientX)
     const yPos = Math.min(layerInitialPositionY, clientY)
     const width = Math.abs(layerInitialPositionX - clientX)

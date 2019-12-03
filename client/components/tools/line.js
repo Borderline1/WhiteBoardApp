@@ -43,7 +43,7 @@ export const line = {
     x2,
     y1,
     y2,
-    setSelectedLayerId,
+    setSelectedLayerIds,
     setChanging
   }) => {
     let deleteButtonDisplay = 'none'
@@ -92,7 +92,7 @@ export const line = {
             borderRadius: changeRadius
           }}
           onMouseDown={() => {
-            setSelectedLayerId(id)
+            setSelectedLayerIds([id])
             setChanging(true)
           }}
           onMouseUp={() => {
@@ -109,9 +109,11 @@ export const line = {
     prevY,
     socket,
     selectedLayer,
-    layerInitialPositionX,
-    layerInitialPositionY
+    layerInitialPositionXs,
+    layerInitialPositionYs
   ) => {
+    const layerInitialPositionX = layerInitialPositionXs[0]
+    const layerInitialPositionY = layerInitialPositionYs[0]
     const xPos = Math.min(layerInitialPositionX, clientX)
     const yPos = Math.min(layerInitialPositionY, clientY)
     const width = Math.abs(layerInitialPositionX - clientX)
@@ -128,8 +130,8 @@ export const line = {
           height,
           x1: 2,
           y1: 2,
-          x2: width - 1,
-          y2: height - 1,
+          x2: width - 0.5,
+          y2: height - 0.5,
           deleteTop: '-6px',
           deleteBottom: '',
           deleteRight: '-8px',
@@ -151,8 +153,8 @@ export const line = {
           ...selectedLayer.props,
           width,
           height,
-          x1: width - 1,
-          y1: height - 1,
+          x1: width - 0.5,
+          y1: height - 0.5,
           x2: 2,
           y2: 2,
           deleteTop: '-6px',
@@ -176,10 +178,10 @@ export const line = {
           ...selectedLayer.props,
           width,
           height,
-          x1: width - 1,
+          x1: width - 0.5,
           y1: 2,
           x2: 2,
-          y2: height - 1,
+          y2: height - 0.5,
           deleteTop: '',
           deleteBottom: '-6px',
           deleteRight: '-8px',
@@ -202,8 +204,8 @@ export const line = {
           width,
           height,
           x1: 2,
-          y1: height - 1,
-          x2: width - 1,
+          y1: height - 0.5,
+          x2: width - 0.5,
           y2: 2,
           deleteTop: '-6px',
           deleteBottom: '',
@@ -271,8 +273,8 @@ export const line = {
             height,
             x1: 2,
             y1: 2,
-            x2: width - 1,
-            y2: height - 1,
+            x2: width - 0.5,
+            y2: height - 0.5,
             deleteTop: '-6px',
             deleteBottom: '',
             deleteRight: '-8px',
@@ -294,8 +296,8 @@ export const line = {
             ...selectedLayer.props,
             width,
             height,
-            x1: width - 1,
-            y1: height - 1,
+            x1: width - 0.5,
+            y1: height - 0.5,
             x2: 2,
             y2: 2,
             deleteTop: '-6px',
@@ -319,10 +321,10 @@ export const line = {
             ...selectedLayer.props,
             width,
             height,
-            x1: width - 1,
+            x1: width - 0.5,
             y1: 2,
             x2: 2,
-            y2: height - 1,
+            y2: height - 0.5,
             deleteTop: '',
             deleteBottom: '-6px',
             deleteRight: '-8px',
@@ -345,8 +347,8 @@ export const line = {
             width,
             height,
             x1: 2,
-            y1: height - 1,
-            x2: width - 1,
+            y1: height - 0.5,
+            x2: width - 0.5,
             y2: 2,
             deleteTop: '-6px',
             deleteBottom: '',
