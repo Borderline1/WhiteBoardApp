@@ -110,7 +110,7 @@ export const rectangle = {
       }
     })
   },
-  handleCreate: (x, y, fill = 'black', uuid, socket) => {
+  handleCreate: (x, y, fill = 'black', uuid, socket, strokeColor) => {
     const data = {
       type: 'rectangle',
       x,
@@ -121,7 +121,7 @@ export const rectangle = {
         width: 10,
         height: 10,
         fill,
-        stroke: 'black',
+        stroke: strokeColor,
         strokeWidth: 5
       }
     }

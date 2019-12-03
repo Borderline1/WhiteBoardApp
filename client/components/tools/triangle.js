@@ -108,7 +108,7 @@ export const triangle = {
       }
     })
   },
-  handleCreate: (x, y, fill = 'black', uuid, socket) => {
+  handleCreate: (x, y, fill = 'black', uuid, socket, strokeColor) => {
     const data = {
       type: 'triangle',
       id: uuid,
@@ -119,7 +119,7 @@ export const triangle = {
         fill,
         base: 10,
         height: 10,
-        stroke: 'black',
+        stroke: strokeColor,
         strokeWidth: 5
       }
     }

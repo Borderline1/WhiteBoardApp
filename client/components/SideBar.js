@@ -1,10 +1,15 @@
 import React, {Component} from 'react'
 import {ChromePicker} from 'react-color'
 import ToolButton from './ToolButton'
+import ColorWheel from './ColorWheel'
 import {Segment, Grid} from 'semantic-ui-react'
 
 const SideBar = ({
   color,
+  strokeColor,
+  handleStrokeColorChange,
+  toggleFilling,
+  filling,
   tool,
   selectedLayer,
   handleColorChange,
@@ -43,23 +48,8 @@ const SideBar = ({
   )
   const secondHalf = Object.keys(types).slice(Object.keys(types).length / 2 + 1)
   return (
-    <div
-      style={{
-        position: 'fixed',
-        height: '100vh',
-        width: '17.5vw',
-        backgroundColor: 'lightgray',
-        display: 'flex',
-        flexDirection: 'column',
-        justifyContent: 'flex-start',
-        alignItems: 'center',
-        padding: '5px',
-        zIndex: 100000
-      }}
-    >
+    <div id="sidebar">
       {/* iterate over all tools instead of hard coding */}
-      <label htmlFor="color" />
-      <input name="color" type="color" value={color} onChange={handleChange} />
       <div className="toolbox">
         <Segment className="tool-table">
           <h4 className="tools-header">TOOLS</h4>
@@ -67,9 +57,8 @@ const SideBar = ({
             <Grid.Column id="tools-column-1">
               {firstHalf.map(typeKey => {
                 return (
-                  <Grid.Row>
+                  <Grid.Row key={types[typeKey].name}>
                     <ToolButton
-                      key={types[typeKey].name}
                       name={types[typeKey].name}
                       tool={tool}
                       types={types}
@@ -82,9 +71,8 @@ const SideBar = ({
             <Grid.Column id="tools-column-2">
               {secondHalf.map(typeKey => {
                 return (
-                  <Grid.Row>
+                  <Grid.Row key={types[typeKey].name}>
                     <ToolButton
-                      key={types[typeKey].name}
                       name={types[typeKey].name}
                       tool={tool}
                       types={types}
@@ -96,6 +84,16 @@ const SideBar = ({
             </Grid.Column>
           </Grid>
         </Segment>
+        <ColorWheel
+          color={color}
+          strokeColor={strokeColor}
+          handleColorChange={handleColorChange}
+          handleStrokeColorChange={handleStrokeColorChange}
+          toggleFilling={toggleFilling}
+          filling={filling}
+          selectedLayer={selectedLayer}
+          socket={socket}
+        />
         {/* Form Stuff */}
         {selectedLayer ? (
           <div>
@@ -114,18 +112,6 @@ const SideBar = ({
               value={selectedLayer.y}
               onChange={handleChange}
             />
-            {selectedLayer.type.name === 'textBox' ||
-            selectedLayer.type.name === 'image' ? null : (
-              <div>
-                <label>Fill</label>
-                <input
-                  name="fill"
-                  type="color"
-                  value={selectedLayer.props.fill}
-                  onChange={handleChange}
-                />
-              </div>
-            )}
             {selectedLayer.type.DimensionsComponent(
               selectedLayer,
               handleChange,
