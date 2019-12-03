@@ -188,7 +188,7 @@ div.rotateElement {
   height: 1rem;
   background-color: rgb(255, 247, 238);
   border: 2px solid black;
-  border-radius: 100% 100% 0 100%;
+  border-radius: 100% 0 100% 0;
 }
 button.deleteLineRect {
   position: absolute;
