@@ -257,8 +257,10 @@ const App = () => {
                     setDragging(true)
                     setLayerInitialPositionX(layer.x)
                     setLayerInitialPositionY(layer.y)
-                    setStrokeColor(layer.props.stroke)
-                    setColor(layer.props.fill)
+                    if (tool.name === 'picker') {
+                      setStrokeColor(layer.props.stroke)
+                      setColor(layer.props.fill)
+                    }
                   }}
                   onMouseUp={() => {
                     if (dragging) return
