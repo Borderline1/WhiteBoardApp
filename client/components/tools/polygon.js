@@ -22,12 +22,12 @@ export const polygon = {
 
     for (let i = 0; i < sides; i++) {
       coordinateStr += Math.round(
-        r + r * Math.sin(i * ((2 * Math.PI) / sides))
+        props.strokeWidth + r + r * Math.sin(i * ((2 * Math.PI) / sides))
       ).toString()
       coordinateStr += ' '
 
       coordinateStr += Math.round(
-        r + r * Math.cos(i * ((2 * Math.PI) / sides))
+        props.strokeWidth + r + r * Math.cos(i * ((2 * Math.PI) / sides))
       ).toString()
       if (i < sides - 1) coordinateStr += ', '
     }
@@ -71,7 +71,7 @@ export const polygon = {
       y,
       id,
       index,
-      setSelectedLayerId,
+      setSelectedLayerIds,
       setChanging
     } = props
     const points = polygon.generatePoints(props, x, y)
@@ -79,13 +79,10 @@ export const polygon = {
     if (selectedLayer && selectedLayer.id === id) {
       deleteButtonDisplay = 'inline'
     }
+    const containerSize = props.radius * 2 + strokeWidth * 2
     return (
       <div>
-        <svg
-          width={props.radius * 2}
-          height={props.radius * 2}
-          className="polygon"
-        >
+        <svg width={containerSize} height={containerSize} className="polygon">
           <polygon
             points={points}
             fill={fill}
@@ -108,7 +105,7 @@ export const polygon = {
           className="changeElement"
           style={{display: deleteButtonDisplay}}
           onMouseDown={() => {
-            setSelectedLayerId(id)
+            setSelectedLayerIds([id])
             setChanging(true)
           }}
           onMouseUp={() => {
@@ -125,9 +122,11 @@ export const polygon = {
     prevY,
     socket,
     selectedLayer,
-    layerInitialPositionX,
-    layerInitialPositionY
+    layerInitialPositionXs,
+    layerInitialPositionYs
   ) => {
+    const layerInitialPositionX = layerInitialPositionXs[0]
+    const layerInitialPositionY = layerInitialPositionYs[0]
     const oldRadius = (prevX - layerInitialPositionX) / 2
     const oldWidth = prevX - layerInitialPositionX
     const oldHeight = prevY - layerInitialPositionY
