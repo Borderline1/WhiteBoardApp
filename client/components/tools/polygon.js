@@ -1,7 +1,6 @@
 /* eslint-disable react/display-name */
 import React from 'react'
 import {Input} from 'semantic-ui-react'
-import {set} from 'mongoose'
 //svg then circle then shape.
 //the circle's radius will be based off of the width and height
 //and the shape will be based off of the radius and width and height. thats all we need.
