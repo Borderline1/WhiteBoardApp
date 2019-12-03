@@ -19,7 +19,6 @@ const SideBar = ({
 }) => {
   const handleChange = e => {
     e.preventDefault()
-    console.log('change', e.target)
     const {type, name, value} = e.target
     let editValue
     editValue = type === 'number' ? +value : value
@@ -36,7 +35,6 @@ const SideBar = ({
     }
   }
   const handleTextPropsChange = e => {
-    console.log('text', e.target)
     if (e.target[0].name) {
       socket.emit('change', {
         ...selectedLayer,
