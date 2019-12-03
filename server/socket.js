@@ -1,19 +1,19 @@
 const socketio = require('socket.io')
 const mongoose = require('mongoose')
-const db = require('./db/index')
-const Elem = require('./db/schemas/shapeSchema')
+const {db, Elem, Room} = require('./db')
 
 function socketWorks(server, elements, sessions, roomRefs) {
   const io = socketio(server)
   let socketCount = 0
   io.on('connection', socket => {
     console.log(`socket ${socket.id} connected`)
-    socket.on('joinRoom', function(roomName) {
+    socket.on('joinRoom', async function(roomName) {
       console.log(`socket ${socket.id} connected to room ${roomName}`)
       socket.join(roomName)
       if (!elements[roomName]) {
         // lookup in database if roomName exists
-
+        const DBroom = await db.collection('rooms').find({roomName})
+        console.log('DB ROOM ON RESULT OF LOOKUP', DBroom)
         // if it does, upload all elements into elements[roomName]
 
         // else
@@ -41,7 +41,6 @@ function socketWorks(server, elements, sessions, roomRefs) {
             sessionKey: key
           })
         }
-        // console.log(cursorPositions)
         socket.emit('cursor', cursorRefs[roomId])
         socket.to(roomId).emit('cursor', cursorRefs[roomId])
         // broadcast exludes the socket that the event came from
