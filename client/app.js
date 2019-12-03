@@ -112,8 +112,8 @@ const App = () => {
           prevY,
           socket,
           selectedLayer,
-          layerInitialPositionX,
-          layerInitialPositionY
+          layerInitialPositionsXs,
+          layerInitialPositionsYs
         )
       } else if (dragging) {
         tool.handleDragging(
