@@ -268,6 +268,8 @@ const App = () => {
                       setSelectedLayerIds([layer.id])
                       setLayerInitialPositionsXs([layer.x])
                       setLayerInitialPositionsYs([layer.y])
+                      setStrokeColor(layer.props.stroke)
+                      setColor(layer.props.fill)
                     }
                   }}
                   onMouseUp={() => {
@@ -294,7 +296,7 @@ const App = () => {
                     handleDelete={handleDelete}
                     setChanging={setChanging}
                     id={layer.id}
-                    setSelectedLayerIds={setSelectedLayerIds} //tagg
+                    setSelectedLayerIds={setSelectedLayerIds}
                     selectedLayerIds={selectedLayerIds}
                     x={layer.x}
                     y={layer.y}
