@@ -4,7 +4,12 @@ import className from 'classnames'
 
 export const triangle = {
   name: 'triangle',
-  DimensionsComponent: (selectedLayer, handleChange) => {
+  DimensionsComponent: (
+    selectedLayer,
+    handleChange,
+    handleTextPropsChange,
+    handleRotate
+  ) => {
     return (
       <div>
         <label>Base</label>
@@ -28,6 +33,13 @@ export const triangle = {
           value={selectedLayer.props.strokeWidth}
           onChange={handleChange}
         />
+        <label>Rotate</label>
+        <input
+          name="rotate"
+          type="number"
+          value={selectedLayer.props.rotate}
+          onChange={handleRotate}
+        />
       </div>
     )
   },
@@ -42,7 +54,8 @@ export const triangle = {
     id,
     index,
     setSelectedLayerIds,
-    setChanging
+    setChanging,
+    setRotating
   }) => {
     let deleteButtonDisplay = 'none'
     if (selectedLayer && selectedLayer.id === id) {
@@ -82,6 +95,18 @@ export const triangle = {
             setChanging(false)
           }}
         />
+        <div
+          className="rotateElement"
+          style={{display: deleteButtonDisplay}}
+          onMouseDown={() => {
+            setSelectedLayerIds([id])
+            setChanging(false)
+            setRotating(true)
+          }}
+          onMouseUp={() => {
+            setRotating(false)
+          }}
+        />
       </div>
     )
   },
@@ -110,19 +135,30 @@ export const triangle = {
       }
     })
   },
+  handleRotate: (selectedLayer, socket, prevX, prevY, clientX, clientY) => {
+    const movementX = clientX - prevX
+    const movementY = clientY - prevY
+    socket.emit('change', {
+      ...selectedLayer,
+      props: {
+        ...selectedLayer.props,
+        rotate: +Math.floor(movementX * 0.5 - movementY * 0.5)
+      }
+    })
+  },
   handleCreate: (x, y, fill = 'black', uuid, socket, strokeColor) => {
     const data = {
       type: 'triangle',
       id: uuid,
       x: x - 5, //relative to canvas mouseX
       y,
-      rotate: 0,
       props: {
         fill,
         base: 10,
         height: 10,
         stroke: strokeColor,
-        strokeWidth: 5
+        strokeWidth: 5,
+        rotate: 0
       }
     }
     socket.emit('create', data)

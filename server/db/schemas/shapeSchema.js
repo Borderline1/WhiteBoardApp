@@ -5,7 +5,6 @@ const elemSchema = new mongoose.Schema({
   type: String,
   x: Number,
   y: Number,
-  rotate: Number,
   props: Object
 })
 
