@@ -42,7 +42,13 @@ const ColorWheel = props => {
   return (
     <Segment id="color-grid-container">
       <div id="main-colors-container">
-        <div className="applied-color-1" onClick={() => toggleFilling(true)}>
+        <div
+          className="applied-color-1"
+          style={
+            filling ? {boxShadow: '0 0 6px #000000'} : {boxShadow: '0 0 0'}
+          }
+          onClick={() => toggleFilling(true)}
+        >
           <div
             id="fill-color"
             style={
@@ -57,7 +63,13 @@ const ColorWheel = props => {
           </div>
           <p className="color-label">Fill</p>
         </div>
-        <div className="applied-color-2" onClick={() => toggleFilling(false)}>
+        <div
+          className="applied-color-2"
+          style={
+            !filling ? {boxShadow: '0 0 6px #000000'} : {boxShadow: '0 0 0'}
+          }
+          onClick={() => toggleFilling(false)}
+        >
           <div
             id="stroke-color"
             style={

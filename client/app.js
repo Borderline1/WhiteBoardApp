@@ -264,10 +264,9 @@ const App = () => {
                   onMouseLeave={() => setIndicatedLayerIds([])}
                   onMouseDown={() => {
                     setDragging(true)
-                    if (selectedLayerIds.length <= 1) {
-                      setSelectedLayerIds([layer.id])
-                      setLayerInitialPositionsXs([layer.x])
-                      setLayerInitialPositionsYs([layer.y])
+                    setLayerInitialPositionX(layer.x)
+                    setLayerInitialPositionY(layer.y)
+                    if (tool.name === 'picker') {
                       setStrokeColor(layer.props.stroke)
                       setColor(layer.props.fill)
                     }
