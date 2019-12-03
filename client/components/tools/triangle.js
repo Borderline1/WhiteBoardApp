@@ -48,7 +48,7 @@ export const triangle = {
     handleDelete,
     id,
     index,
-    setSelectedLayerId,
+    setSelectedLayerIds,
     setChanging,
     setRotating
   }) => {
@@ -62,9 +62,9 @@ export const triangle = {
           <polygon
             stroke={stroke}
             strokeWidth={strokeWidth}
-            points={`${base / 2 + strokeWidth / 4} ${strokeWidth /
-              2}, ${strokeWidth / 2} ${height + strokeWidth / 2}, ${base +
-              strokeWidth / 2} ${height + strokeWidth / 2}`}
+            points={`${(base + strokeWidth) / 2} ${strokeWidth /
+              2}, ${strokeWidth} ${height + strokeWidth / 2}, ${base} ${height +
+              strokeWidth / 2}`}
             fill={fill}
           />
         </svg>
@@ -83,7 +83,7 @@ export const triangle = {
           className="changeElement"
           style={{display: deleteButtonDisplay}}
           onMouseDown={() => {
-            setSelectedLayerId(id)
+            setSelectedLayerIds([id])
             setChanging(true)
           }}
           onMouseUp={() => {
@@ -111,9 +111,11 @@ export const triangle = {
     prevY,
     socket,
     selectedLayer,
-    layerInitialPositionX,
-    layerInitialPositionY
+    layerInitialPositionsXs,
+    layerInitialPositionsYs
   ) => {
+    const layerInitialPositionX = layerInitialPositionsXs[0]
+    const layerInitialPositionY = layerInitialPositionsYs[0]
     const oldBase = prevX - layerInitialPositionX
     const oldHeight = prevY - layerInitialPositionY
     const movementX = clientX - prevX

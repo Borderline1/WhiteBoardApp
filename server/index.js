@@ -110,21 +110,20 @@ const startListening = () => {
   const server = app.listen(PORT, () =>
     console.log(`listening on port http://localhost:${PORT}`))
 
+  // call DB to sync rooms to server
+
+  // upload all elements to elements object before its passed to socketWorks
+
   // set up our socket control center
   socketWorks(server, elements, sessions, roomRefs)
 }
 
 async function bootApp() {
-  // await createApp()
   await startListening()
 }
-// This evaluates as true when this file is run directly from the command line,
-// i.e. when we say 'node server/index.js' (or 'nodemon server/index.js', or 'nodemon server', etc)
-// It will evaluate false when this module is required by another module - for example,
-// if we wanted to require our app in a test spec
+
 if (require.main === module) {
   bootApp()
 } else {
   console.log('error')
-  // createApp()
 }

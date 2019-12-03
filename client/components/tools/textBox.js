@@ -47,7 +47,7 @@ export const textBox = {
       selectedLayer,
       socket,
       id,
-      setSelectedLayerId,
+      setSelectedLayerIds,
       setChanging
     } = props
     let deleteButtonDisplay = 'none'
@@ -87,7 +87,7 @@ export const textBox = {
           className="changeElement"
           style={{display: deleteButtonDisplay}}
           onMouseDown={() => {
-            setSelectedLayerId(id)
+            setSelectedLayerIds([id])
             setChanging(true)
           }}
           onMouseUp={() => {
@@ -104,9 +104,11 @@ export const textBox = {
     prevY,
     socket,
     selectedLayer,
-    layerInitialPositionX,
-    layerInitialPositionY
+    layerInitialPositionXs,
+    layerInitialPositionYs
   ) => {
+    const layerInitialPositionX = layerInitialPositionXs[0]
+    const layerInitialPositionY = layerInitialPositionYs[0]
     const oldWidth = prevX - layerInitialPositionX
     const oldHeight = prevY - layerInitialPositionY
     const movementX = clientX - prevX

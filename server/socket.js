@@ -7,9 +7,16 @@ function socketWorks(server, elements, sessions, roomRefs) {
   const io = socketio(server)
   let socketCount = 0
   io.on('connection', socket => {
+    console.log(`socket ${socket.id} connected`)
     socket.on('joinRoom', function(roomName) {
+      console.log(`socket ${socket.id} connected to room ${roomName}`)
       socket.join(roomName)
       if (!elements[roomName]) {
+        // lookup in database if roomName exists
+
+        // if it does, upload all elements into elements[roomName]
+
+        // else
         elements[roomName] = []
       }
       roomRefs[socket.id] = roomName

@@ -32,8 +32,8 @@ const App = () => {
   const [creating, setCreating] = useState(false)
   const [changing, setChanging] = useState(false)
   const [rotating, setRotating] = useState(false)
-  const [layerInitialPositionsXs, setLayerInitialPositionsXs] = useState(null)
-  const [layerInitialPositionsYs, setLayerInitialPositionsYs] = useState(null)
+  const [layerInitialPositionsXs, setLayerInitialPositionsXs] = useState([])
+  const [layerInitialPositionsYs, setLayerInitialPositionsYs] = useState([])
   const [lasso, setLasso] = useState(null)
   const [lassoing, setLassoing] = useState(false)
 
@@ -116,6 +116,17 @@ const App = () => {
           layerInitialPositionsXs,
           layerInitialPositionsYs
         )
+      } else if (rotating) {
+        if (selectedLayer) {
+          selectedLayer.type.handleRotate(
+            selectedLayer,
+            socket,
+            prevX,
+            prevY,
+            clientX,
+            clientY
+          )
+        }
       } else if (dragging) {
         tool.handleDragging(
           selectedLayers,
@@ -126,15 +137,6 @@ const App = () => {
           clientX,
           clientY,
           socket
-        )
-      } else if (tool.name === 'picker' && rotating) {
-        selectedLayer.type.handleRotate(
-          selectedLayer,
-          socket,
-          prevX,
-          prevY,
-          clientX,
-          clientY
         )
       } else if (lassoing) {
         tool.handleLasso(
@@ -184,6 +186,7 @@ const App = () => {
   }
 
   const handleDisplayMouseUp = event => {
+    setRotating(false)
     setChanging(false)
     if (dragging) {
       setDragging(false)
@@ -273,13 +276,15 @@ const App = () => {
                   }}
                   onMouseLeave={() => setIndicatedLayerIds([])}
                   onMouseDown={() => {
-                    setDragging(true)
                     if (selectedLayerIds.length <= 1) {
                       setSelectedLayerIds([layer.id])
+                      setDragging(true)
                       setLayerInitialPositionsXs([layer.x])
                       setLayerInitialPositionsYs([layer.y])
-                      setStrokeColor(layer.props.stroke)
-                      setColor(layer.props.fill)
+                      if (tool.name === 'picker') {
+                        setStrokeColor(layer.props.stroke)
+                        setColor(layer.props.fill)
+                      }
                     }
                   }}
                   onMouseUp={() => {

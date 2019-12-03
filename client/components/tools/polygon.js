@@ -1,6 +1,7 @@
 /* eslint-disable react/display-name */
 import React from 'react'
 import {Input} from 'semantic-ui-react'
+import {set} from 'mongoose'
 //svg then circle then shape.
 //the circle's radius will be based off of the width and height
 //and the shape will be based off of the radius and width and height. thats all we need.
@@ -22,18 +23,18 @@ export const polygon = {
 
     for (let i = 0; i < sides; i++) {
       coordinateStr += Math.round(
-        r + r * Math.sin(i * ((2 * Math.PI) / sides))
+        props.strokeWidth + r + r * Math.sin(i * ((2 * Math.PI) / sides))
       ).toString()
       coordinateStr += ' '
 
       coordinateStr += Math.round(
-        r + r * Math.cos(i * ((2 * Math.PI) / sides))
+        props.strokeWidth + r + r * Math.cos(i * ((2 * Math.PI) / sides))
       ).toString()
       if (i < sides - 1) coordinateStr += ', '
     }
     return coordinateStr
   },
-  DimensionsComponent: (selectedLayer, handleChange) => {
+  DimensionsComponent: (selectedLayer, handleChange, handleRotate) => {
     return (
       <div>
         <label>Sides</label>
@@ -51,7 +52,12 @@ export const polygon = {
           onChange={handleChange}
         />
         <label>Rotate</label>
-        <Input name="rotate" type="number" value={selectedLayer.props.rotate} />
+        <Input
+          name="rotate"
+          type="number"
+          value={selectedLayer.props.rotate}
+          onChange={handleRotate}
+        />
         <label>Stroke Width</label>
         <Input
           name="strokeWidth"
@@ -73,7 +79,7 @@ export const polygon = {
       y,
       id,
       index,
-      setSelectedLayerId,
+      setSelectedLayerIds,
       setChanging,
       setRotating
     } = props
@@ -82,13 +88,10 @@ export const polygon = {
     if (selectedLayer && selectedLayer.id === id) {
       deleteButtonDisplay = 'inline'
     }
+    const containerSize = props.radius * 2 + strokeWidth * 2
     return (
       <div>
-        <svg
-          width={props.radius * 2}
-          height={props.radius * 2}
-          className="polygon"
-        >
+        <svg width={containerSize} height={containerSize} className="polygon">
           <polygon
             points={points}
             fill={fill}
@@ -111,7 +114,7 @@ export const polygon = {
           className="changeElement"
           style={{display: deleteButtonDisplay}}
           onMouseDown={() => {
-            setSelectedLayerId(id)
+            setSelectedLayerIds([id])
             setChanging(true)
           }}
           onMouseUp={() => {
@@ -122,10 +125,12 @@ export const polygon = {
           className="rotateElement"
           style={{display: deleteButtonDisplay}}
           onMouseDown={() => {
-            setSelectedLayerId(id)
+            setSelectedLayerIds([id])
+            setChanging(false)
             setRotating(true)
           }}
           onMouseUp={() => {
+            setSelectedLayerIds([])
             setRotating(false)
           }}
         />
@@ -141,9 +146,11 @@ export const polygon = {
     prevY,
     socket,
     selectedLayer,
-    layerInitialPositionX,
-    layerInitialPositionY
+    layerInitialPositionXs,
+    layerInitialPositionYs
   ) => {
+    const layerInitialPositionX = layerInitialPositionXs[0]
+    const layerInitialPositionY = layerInitialPositionYs[0]
     const oldRadius = (prevX - layerInitialPositionX) / 2
     const oldWidth = prevX - layerInitialPositionX
     const oldHeight = prevY - layerInitialPositionY
@@ -163,6 +170,7 @@ export const polygon = {
   },
   handleRotate: (selectedLayer, socket, prevX, prevY, clientX, clientY) => {
     const movementX = clientX - prevX
+    console.log('handle rotate')
     socket.emit('change', {
       ...selectedLayer,
       props: {
