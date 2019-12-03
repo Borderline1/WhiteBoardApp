@@ -29,8 +29,8 @@ const App = () => {
   const [dragging, setDragging] = useState(false)
   const [creating, setCreating] = useState(false)
   const [changing, setChanging] = useState(false)
-  const [layerInitialPositionX, setLayerInitialPositionX] = useState(null)
-  const [layerInitialPositionY, setLayerInitialPositionY] = useState(null)
+  const [layerInitialPositionsXs, setLayerInitialPositionsXs] = useState(null)
+  const [layerInitialPositionsYs, setLayerInitialPositionsYs] = useState(null)
   const [lasso, setLasso] = useState(null)
   const [lassoing, setLassoing] = useState(false)
 
@@ -110,8 +110,8 @@ const App = () => {
       } else if (dragging) {
         tool.handleDragging(
           selectedLayers,
-          layerInitialPositionX,
-          layerInitialPositionY,
+          layerInitialPositionsXs,
+          layerInitialPositionsYs,
           prevX,
           prevY,
           clientX,
@@ -158,10 +158,10 @@ const App = () => {
     } else if (event.target.id !== 'canvas') {
       setDragging(true)
     } else if (event.target.id === 'canvas') {
-        setSelectedLayerIds([])
-        setLassoing(true)
-        setLasso({x: mouseX, y: mouseY, width: 1, height: 1})
-      }
+      setSelectedLayerIds([])
+      setLassoing(true)
+      setLasso({x: mouseX, y: mouseY, width: 1, height: 1})
+    }
   }
 
   const handleDisplayMouseUp = event => {
@@ -189,6 +189,16 @@ const App = () => {
         return acc
       }, [])
       setSelectedLayerIds(layersToSelectIds)
+      const xPositions = []
+      const yPositions = []
+      const layersToUpdate = clientLayers.filter(layer =>
+        layersToSelectIds.includes(layer.id))
+      for (let layer of layersToUpdate) {
+        xPositions.push(layer.x)
+        yPositions.push(layer.y)
+      }
+      setLayerInitialPositionsXs(xPositions)
+      setLayerInitialPositionsYs(yPositions)
       setLasso(null)
       setLassoing(false)
     }
@@ -218,7 +228,7 @@ const App = () => {
             tool={tool}
             handleColorChange={handleColorChange}
             handleSelectTool={handleSelectTool}
-            selectedLayer={selectedLayer} //taggg
+            selectedLayer={selectedLayer}
             socket={socket}
           />
           <div
@@ -241,10 +251,12 @@ const App = () => {
                       }}
                       onMouseLeave={() => setIndicatedLayerIds([])}
                       onMouseDown={() => {
-                        setSelectedLayerIds([layer.id])
                         setDragging(true)
-                        setLayerInitialPositionX(layer.x)
-                        setLayerInitialPositionY(layer.y)
+                        if (selectedLayerIds.length <= 1) {
+                          setSelectedLayerIds([layer.id])
+                          setLayerInitialPositionsXs([layer.x])
+                          setLayerInitialPositionsYs([layer.y])
+                        }
                       }}
                       onMouseUp={() => {
                         if (dragging) return

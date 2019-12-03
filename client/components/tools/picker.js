@@ -1,11 +1,9 @@
-import React from 'react'
-
 export const picker = {
   name: 'picker',
   handleDragging: (
     selectedLayers,
-    SLIPX,
-    SLIPY,
+    SLIPX, // Selected layer initial Position X
+    SLIPY, // Selected layer intial Position Y
     prevX,
     prevY,
     clientX,
@@ -14,15 +12,16 @@ export const picker = {
   ) => {
     const movementX = clientX - prevX
     const movementY = clientY - prevY
-
-    selectedLayers.forEach(selectedLayer => {
-      socket.emit('change', {
+    const movedLayers = []
+    selectedLayers.forEach((selectedLayer, idx) => {
+      movedLayers.push({
         ...selectedLayer,
-        x: SLIPX + movementX,
-        y: SLIPY + movementY,
+        x: SLIPX[idx] + movementX,
+        y: SLIPY[idx] + movementY,
         props: selectedLayer.props
       })
     })
+    socket.emit('massChange', movedLayers)
   },
   handleLasso: (
     clientX,
