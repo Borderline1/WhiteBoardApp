@@ -1,3 +1,4 @@
+/* eslint-disable complexity */
 /* eslint-disable max-params */
 /* eslint-disable react/display-name */
 import React from 'react'
@@ -47,6 +48,15 @@ export const rectangle = {
     stroke,
     strokeWidth,
     handleDelete,
+    deleteTop,
+    deleteBottom,
+    deleteRight,
+    deleteLeft,
+    changeTop,
+    changeBottom,
+    changeRight,
+    changeLeft,
+    changeRadius,
     id,
     index,
     setSelectedLayerId,
@@ -73,8 +83,14 @@ export const rectangle = {
         <button
           name="X"
           type="button"
-          className="deleteElement"
-          style={{display: deleteButtonDisplay}}
+          className="deleteLineRect"
+          style={{
+            display: deleteButtonDisplay,
+            top: deleteTop,
+            bottom: deleteBottom,
+            right: deleteRight,
+            left: deleteLeft
+          }}
           onClick={() => {
             handleDelete(index)
           }}
@@ -82,8 +98,15 @@ export const rectangle = {
           <p style={{position: 'absolute', left: '4px', top: '-4px'}}>x</p>
         </button>
         <div
-          className="changeElement"
-          style={{display: deleteButtonDisplay}}
+          className="changeLineRect"
+          style={{
+            display: deleteButtonDisplay,
+            top: changeTop,
+            bottom: changeBottom,
+            right: changeRight,
+            left: changeLeft,
+            borderRadius: changeRadius
+          }}
           onMouseDown={() => {
             setSelectedLayerId(id)
             setChanging(true)
@@ -116,18 +139,95 @@ export const rectangle = {
     layerInitialPositionX,
     layerInitialPositionY
   ) => {
-    const oldWidth = prevX - layerInitialPositionX
-    const oldHeight = prevY - layerInitialPositionY
-    const movementX = clientX - prevX
-    const movementY = clientY - prevY
-    socket.emit('change', {
-      ...selectedLayer,
-      props: {
-        ...selectedLayer.props,
-        width: oldWidth + movementX,
-        height: oldHeight + movementY
-      }
-    })
+    const xPos = Math.min(layerInitialPositionX, clientX)
+    const yPos = Math.min(layerInitialPositionY, clientY)
+    const width = Math.abs(layerInitialPositionX - clientX)
+    const height = Math.abs(layerInitialPositionY - clientY)
+
+    if (clientX > layerInitialPositionX && clientY > layerInitialPositionY) {
+      socket.emit('change', {
+        ...selectedLayer,
+        x: xPos,
+        y: yPos,
+        props: {
+          ...selectedLayer.props,
+          width: width,
+          height: height,
+          deleteTop: '-6px',
+          deleteBottom: '',
+          deleteRight: '-8px',
+          deleteLeft: '',
+          changeTop: '',
+          changeBottom: '-6px',
+          changeRight: '-8px',
+          changeLeft: '',
+          changeRadius: '100% 100% 0 100%'
+        }
+      })
+    }
+    if (clientX < layerInitialPositionX && clientY < layerInitialPositionY) {
+      socket.emit('change', {
+        ...selectedLayer,
+        x: xPos,
+        y: yPos,
+        props: {
+          ...selectedLayer.props,
+          width: width,
+          height: height,
+          deleteTop: '-6px',
+          deleteBottom: '',
+          deleteRight: '-8px',
+          deleteLeft: '',
+          changeTop: '-6px',
+          changeBottom: '',
+          changeRight: '',
+          changeLeft: '-8px',
+          changeRadius: '0 100% 100% 100%'
+        }
+      })
+    }
+    if (clientX > layerInitialPositionX && clientY < layerInitialPositionY) {
+      socket.emit('change', {
+        ...selectedLayer,
+        x: xPos,
+        y: yPos,
+        props: {
+          ...selectedLayer.props,
+          width: width,
+          height: height,
+          deleteTop: '',
+          deleteBottom: '-6px',
+          deleteRight: '-8px',
+          deleteLeft: '',
+          changeTop: '-6px',
+          changeBottom: '',
+          changeRight: '-8px',
+          changeLeft: '',
+          changeRadius: '100% 0 100% 100%'
+        }
+      })
+    }
+    if (clientX < layerInitialPositionX && clientY > layerInitialPositionY) {
+      socket.emit('change', {
+        ...selectedLayer,
+        x: xPos,
+        y: yPos,
+        props: {
+          ...selectedLayer.props,
+          width: width,
+          height: height,
+          deleteTop: '-6px',
+          deleteBottom: '',
+          deleteRight: '-8px',
+          deleteLeft: '',
+          changeTop: '',
+          changeBottom: '-6px',
+          changeRight: '',
+          changeLeft: '-8px',
+          changeRadius: '100% 100% 100% 0%'
+        }
+      })
+    }
   },
   handleRotate: (selectedLayer, socket, prevX, prevY, clientX, clientY) => {
     const movementX = clientX - prevX
@@ -139,7 +239,7 @@ export const rectangle = {
       }
     })
   },
-  handleCreate: (x, y, fill = 'black', uuid, socket) => {
+  handleCreate: (x, y, fill = 'black', uuid, socket, strokeColor) => {
     const data = {
       type: 'rectangle',
       x,
@@ -151,7 +251,16 @@ export const rectangle = {
         rotate: 0,
         fill,
         stroke: 'black',
-        strokeWidth: 5
+        strokeWidth: 5,
+        deleteTop: '-6px',
+        deleteBottom: '',
+        deleteRight: '-8px',
+        deleteLeft: '',
+        changeTop: '',
+        changeBottom: '-6px',
+        changeRight: '-8px',
+        changeLeft: '',
+        changeRadius: '100% 100% 0 100%'
       }
     }
     socket.emit('create', data)
@@ -169,12 +278,90 @@ export const rectangle = {
     const width = Math.abs(prevX - clientX)
     const height = Math.abs(prevY - clientY)
     if (selectedLayer) {
-      socket.emit('change', {
-        ...selectedLayer,
-        x: xPos,
-        y: yPos,
-        props: {...selectedLayer.props, width, height}
-      })
+      if (clientX > prevX && clientY > prevY) {
+        socket.emit('change', {
+          ...selectedLayer,
+          x: xPos,
+          y: yPos,
+          props: {
+            ...selectedLayer.props,
+            width,
+            height,
+            deleteTop: '-6px',
+            deleteBottom: '',
+            deleteRight: '-8px',
+            deleteLeft: '',
+            changeTop: '',
+            changeBottom: '-6px',
+            changeRight: '-8px',
+            changeLeft: '',
+            changeRadius: '100% 100% 0 100%'
+          }
+        })
+      }
+      if (clientX < prevX && clientY < prevY) {
+        socket.emit('change', {
+          ...selectedLayer,
+          x: xPos,
+          y: yPos,
+          props: {
+            ...selectedLayer.props,
+            width,
+            height,
+            deleteTop: '-6px',
+            deleteBottom: '',
+            deleteRight: '-8px',
+            deleteLeft: '',
+            changeTop: '-6px',
+            changeBottom: '',
+            changeRight: '',
+            changeLeft: '-8px',
+            changeRadius: '0 100% 100% 100%'
+          }
+        })
+      }
+      if (clientX > prevX && clientY < prevY) {
+        socket.emit('change', {
+          ...selectedLayer,
+          x: xPos,
+          y: yPos,
+          props: {
+            ...selectedLayer.props,
+            width,
+            height,
+            deleteTop: '',
+            deleteBottom: '-6px',
+            deleteRight: '-8px',
+            deleteLeft: '',
+            changeTop: '-6px',
+            changeBottom: '',
+            changeRight: '-8px',
+            changeLeft: '',
+            changeRadius: '100% 0 100% 100%'
+          }
+        })
+      }
+      if (clientX < prevX && clientY > prevY) {
+        socket.emit('change', {
+          ...selectedLayer,
+          x: xPos,
+          y: yPos,
+          props: {
+            ...selectedLayer.props,
+            width,
+            height,
+            deleteTop: '-6px',
+            deleteBottom: '',
+            deleteRight: '-8px',
+            deleteLeft: '',
+            changeTop: '',
+            changeBottom: '-6px',
+            changeRight: '',
+            changeLeft: '-8px',
+            changeRadius: '100% 100% 100% 0%'
+          }
+        })
+      }
     }
   }
 }

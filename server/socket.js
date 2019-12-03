@@ -94,6 +94,21 @@ function socketWorks(server, elements, sessions, roomRefs) {
       //   }
       // )
     })
+    socket.on('massChange', data => {
+      let roomId = roomRefs[socket.id]
+      for (const layer of data) {
+        const element = elements[roomId].find(
+          element => element.id === layer.id
+        )
+        Object.keys(element).forEach(key => {
+          if (key !== 'type') {
+            element[key] = layer[key]
+          }
+        })
+      }
+      socket.emit('change', elements[roomId])
+      socket.to(roomId).emit('change', elements[roomId])
+    })
     socket.on('delete', (data, index) => {
       let roomId = roomRefs[socket.id]
       elements[roomId].splice(index, 1)
