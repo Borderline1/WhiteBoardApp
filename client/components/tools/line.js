@@ -50,9 +50,11 @@ export const line = {
     if (selectedLayer && selectedLayer.id === id) {
       deleteButtonDisplay = 'inline'
     }
+    const containerWidth = width + strokeWidth * 2
+    const containerHeight = height + strokeWidth
     return (
       <div>
-        <svg width={width} height={height}>
+        <svg width={containerWidth} height={containerHeight}>
           <line
             x1={x1}
             x2={x2}
@@ -65,7 +67,7 @@ export const line = {
         <button
           name="X"
           type="button"
-          className="deleteLine"
+          className="deleteLineRect"
           style={{
             display: deleteButtonDisplay,
             top: deleteTop,
@@ -80,7 +82,7 @@ export const line = {
           <p style={{position: 'absolute', left: '4px', top: '-4px'}}>x</p>
         </button>
         <div
-          className="changeLine"
+          className="changeLineRect"
           style={{
             display: deleteButtonDisplay,
             top: changeTop,
@@ -124,10 +126,10 @@ export const line = {
           ...selectedLayer.props,
           width,
           height,
-          x1: 0,
-          y1: 0,
-          x2: width,
-          y2: height,
+          x1: 2,
+          y1: 2,
+          x2: width - 1,
+          y2: height - 1,
           deleteTop: '-6px',
           deleteBottom: '',
           deleteRight: '-8px',
@@ -149,10 +151,10 @@ export const line = {
           ...selectedLayer.props,
           width,
           height,
-          x1: width,
-          y1: height,
-          x2: 0,
-          y2: 0,
+          x1: width - 1,
+          y1: height - 1,
+          x2: 2,
+          y2: 2,
           deleteTop: '-6px',
           deleteBottom: '',
           deleteRight: '-8px',
@@ -174,10 +176,10 @@ export const line = {
           ...selectedLayer.props,
           width,
           height,
-          x1: width,
-          y1: 0,
-          x2: 0,
-          y2: height,
+          x1: width - 1,
+          y1: 2,
+          x2: 2,
+          y2: height - 1,
           deleteTop: '',
           deleteBottom: '-6px',
           deleteRight: '-8px',
@@ -199,10 +201,10 @@ export const line = {
           ...selectedLayer.props,
           width,
           height,
-          x1: 0,
-          y1: height,
-          x2: width,
-          y2: 0,
+          x1: 2,
+          y1: height - 1,
+          x2: width - 1,
+          y2: 2,
           deleteTop: '-6px',
           deleteBottom: '',
           deleteRight: '-8px',
@@ -223,14 +225,14 @@ export const line = {
       y,
       id: uuid,
       props: {
-        x1: 0,
-        y1: 0,
+        x1: 2,
+        y1: 2,
         x2: 3,
         y2: 3,
         stroke: strokeColor,
         strokeWidth: 3,
-        height: 3,
-        width: 3,
+        height: 4,
+        width: 4,
         deleteTop: '-6px',
         deleteBottom: '',
         deleteRight: '-8px',
@@ -267,10 +269,10 @@ export const line = {
             ...selectedLayer.props,
             width,
             height,
-            x1: 0,
-            y1: 0,
-            x2: width,
-            y2: height,
+            x1: 2,
+            y1: 2,
+            x2: width - 1,
+            y2: height - 1,
             deleteTop: '-6px',
             deleteBottom: '',
             deleteRight: '-8px',
@@ -292,10 +294,10 @@ export const line = {
             ...selectedLayer.props,
             width,
             height,
-            x1: width,
-            y1: height,
-            x2: 0,
-            y2: 0,
+            x1: width - 1,
+            y1: height - 1,
+            x2: 2,
+            y2: 2,
             deleteTop: '-6px',
             deleteBottom: '',
             deleteRight: '-8px',
@@ -317,10 +319,10 @@ export const line = {
             ...selectedLayer.props,
             width,
             height,
-            x1: width,
-            y1: 0,
-            x2: 0,
-            y2: height,
+            x1: width - 1,
+            y1: 2,
+            x2: 2,
+            y2: height - 1,
             deleteTop: '',
             deleteBottom: '-6px',
             deleteRight: '-8px',
@@ -342,10 +344,10 @@ export const line = {
             ...selectedLayer.props,
             width,
             height,
-            x1: 0,
-            y1: height,
-            x2: width,
-            y2: 0,
+            x1: 2,
+            y1: height - 1,
+            x2: width - 1,
+            y2: 2,
             deleteTop: '-6px',
             deleteBottom: '',
             deleteRight: '-8px',
