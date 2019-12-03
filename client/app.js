@@ -29,6 +29,7 @@ const App = () => {
   const [dragging, setDragging] = useState(false)
   const [creating, setCreating] = useState(false)
   const [changing, setChanging] = useState(false)
+  const [rotating, setRotating] = useState(false)
   const [layerInitialPositionX, setLayerInitialPositionX] = useState(null)
   const [layerInitialPositionY, setLayerInitialPositionY] = useState(null)
 
@@ -90,7 +91,6 @@ const App = () => {
       })
     }
     if (tool.name === 'picker' && changing) {
-      console.log(selectedLayer)
       selectedLayer.type.handleChange(
         clientX,
         clientY,
@@ -100,6 +100,15 @@ const App = () => {
         selectedLayer,
         layerInitialPositionX,
         layerInitialPositionY
+      )
+    } else if (tool.name === 'picker' && rotating) {
+      selectedLayer.type.handleRotate(
+        selectedLayer,
+        socket,
+        prevX,
+        prevY,
+        clientX,
+        clientY
       )
     } else if (tool.name === 'picker' && dragging) {
       tool.handleDragging(
@@ -184,6 +193,9 @@ const App = () => {
               if (dragging) {
                 setDragging(false)
               }
+              if (rotating) {
+                setRotating(false)
+              }
               if (creating) {
                 //make DRY vv; note to self - Henry
                 if (tool.name === 'textBox') {
@@ -241,6 +253,7 @@ const App = () => {
                         index={index}
                         handleDelete={handleDelete}
                         setChanging={setChanging}
+                        setRotating={setRotating}
                         id={layer.id}
                         setSelectedLayerId={setSelectedLayerId}
                         selectedLayerId={selectedLayerId}

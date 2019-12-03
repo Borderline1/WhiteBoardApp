@@ -68,7 +68,8 @@ export const polygon = {
       id,
       index,
       setSelectedLayerId,
-      setChanging
+      setChanging,
+      setRotating
     } = props
     const points = polygon.generatePoints(props, x, y)
     let deleteButtonDisplay = 'none'
@@ -106,9 +107,22 @@ export const polygon = {
             setChanging(false)
           }}
         />
+        <div
+          className="rotateElement"
+          style={{display: deleteButtonDisplay}}
+          onMouseDown={() => {
+            setSelectedLayerId(id)
+            setRotating(true)
+          }}
+          onMouseUp={() => {
+            setRotating(false)
+          }}
+        />
       </div>
     )
   },
+  //when polygon is rotated upsidedown,
+  //attempting to change size will bheave oddly, shrinking in size.
   handleChange: (
     clientX,
     clientY,
@@ -130,9 +144,19 @@ export const polygon = {
       props: {
         ...selectedLayer.props,
         radius: oldRadius + newRadius,
-        width: oldWidth + movementX,
-        height: oldHeight + movementY,
-        rotate: +movementX
+        width: Math.abs(oldWidth + movementX),
+        height: Math.abs(oldHeight + movementY)
+        // rotate: +movementX
+      }
+    })
+  },
+  handleRotate: (selectedLayer, socket, prevX, prevY, clientX, clientY) => {
+    const movementX = clientX - prevX
+    socket.emit('change', {
+      ...selectedLayer,
+      props: {
+        ...selectedLayer.props,
+        rotate: +Math.floor(movementX * 0.5)
       }
     })
   },
@@ -153,23 +177,6 @@ export const polygon = {
     }
     socket.emit('create', data)
   },
-  // handleRotate: (
-  //   selectedLayer,
-  //   socket,
-  //   prevX,
-  //   prevY,
-  //   clientX,
-  //   clientY,
-  // ) => {
-  //   const movementX = clientX - prevX
-  //   socket.emit('change', {
-  //     ...selectedLayer,
-  //     props: {
-  //       ...selectedLayer.props,
-  //       rotate: movementX
-  //     }
-  //   })
-  // },
   handleCreatingUpdate: (
     selectedLayer,
     prevX,

@@ -28,6 +28,13 @@ export const triangle = {
           value={selectedLayer.props.strokeWidth}
           onChange={handleChange}
         />
+        <label>Rotate</label>
+        <input
+          name="rotate"
+          type="number"
+          value={selectedLayer.props.rotate}
+          onChange={handleChange}
+        />
       </div>
     )
   },
@@ -42,7 +49,8 @@ export const triangle = {
     id,
     index,
     setSelectedLayerId,
-    setChanging
+    setChanging,
+    setRotating
   }) => {
     let deleteButtonDisplay = 'none'
     if (selectedLayer && selectedLayer.id === id) {
@@ -82,6 +90,17 @@ export const triangle = {
             setChanging(false)
           }}
         />
+        <div
+          className="rotateElement"
+          style={{display: deleteButtonDisplay}}
+          onMouseDown={() => {
+            setSelectedLayerId(id)
+            setRotating(true)
+          }}
+          onMouseUp={() => {
+            setRotating(false)
+          }}
+        />
       </div>
     )
   },
@@ -105,6 +124,16 @@ export const triangle = {
         ...selectedLayer.props,
         base: oldBase + movementX,
         height: oldHeight + movementY
+      }
+    })
+  },
+  handleRotate: (selectedLayer, socket, prevX, prevY, clientX, clientY) => {
+    const movementX = clientX - prevX
+    socket.emit('change', {
+      ...selectedLayer,
+      props: {
+        ...selectedLayer.props,
+        rotate: +Math.floor(movementX * 0.5)
       }
     })
   },
