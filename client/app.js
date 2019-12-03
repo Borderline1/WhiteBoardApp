@@ -242,58 +242,56 @@ const App = () => {
             onMouseDown={handleDisplayMouseDown}
             onMouseUp={handleDisplayMouseUp}
           >
-            {layers
-              ? clientLayers.map((layer, index) => {
-                  return (
-                    <div
-                      key={layer.id}
-                      onMouseEnter={() => {
-                        if (tool.name === 'picker') {
-                          setIndicatedLayerIds([layer.id])
-                        }
-                      }}
-                      onMouseLeave={() => setIndicatedLayerIds([])}
-                      onMouseDown={() => {
-                        setSelectedLayerIds([layer.id])
-                        setDragging(true)
-                        setLayerInitialPositionX(layer.x)
-                        setLayerInitialPositionY(layer.y)
-                        setStrokeColor(layer.props.stroke)
-                        setColor(layer.props.fill)
-                      }}
-                      onMouseUp={() => {
-                        if (dragging) return
-                        else setSelectedLayerIds([layer.id])
-                      }}
-                      className={className('layer', {
-                        indicated: indicatedLayerIds.includes(layer.id),
-                        selected: selectedLayerIds.includes(layer.id)
-                      })}
-                      style={{
-                        position: 'absolute',
-                        top: layer.y,
-                        left: layer.x
-                      }}
-                    >
-                      {/* this layers canvas component */}
-                      <layer.type.ElementComponent
-                        {...layer.props}
-                        handleTextChange={layer.type.handleTextChange}
-                        selectedLayer={selectedLayer}
-                        socket={socket}
-                        index={index}
-                        handleDelete={handleDelete}
-                        setChanging={setChanging}
-                        id={layer.id}
-                        setSelectedLayerIds={setSelectedLayerIds} //tagg
-                        selectedLayerIds={selectedLayerIds}
-                        x={layer.x}
-                        y={layer.y}
-                      />
-                    </div>
-                  )
-                })
-              : null}
+            {clientLayers.map((layer, index) => {
+              return (
+                <div
+                  key={layer.id}
+                  onMouseEnter={() => {
+                    if (tool.name === 'picker') {
+                      setIndicatedLayerIds([layer.id])
+                    }
+                  }}
+                  onMouseLeave={() => setIndicatedLayerIds([])}
+                  onMouseDown={() => {
+                    setSelectedLayerIds([layer.id])
+                    setDragging(true)
+                    setLayerInitialPositionX(layer.x)
+                    setLayerInitialPositionY(layer.y)
+                    setStrokeColor(layer.props.stroke)
+                    setColor(layer.props.fill)
+                  }}
+                  onMouseUp={() => {
+                    if (dragging) return
+                    else setSelectedLayerIds([layer.id])
+                  }}
+                  className={className('layer', {
+                    indicated: indicatedLayerIds.includes(layer.id),
+                    selected: selectedLayerIds.includes(layer.id)
+                  })}
+                  style={{
+                    position: 'absolute',
+                    top: layer.y,
+                    left: layer.x
+                  }}
+                >
+                  {/* this layers canvas component */}
+                  <layer.type.ElementComponent
+                    {...layer.props}
+                    handleTextChange={layer.type.handleTextChange}
+                    selectedLayer={selectedLayer}
+                    socket={socket}
+                    index={index}
+                    handleDelete={handleDelete}
+                    setChanging={setChanging}
+                    id={layer.id}
+                    setSelectedLayerIds={setSelectedLayerIds} //tagg
+                    selectedLayerIds={selectedLayerIds}
+                    x={layer.x}
+                    y={layer.y}
+                  />
+                </div>
+              )
+            })}
             {cursors.map(cursor => (
               <div
                 key={cursor.sessionKey}
