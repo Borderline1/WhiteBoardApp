@@ -35,7 +35,7 @@ export const circle = {
     handleDelete,
     index,
     setChanging,
-    setSelectedLayerId
+    setSelectedLayerIds
   }) => {
     let deleteButtonDisplay = 'none'
     if (selectedLayer && selectedLayer.id === id) {
@@ -70,7 +70,7 @@ export const circle = {
           className="changeElement"
           style={{display: deleteButtonDisplay}}
           onMouseDown={() => {
-            setSelectedLayerId(id)
+            setSelectedLayerIds([id])
             setChanging(true)
           }}
           onMouseUp={() => {
@@ -111,7 +111,7 @@ export const circle = {
         radius: 9,
         fill,
         stroke: strokeColor,
-        strokeWidth: 5
+        strokeWidth: 6
       }
     }
     socket.emit('create', data)

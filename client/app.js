@@ -26,23 +26,29 @@ const App = () => {
   const [name, setName] = useState('')
   const [loaded, setLoaded] = useState(false)
   const [layers, setLayers] = useState([])
-  const [indicatedLayerId, setIndicatedLayerId] = useState(null)
-  const [selectedLayerId, setSelectedLayerId] = useState(null)
+  const [indicatedLayerIds, setIndicatedLayerIds] = useState([])
+  const [selectedLayerIds, setSelectedLayerIds] = useState([])
   const [dragging, setDragging] = useState(false)
   const [creating, setCreating] = useState(false)
   const [changing, setChanging] = useState(false)
   const [layerInitialPositionX, setLayerInitialPositionX] = useState(null)
   const [layerInitialPositionY, setLayerInitialPositionY] = useState(null)
+  const [lasso, setLasso] = useState(null)
+  const [lassoing, setLassoing] = useState(false)
 
   const clientLayers = layers.map(layer => {
     return {...layer, type: types[layer.type]}
   })
 
-  const selectedLayer = clientLayers.find(layer => layer.id === selectedLayerId)
+  const selectedLayers = clientLayers.filter(layer =>
+    selectedLayerIds.includes(layer.id))
+  const selectedLayer =
+    selectedLayers && selectedLayers.length === 1 ? selectedLayers[0] : null
 
-  const indicatedLayer = clientLayers.find(
-    layer => layer.id === indicatedLayerId
-  )
+  const indicatedLayers = clientLayers.filter(layer =>
+    indicatedLayerIds.includes(layer.id))
+  const indicatedLayer =
+    indicatedLayers && indicatedLayers.length === 1 ? indicatedLayers[0] : null
 
   useInterval(() => {
     if (loaded) {
@@ -97,29 +103,41 @@ const App = () => {
         sessionKey: window.localStorage.getItem('sessionKey')
       })
     }
-    if (tool.name === 'picker' && changing) {
-      selectedLayer.type.handleChange(
-        clientX,
-        clientY,
-        prevX,
-        prevY,
-        socket,
-        selectedLayer,
-        layerInitialPositionX,
-        layerInitialPositionY
-      )
-    } else if (tool.name === 'picker' && dragging) {
-      tool.handleDragging(
-        selectedLayer,
-        layerInitialPositionX,
-        layerInitialPositionY,
-        prevX,
-        prevY,
-        clientX,
-        clientY,
-        socket
-      )
-    } else if (creating && selectedLayerId) {
+    if (tool.name === 'picker') {
+      if (changing) {
+        selectedLayer.type.handleChange(
+          clientX,
+          clientY,
+          prevX,
+          prevY,
+          socket,
+          selectedLayer,
+          layerInitialPositionX,
+          layerInitialPositionY
+        )
+      } else if (dragging) {
+        tool.handleDragging(
+          selectedLayers,
+          layerInitialPositionX,
+          layerInitialPositionY,
+          prevX,
+          prevY,
+          clientX,
+          clientY,
+          socket
+        )
+      } else if (lassoing) {
+        tool.handleLasso(
+          clientX,
+          clientY,
+          prevX,
+          prevY,
+          setLasso,
+          setIndicatedLayerIds,
+          clientLayers
+        )
+      }
+    } else if (creating && selectedLayer) {
       tool.handleCreatingUpdate(
         selectedLayer,
         prevX + window.scrollX,
@@ -145,18 +163,49 @@ const App = () => {
         socket,
         strokeColor
       )
-      setSelectedLayerId(layerId)
+      setSelectedLayerIds([layerId])
     } else if (event.target.id !== 'canvas') {
       setDragging(true)
-    } else {
-      if (event.target.id === 'canvas') setSelectedLayerId(null)
-      // do things with picker for lasso
+    } else if (event.target.id === 'canvas') {
+      setSelectedLayerIds([])
+      setLassoing(true)
+      setLasso({x: mouseX, y: mouseY, width: 1, height: 1})
+    }
+  }
+
+  const handleDisplayMouseUp = event => {
+    setChanging(false)
+    if (dragging) {
+      setDragging(false)
+    }
+    if (creating) {
+      //make DRY vv; note to self - Henry
+      setSelectedLayerIds([])
+      setprevX(null)
+      setprevY(null)
+      if (tool.name === 'textBox') {
+        setTool(types.picker)
+        setCreating(false)
+      }
+    }
+    if (lassoing) {
+      const layersToSelectIds = clientLayers.reduce((acc, layer) => {
+        if (layer.x < lasso.x + lasso.width && layer.x > lasso.x) {
+          if (layer.y < lasso.y + lasso.height && layer.y > lasso.y) {
+            acc.push(layer.id)
+          }
+        }
+        return acc
+      }, [])
+      setSelectedLayerIds(layersToSelectIds)
+      setLasso(null)
+      setLassoing(false)
     }
   }
 
   const handleSelectTool = tool => {
     setTool(tool)
-    setSelectedLayerId(null)
+    setSelectedLayerIds([])
     if (tool.name === 'picker') {
       setCreating(false)
     } else {
@@ -182,7 +231,7 @@ const App = () => {
             toggleFilling={toggleFilling}
             filling={filling}
             handleSelectTool={handleSelectTool}
-            selectedLayer={selectedLayer}
+            selectedLayer={selectedLayer} //taggg
             socket={socket}
           />
           <div
@@ -191,26 +240,7 @@ const App = () => {
             style={{position: 'absolute', width: 1800, height: 1800}}
             onMouseMove={handleDisplayMouseMove}
             onMouseDown={handleDisplayMouseDown}
-            onMouseUp={event => {
-              setChanging(false)
-              if (dragging) {
-                setDragging(false)
-              }
-              if (creating) {
-                //make DRY vv; note to self - Henry
-                if (tool.name === 'textBox') {
-                  setTool(types.picker)
-                  setCreating(false)
-                  setSelectedLayerId(null)
-                  setprevX(null)
-                  setprevY(null)
-                } else {
-                  setSelectedLayerId(null)
-                  setprevX(null)
-                  setprevY(null)
-                }
-              }
-            }}
+            onMouseUp={handleDisplayMouseUp}
           >
             {layers
               ? clientLayers.map((layer, index) => {
@@ -219,12 +249,12 @@ const App = () => {
                       key={layer.id}
                       onMouseEnter={() => {
                         if (tool.name === 'picker') {
-                          setIndicatedLayerId(layer.id)
+                          setIndicatedLayerIds([layer.id])
                         }
                       }}
-                      onMouseLeave={() => setIndicatedLayerId(null)}
+                      onMouseLeave={() => setIndicatedLayerIds([])}
                       onMouseDown={() => {
-                        setSelectedLayerId(layer.id)
+                        setSelectedLayerIds([layer.id])
                         setDragging(true)
                         setLayerInitialPositionX(layer.x)
                         setLayerInitialPositionY(layer.y)
@@ -233,11 +263,11 @@ const App = () => {
                       }}
                       onMouseUp={() => {
                         if (dragging) return
-                        else setSelectedLayerId(layer.id)
+                        else setSelectedLayerIds([layer.id])
                       }}
                       className={className('layer', {
-                        indicated: layer.id === indicatedLayerId,
-                        selected: layer.id === selectedLayerId
+                        indicated: indicatedLayerIds.includes(layer.id),
+                        selected: selectedLayerIds.includes(layer.id)
                       })}
                       style={{
                         position: 'absolute',
@@ -255,8 +285,8 @@ const App = () => {
                         handleDelete={handleDelete}
                         setChanging={setChanging}
                         id={layer.id}
-                        setSelectedLayerId={setSelectedLayerId}
-                        selectedLayerId={selectedLayerId}
+                        setSelectedLayerIds={setSelectedLayerIds} //tagg
+                        selectedLayerIds={selectedLayerIds}
                         x={layer.x}
                         y={layer.y}
                       />
@@ -286,6 +316,20 @@ const App = () => {
                 {cursor.name}
               </div>
             ))}
+            {lasso ? (
+              <div
+                id="lasso"
+                style={{
+                  position: 'absolute',
+                  left: lasso.x,
+                  top: lasso.y,
+                  width: lasso.width,
+                  height: lasso.height,
+                  border: '1px black dashed',
+                  zIndex: 10
+                }}
+              />
+            ) : null}
           </div>
         </div>
       ) : (
