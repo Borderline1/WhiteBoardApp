@@ -218,7 +218,7 @@ export const line = {
       })
     }
   },
-  handleCreate: (x, y, fill = '#000000', uuid, socket) => {
+  handleCreate: (x, y, fill = '#000000', uuid, socket, strokeColor) => {
     const data = {
       type: 'line',
       x,
@@ -229,7 +229,7 @@ export const line = {
         y1: 2,
         x2: 3,
         y2: 3,
-        stroke: 'black',
+        stroke: strokeColor,
         strokeWidth: 3,
         height: 4,
         width: 4,

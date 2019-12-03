@@ -210,7 +210,7 @@ export const rectangle = {
       })
     }
   },
-  handleCreate: (x, y, fill = 'black', uuid, socket) => {
+  handleCreate: (x, y, fill = 'black', uuid, socket, strokeColor) => {
     const data = {
       type: 'rectangle',
       x,

@@ -1,15 +1,6 @@
 /* eslint-disable react/display-name */
 import React from 'react'
-import {Dropdown, Input, Select} from 'semantic-ui-react'
-
-const selectOptions = [
-  {key: 0, value: 'none', text: 'No Border'}
-  // { key: 1, value: "white", text: "white" },
-  // { key: 2, value: "red", text: "red" },
-  // { key: 3, value: "yellow", text: "yellow" },
-  // { key: 4, value: "green", text: "green" },
-  // { key: 5, value: "black", text: "black" }
-]
+import {Input} from 'semantic-ui-react'
 
 export const circle = {
   name: 'circle',
@@ -24,15 +15,6 @@ export const circle = {
           value={selectedLayer.props.radius}
           onChange={handleChange}
         />
-        {/* <label>Stroke</label>
-        <Select
-          name="stroke"
-          width='4'
-          options={selectOptions}
-          placeholder='Choose a Color'
-          value={selectedLayer.props.stroke}
-          onSelect={handleChange}
-        /> */}
         <label>Stroke Width</label>
         <Input
           name="strokeWidth"
@@ -53,7 +35,7 @@ export const circle = {
     handleDelete,
     index,
     setChanging,
-    setSelectedLayerId
+    setSelectedLayerIds
   }) => {
     let deleteButtonDisplay = 'none'
     if (selectedLayer && selectedLayer.id === id) {
@@ -88,7 +70,7 @@ export const circle = {
           className="changeElement"
           style={{display: deleteButtonDisplay}}
           onMouseDown={() => {
-            setSelectedLayerId(id)
+            setSelectedLayerIds([id])
             setChanging(true)
           }}
           onMouseUp={() => {
@@ -105,8 +87,9 @@ export const circle = {
     prevY,
     socket,
     selectedLayer,
-    layerInitialPositionX
+    layerInitialPositionsXs
   ) => {
+    const layerInitialPositionX = layerInitialPositionsXs[0]
     const oldRadius = (prevX - layerInitialPositionX) / 2
     const movementX = clientX - prevX
     const newRadius = movementX / 2
@@ -118,7 +101,7 @@ export const circle = {
       }
     })
   },
-  handleCreate: (x, y, fill, uuid, socket) => {
+  handleCreate: (x, y, fill, uuid, socket, strokeColor) => {
     const data = {
       type: 'circle',
       x: x - 10,
@@ -128,8 +111,8 @@ export const circle = {
       props: {
         radius: 9,
         fill,
-        stroke: '#000',
-        strokeWidth: 5
+        stroke: strokeColor,
+        strokeWidth: 6
       }
     }
     socket.emit('create', data)
