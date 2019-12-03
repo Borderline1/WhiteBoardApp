@@ -92,11 +92,11 @@ export const triangle = {
     prevY,
     socket,
     selectedLayer,
-    layerInitialPositionXs,
-    layerInitialPositionYs
+    layerInitialPositionsXs,
+    layerInitialPositionsYs
   ) => {
-    const layerInitialPositionX = layerInitialPositionXs[0]
-    const layerInitialPositionY = layerInitialPositionYs[0]
+    const layerInitialPositionX = layerInitialPositionsXs[0]
+    const layerInitialPositionY = layerInitialPositionsYs[0]
     const oldBase = prevX - layerInitialPositionX
     const oldHeight = prevY - layerInitialPositionY
     const movementX = clientX - prevX

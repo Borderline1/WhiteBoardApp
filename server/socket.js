@@ -7,17 +7,21 @@ function socketWorks(server, elements, sessions, roomRefs) {
   const io = socketio(server)
   let socketCount = 0
   io.on('connection', socket => {
+    console.log(`socket ${socket.id} connected`)
     socket.on('joinRoom', function(roomName) {
+      console.log(`socket ${socket.id} connected to room ${roomName}`)
       socket.join(roomName)
       if (!elements[roomName]) {
+        // lookup in database if roomName exists
+
+        // if it does, upload all elements into elements[roomName]
+
+        // else
         elements[roomName] = []
       }
       roomRefs[socket.id] = roomName
       socket.emit('create', elements[roomName])
     })
-    // socket.emit('create', elements) //not working? should render previously created elements on connect
-    //maybe bc we are broadcasting on create.
-    console.log(`socket ${socket.id} connected`)
     let interval
     socketCount++
 
@@ -98,7 +102,6 @@ function socketWorks(server, elements, sessions, roomRefs) {
     })
     socket.on('massChange', data => {
       let roomId = roomRefs[socket.id]
-      console.log('RoomId', roomId)
       for (const layer of data) {
         const element = elements[roomId].find(
           element => element.id === layer.id
