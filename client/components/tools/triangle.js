@@ -4,7 +4,12 @@ import className from 'classnames'
 
 export const triangle = {
   name: 'triangle',
-  DimensionsComponent: (selectedLayer, handleChange) => {
+  DimensionsComponent: (
+    selectedLayer,
+    handleChange,
+    handleTextPropsChange,
+    handleRotate
+  ) => {
     return (
       <div>
         <label>Base</label>
@@ -33,7 +38,7 @@ export const triangle = {
           name="rotate"
           type="number"
           value={selectedLayer.props.rotate}
-          onChange={handleChange}
+          onChange={handleRotate}
         />
       </div>
     )
@@ -94,7 +99,8 @@ export const triangle = {
           className="rotateElement"
           style={{display: deleteButtonDisplay}}
           onMouseDown={() => {
-            setSelectedLayerId(id)
+            setSelectedLayerIds([id])
+            setChanging(false)
             setRotating(true)
           }}
           onMouseUp={() => {
@@ -131,11 +137,12 @@ export const triangle = {
   },
   handleRotate: (selectedLayer, socket, prevX, prevY, clientX, clientY) => {
     const movementX = clientX - prevX
+    const movementY = clientY - prevY
     socket.emit('change', {
       ...selectedLayer,
       props: {
         ...selectedLayer.props,
-        rotate: +Math.floor(movementX * 0.5)
+        rotate: +Math.floor(movementX * 0.5 - movementY * 0.5)
       }
     })
   },
@@ -145,13 +152,13 @@ export const triangle = {
       id: uuid,
       x: x - 5, //relative to canvas mouseX
       y,
-      rotate: 0,
       props: {
         fill,
         base: 10,
         height: 10,
         stroke: strokeColor,
-        strokeWidth: 5
+        strokeWidth: 5,
+        rotate: 0
       }
     }
     socket.emit('create', data)

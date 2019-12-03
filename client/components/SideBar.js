@@ -19,6 +19,7 @@ const SideBar = ({
 }) => {
   const handleChange = e => {
     e.preventDefault()
+    console.log('change', e.target)
     const {type, name, value} = e.target
     let editValue
     editValue = type === 'number' ? +value : value
@@ -35,12 +36,23 @@ const SideBar = ({
     }
   }
   const handleTextPropsChange = e => {
+    console.log('text', e.target)
     if (e.target[0].name) {
       socket.emit('change', {
         ...selectedLayer,
         props: {...selectedLayer.props, [e.target[0].name]: e.target[0].value}
       })
     }
+  }
+  const handleRotate = e => {
+    let {name, type, value} = e.target
+    socket.emit('change', {
+      ...selectedLayer,
+      props: {
+        ...selectedLayer.props,
+        rotate: value
+      }
+    })
   }
   const firstHalf = Object.keys(types).slice(
     0,
@@ -115,7 +127,8 @@ const SideBar = ({
             {selectedLayer.type.DimensionsComponent(
               selectedLayer,
               handleChange,
-              handleTextPropsChange
+              handleTextPropsChange,
+              handleRotate
             )}
           </div>
         ) : null}

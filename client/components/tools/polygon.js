@@ -34,7 +34,12 @@ export const polygon = {
     }
     return coordinateStr
   },
-  DimensionsComponent: (selectedLayer, handleChange, handleRotate) => {
+  DimensionsComponent: (
+    selectedLayer,
+    handleChange,
+    handleTextPropsChange,
+    handleRotate
+  ) => {
     return (
       <div>
         <label>Sides</label>
@@ -164,18 +169,17 @@ export const polygon = {
         radius: oldRadius + newRadius,
         width: Math.abs(oldWidth + movementX),
         height: Math.abs(oldHeight + movementY)
-        // rotate: +movementX
       }
     })
   },
   handleRotate: (selectedLayer, socket, prevX, prevY, clientX, clientY) => {
     const movementX = clientX - prevX
-    console.log('handle rotate')
+    const movementY = clientY - prevY
     socket.emit('change', {
       ...selectedLayer,
       props: {
         ...selectedLayer.props,
-        rotate: +Math.floor(movementX * 0.5)
+        rotate: +Math.floor(movementX * 0.5 - movementY * 0.5)
       }
     })
   },

@@ -6,7 +6,12 @@ import className from 'classnames'
 
 export const rectangle = {
   name: 'rectangle',
-  DimensionsComponent: (selectedLayer, handleChange) => {
+  DimensionsComponent: (
+    selectedLayer,
+    handleChange,
+    handleTextPropsChange,
+    handleRotate
+  ) => {
     return (
       <div>
         <label>Width</label>
@@ -35,7 +40,7 @@ export const rectangle = {
           name="rotate"
           type="number"
           value={selectedLayer.props.rotate}
-          onChange={handleChange}
+          onChange={handleRotate}
         />
       </div>
     )
@@ -119,7 +124,8 @@ export const rectangle = {
           className="rotateElement"
           style={{display: deleteButtonDisplay}}
           onMouseDown={() => {
-            setSelectedLayerId(id)
+            setSelectedLayerIds([id])
+            setChanging(false)
             setRotating(true)
           }}
           onMouseUp={() => {
@@ -233,11 +239,12 @@ export const rectangle = {
   },
   handleRotate: (selectedLayer, socket, prevX, prevY, clientX, clientY) => {
     const movementX = clientX - prevX
+    const movementY = clientY - prevY
     socket.emit('change', {
       ...selectedLayer,
       props: {
         ...selectedLayer.props,
-        rotate: +Math.floor(movementX * 0.5)
+        rotate: +Math.floor(movementX * 0.5 - movementY * 0.5)
       }
     })
   },
