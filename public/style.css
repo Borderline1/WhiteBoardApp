@@ -169,7 +169,7 @@ div.changeElement {
   border: 2px solid black;
   border-radius: 100% 100% 0 100%;
 }
-button.deleteLine {
+button.deleteLineRect {
   position: absolute;
   width: 0.5rem;
   height: 1.2rem;
@@ -177,7 +177,7 @@ button.deleteLine {
   border: 2px solid black;
   border-radius: 50%;
 }
-div.changeLine {
+div.changeLineRect {
   position: absolute;
   /* right: -8px;
   bottom: -6px; */
