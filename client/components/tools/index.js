@@ -7,6 +7,7 @@ import {textBox} from './textBox'
 import {polygon} from './polygon'
 import {rightTriangle} from './rightTriangle'
 import {spline} from './spline'
+import {ellipse} from './ellipse'
 // import {image} from './image'
 // import {iframe} from './iframe'
 // import types here
@@ -15,13 +16,14 @@ export const types = {
   // include types here
   picker,
   circle,
+  triangle,
   rectangle,
   line,
-  triangle,
+  spline,
+  ellipse,
   rightTriangle,
-  textBox,
   polygon,
-  spline
+  textBox
   // image,
   // iframe
 }

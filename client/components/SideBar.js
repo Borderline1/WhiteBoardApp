@@ -2,7 +2,7 @@ import React, {Component} from 'react'
 import {ChromePicker} from 'react-color'
 import ToolButton from './ToolButton'
 import ColorWheel from './ColorWheel'
-import {Segment, Grid, Header, Input} from 'semantic-ui-react'
+import {Segment, Grid, Header, Input, Form} from 'semantic-ui-react'
 
 const SideBar = ({
   color,
@@ -15,7 +15,9 @@ const SideBar = ({
   handleColorChange,
   types,
   handleSelectTool,
-  socket
+  socket,
+  selectedColor,
+  setSelectedColor
 }) => {
   const handleChange = e => {
     e.preventDefault()
@@ -101,6 +103,8 @@ const SideBar = ({
           filling={filling}
           selectedLayer={selectedLayer}
           socket={socket}
+          selectedColor={selectedColor}
+          setSelectedColor={setSelectedColor}
         />
         {/* Form Stuff */}
         {selectedLayer ? (
@@ -114,6 +118,7 @@ const SideBar = ({
               value={selectedLayer.x}
               onChange={handleChange}
             />
+
             <label htmlFor="y">Y position</label>
             <Input
               min="0"
@@ -122,6 +127,7 @@ const SideBar = ({
               value={selectedLayer.y}
               onChange={handleChange}
             />
+
             {selectedLayer.type.DimensionsComponent(
               selectedLayer,
               handleChange,
