@@ -42,6 +42,16 @@ const SideBar = ({
       })
     }
   }
+  const handleRotate = e => {
+    let {name, type, value} = e.target
+    socket.emit('change', {
+      ...selectedLayer,
+      props: {
+        ...selectedLayer.props,
+        rotate: value
+      }
+    })
+  }
   const firstHalf = Object.keys(types).slice(
     0,
     Object.keys(types).length / 2 + 1
@@ -115,7 +125,8 @@ const SideBar = ({
             {selectedLayer.type.DimensionsComponent(
               selectedLayer,
               handleChange,
-              handleTextPropsChange
+              handleTextPropsChange,
+              handleRotate
             )}
           </div>
         ) : null}

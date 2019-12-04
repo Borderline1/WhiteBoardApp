@@ -22,6 +22,7 @@ function socketWorks(server, elements, sessions, roomRefs) {
       roomRefs[socket.id] = roomName
       socket.emit('create', elements[roomName])
     })
+    console.log(`socket ${socket.id} connected`)
     let interval
     socketCount++
 

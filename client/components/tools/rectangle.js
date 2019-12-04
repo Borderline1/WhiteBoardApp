@@ -6,7 +6,12 @@ import className from 'classnames'
 
 export const rectangle = {
   name: 'rectangle',
-  DimensionsComponent: (selectedLayer, handleChange) => {
+  DimensionsComponent: (
+    selectedLayer,
+    handleChange,
+    handleTextPropsChange,
+    handleRotate
+  ) => {
     return (
       <div>
         <label>Width</label>
@@ -29,6 +34,13 @@ export const rectangle = {
           type="number"
           value={selectedLayer.props.strokeWidth}
           onChange={handleChange}
+        />
+        <label>Rotate</label>
+        <input
+          name="rotate"
+          type="number"
+          value={selectedLayer.props.rotate}
+          onChange={handleRotate}
         />
       </div>
     )
@@ -53,7 +65,8 @@ export const rectangle = {
     id,
     index,
     setSelectedLayerIds,
-    setChanging
+    setChanging,
+    setRotating
   }) => {
     let deleteButtonDisplay = 'none'
     if (selectedLayer && selectedLayer.id === id) {
@@ -105,6 +118,18 @@ export const rectangle = {
           }}
           onMouseUp={() => {
             setChanging(false)
+          }}
+        />
+        <div
+          className="rotateElement"
+          style={{display: deleteButtonDisplay}}
+          onMouseDown={() => {
+            setSelectedLayerIds([id])
+            setChanging(false)
+            setRotating(true)
+          }}
+          onMouseUp={() => {
+            setRotating(false)
           }}
         />
       </div>
@@ -212,16 +237,27 @@ export const rectangle = {
       })
     }
   },
+  handleRotate: (selectedLayer, socket, prevX, prevY, clientX, clientY) => {
+    const movementX = clientX - prevX
+    const movementY = clientY - prevY
+    socket.emit('change', {
+      ...selectedLayer,
+      props: {
+        ...selectedLayer.props,
+        rotate: +Math.floor(movementX * 0.5 - movementY * 0.5)
+      }
+    })
+  },
   handleCreate: (x, y, fill = 'black', uuid, socket, strokeColor) => {
     const data = {
       type: 'rectangle',
       x,
       y,
       id: uuid,
-      rotate: 0,
       props: {
         width: 10,
         height: 10,
+        rotate: 0,
         fill,
         stroke: 'black',
         strokeWidth: 5,

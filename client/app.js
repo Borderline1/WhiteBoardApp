@@ -31,6 +31,7 @@ const App = () => {
   const [dragging, setDragging] = useState(false)
   const [creating, setCreating] = useState(false)
   const [changing, setChanging] = useState(false)
+  const [rotating, setRotating] = useState(false)
   const [layerInitialPositionsXs, setLayerInitialPositionsXs] = useState([])
   const [layerInitialPositionsYs, setLayerInitialPositionsYs] = useState([])
   const [lasso, setLasso] = useState(null)
@@ -115,6 +116,17 @@ const App = () => {
           layerInitialPositionsXs,
           layerInitialPositionsYs
         )
+      } else if (rotating) {
+        if (selectedLayer) {
+          selectedLayer.type.handleRotate(
+            selectedLayer,
+            socket,
+            prevX,
+            prevY,
+            clientX,
+            clientY
+          )
+        }
       } else if (dragging) {
         tool.handleDragging(
           selectedLayers,
@@ -182,6 +194,7 @@ const App = () => {
   }
 
   const handleDisplayMouseUp = event => {
+    setRotating(false)
     setChanging(false)
     if (dragging) {
       setDragging(false)
@@ -293,7 +306,8 @@ const App = () => {
                   style={{
                     position: 'absolute',
                     top: layer.y,
-                    left: layer.x
+                    left: layer.x,
+                    transform: `rotate(${layer.props.rotate}deg)`
                   }}
                 >
                   {/* this layers canvas component */}
@@ -305,6 +319,7 @@ const App = () => {
                     index={index}
                     handleDelete={handleDelete}
                     setChanging={setChanging}
+                    setRotating={setRotating}
                     id={layer.id}
                     setSelectedLayerIds={setSelectedLayerIds}
                     selectedLayerIds={selectedLayerIds}
