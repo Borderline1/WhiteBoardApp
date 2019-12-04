@@ -150,15 +150,24 @@ const App = () => {
         )
       }
     } else if (creating && selectedLayer) {
-      tool.handleCreatingUpdate(
-        selectedLayer,
-        prevX + window.scrollX,
-        prevY + window.scrollY,
-        clientX + window.scrollX,
-        clientY + window.scrollY,
-        socket,
-        handleSelectTool
-      )
+      if (tool.name !== 'spline') {
+        tool.handleCreatingUpdate(
+          selectedLayer,
+          prevX + window.scrollX,
+          prevY + window.scrollY,
+          clientX + window.scrollX,
+          clientY + window.scrollY,
+          socket,
+          handleSelectTool
+        )
+      } else {
+        tool.handleMouseMove(
+          selectedLayer,
+          clientX + window.scrollX,
+          clientY + window.scrollY,
+          socket
+        )
+      }
     }
   }
 
