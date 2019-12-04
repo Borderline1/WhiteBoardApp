@@ -1,5 +1,4 @@
 import React, {Component} from 'react'
-import {ChromePicker} from 'react-color'
 import ToolButton from './ToolButton'
 import ColorWheel from './ColorWheel'
 import {Segment, Grid, Header} from 'semantic-ui-react'
