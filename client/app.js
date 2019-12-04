@@ -313,8 +313,18 @@ const App = () => {
                     }
                   }}
                   onMouseUp={() => {
-                    if (dragging) return
-                    else setSelectedLayerIds([layer.id])
+                    if (dragging) {
+                      const xPositions = []
+                      const yPositions = []
+                      const layersToUpdate = clientLayers.filter(layer =>
+                        selectedLayerIds.includes(layer.id))
+                      for (let layer of layersToUpdate) {
+                        xPositions.push(layer.x)
+                        yPositions.push(layer.y)
+                      }
+                      setLayerInitialPositionsXs(xPositions)
+                      setLayerInitialPositionsYs(yPositions)
+                    } else {setSelectedLayerIds([layer.id])}
                   }}
                   className={className('layer', {
                     indicated: indicatedLayerIds.includes(layer.id),
