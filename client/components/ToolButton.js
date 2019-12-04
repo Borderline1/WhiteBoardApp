@@ -12,7 +12,8 @@ const ToolButton = ({tool, types, name, handleSelectTool}) => {
     rectangle: 'square',
     textBox: 'font',
     line: 'minus',
-    image: 'file image outline'
+    image: 'file image outline',
+    ellipse: 'cloud'
   }
   return (
     <Button
