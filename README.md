@@ -1,5 +1,5 @@
 # SaVaGe BOARD
-This colaberative whiteboard app allows groups of people to join a room by name and draw together!
+This collaborative whiteboard app allows groups of people to join a room by name and draw together!
 
 
 
