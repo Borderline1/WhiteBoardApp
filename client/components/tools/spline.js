@@ -1,5 +1,7 @@
 /* eslint-disable react/display-name */
 import React from 'react'
+import {Input} from 'semantic-ui-react'
+
 export const spline = {
   name: 'spline',
   handleMouseMove: (selectedLayer, newX, newY, socket) => {
@@ -59,11 +61,23 @@ export const spline = {
       }
     })
   },
-  DimensionsComponent: (selectedLayer, handleChange) => {
+  DimensionsComponent: (
+    selectedLayer,
+    handleChange,
+    handleTextPropsChange,
+    handleRotate
+  ) => {
     return (
       <div>
+        <label>Rotate</label>
+        <Input
+          name="rotate"
+          type="number"
+          value={selectedLayer.props.rotate}
+          onChange={handleRotate}
+        />
         <label>Stroke Width</label>
-        <input
+        <Input
           name="strokeWidth"
           type="number"
           value={selectedLayer.props.strokeWidth}
