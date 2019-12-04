@@ -16,14 +16,14 @@ export const types = {
   // include types here
   picker,
   circle,
+  triangle,
   rectangle,
   line,
-  triangle,
-  rightTriangle,
-  textBox,
-  polygon,
   spline,
-  ellipse
+  ellipse,
+  rightTriangle,
+  polygon,
+  textBox
   // image,
   // iframe
 }

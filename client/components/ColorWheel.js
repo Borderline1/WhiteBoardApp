@@ -1,5 +1,6 @@
 import React from 'react'
 import {Segment, Icon} from 'semantic-ui-react'
+import className from 'classnames'
 
 const ColorWheel = props => {
   const {
@@ -10,7 +11,9 @@ const ColorWheel = props => {
     toggleFilling,
     filling,
     selectedLayer,
-    socket
+    socket,
+    selectedColor,
+    setSelectedColor
   } = props
   const colors = {
     red: '#ff0000',
@@ -57,9 +60,18 @@ const ColorWheel = props => {
                 : {backgroundColor: 'white'}
             }
           >
-            {color !== 'none' ? null : (
-              <Icon color="red" name="ban" size="large" />
-            )}
+            <div
+              style={{
+                position: 'absolute',
+                display: 'inline-block',
+                textAlign: 'center',
+                right: '0%'
+              }}
+            >
+              {color !== 'none' ? null : (
+                <Icon color="red" name="ban" size="large" />
+              )}
+            </div>
           </div>
           <p className="color-label">Fill</p>
         </div>
@@ -78,9 +90,18 @@ const ColorWheel = props => {
                 : {backgroundColor: 'white'}
             }
           >
-            {strokeColor !== 'none' ? null : (
-              <Icon color="red" name="ban" size="large" />
-            )}
+            <div
+              style={{
+                position: 'absolute',
+                display: 'inline-block',
+                textAlign: 'center',
+                right: '0%'
+              }}
+            >
+              {strokeColor !== 'none' ? null : (
+                <Icon color="red" name="ban" size="large" />
+              )}
+            </div>
           </div>
           <p className="color-label">Stroke</p>
         </div>
@@ -96,12 +117,15 @@ const ColorWheel = props => {
                   const type = filling ? 'fill' : 'stroke'
                   handleFillStrokeChange(color, type, selectedLayer, socket)
                 }
+                setSelectedColor(color)
                 if (filling) handleColorChange(color)
                 else handleStrokeColorChange(color)
               }}
             >
               <div
-                className="selected-color"
+                className={className('selected-color', {
+                  selected: selectedColor === color
+                })}
                 style={
                   color !== 'none'
                     ? {backgroundColor: color}
