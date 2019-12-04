@@ -56,10 +56,11 @@ const SideBar = ({
   const secondHalf = Object.keys(types).slice(Object.keys(types).length / 2)
   return (
     <div id="sidebar">
-      <Header as="h1">SVG Board</Header>
+      <Header as="h1" id="title-header">
+        SVG Board
+      </Header>
       <div className="toolbox">
         <Segment className="tool-table">
-          <h4 className="tools-header">TOOLS</h4>
           <Grid columns={2}>
             <Grid.Column id="tools-column-1">
               {firstHalf.map(typeKey => {

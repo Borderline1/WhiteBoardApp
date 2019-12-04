@@ -24,13 +24,22 @@ form div {
   position: fixed;
   height: 100vh;
   width: 252px;
-  background-color: lightgray;
+  background-color: #3c4043;
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
   align-items: center;
   padding: 5px;
   z-index: 100000;
+}
+#title-header {
+  color: white;
+  margin-top: 5px;
+  font-size: 30pt;
+}
+.ui.segment {
+  background-color: #e8e9eb !important;
+  width: 216px !important;
 }
 
 .ui.button.tool-button {
@@ -45,10 +54,7 @@ form div {
   width: 100%;
   height: 150% !important;
 }
-.ui.segment {
-  background-color: rgb(182, 181, 181) !important;
-  width: 216px !important;
-}
+
 .ui.button.tool-button:hover {
   background: rgb(191, 243, 139) !important;
 }
