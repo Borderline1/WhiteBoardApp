@@ -1,10 +1,9 @@
 /* eslint-disable complexity */
 /* eslint-disable react/display-name */
 import React from 'react'
-import className from 'classnames'
 
-export const triangle = {
-  name: 'triangle',
+export const rightTriangle = {
+  name: 'rightTriangle',
   DimensionsComponent: (
     selectedLayer,
     handleChange,
@@ -50,6 +49,7 @@ export const triangle = {
     height,
     fill,
     stroke,
+    topX,
     strokeWidth,
     handleDelete,
     deletePosition,
@@ -65,15 +65,16 @@ export const triangle = {
     if (selectedLayer && selectedLayer.id === id) {
       deleteButtonDisplay = 'inline'
     }
-    console.log('trianlge')
+    console.log('rightTriangle')
     return (
       <div>
         <svg width={base + strokeWidth} height={height + strokeWidth}>
           <polygon
             stroke={stroke}
             strokeWidth={strokeWidth}
-            points={`${(base + strokeWidth) / 2} ${strokeWidth /
-              2}, ${strokeWidth} ${height + strokeWidth / 2}, ${base} ${height +
+            points={`${topX}
+            ${strokeWidth / 2}
+              , ${strokeWidth} ${height + strokeWidth / 2}, ${base} ${height +
               strokeWidth / 2}`}
             fill={fill}
           />
@@ -165,6 +166,7 @@ export const triangle = {
           ...selectedLayer.props,
           base,
           height,
+          topX: base,
           deletePosition: {top: '-6px', bottom: '', right: '-8px', left: ''},
           changePosition: {
             top: '',
@@ -186,6 +188,7 @@ export const triangle = {
           ...selectedLayer.props,
           base,
           height,
+          topX: selectedLayer.props.strokeWidth,
           deletePosition: {top: '-6px', bottom: '', right: '-8px', left: ''},
           changePosition: {
             top: '-6px',
@@ -207,6 +210,7 @@ export const triangle = {
           ...selectedLayer.props,
           base,
           height,
+          topX: base,
           deletePosition: {top: '', bottom: '-6px', right: '-8px', left: ''},
           changePosition: {
             top: '-6px',
@@ -228,6 +232,7 @@ export const triangle = {
           ...selectedLayer.props,
           base,
           height,
+          topX: selectedLayer.props.strokeWidth,
           deletePosition: {top: '-6px', bottom: '', right: '-8px', left: ''},
           changePosition: {
             top: '',
@@ -254,7 +259,7 @@ export const triangle = {
   },
   handleCreate: (x, y, fill = 'black', uuid, socket, strokeColor) => {
     const data = {
-      type: 'triangle',
+      type: 'rightTriangle',
       id: uuid,
       x: x - 5, //relative to canvas mouseX
       y,
@@ -265,6 +270,7 @@ export const triangle = {
         stroke: strokeColor,
         strokeWidth: 5,
         rotate: 0,
+        topX: 10,
         deletePosition: {top: '-6px', bottom: '', right: '-8px', left: ''},
         changePosition: {
           top: '',
@@ -303,6 +309,7 @@ export const triangle = {
             ...selectedLayer.props,
             base,
             height,
+            topX: base,
             deletePosition: {top: '-6px', bottom: '', right: '-8px', left: ''},
             changePosition: {
               top: '',
@@ -324,6 +331,7 @@ export const triangle = {
             ...selectedLayer.props,
             base,
             height,
+            topX: selectedLayer.props.strokeWidth,
             deletePosition: {top: '-6px', bottom: '', right: '-8px', left: ''},
             changePosition: {
               top: '-6px',
@@ -345,6 +353,7 @@ export const triangle = {
             ...selectedLayer.props,
             base,
             height,
+            topX: base,
             deletePosition: {top: '', bottom: '-6px', right: '-8px', left: ''},
             changePosition: {
               top: '-6px',
@@ -366,6 +375,7 @@ export const triangle = {
             ...selectedLayer.props,
             base,
             height,
+            topX: selectedLayer.props.strokeWidth,
             deletePosition: {top: '-6px', bottom: '', right: '-8px', left: ''},
             changePosition: {
               top: '',

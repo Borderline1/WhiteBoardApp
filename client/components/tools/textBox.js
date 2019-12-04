@@ -10,20 +10,6 @@ export const textBox = {
   DimensionsComponent: (selectedLayer, handleChange, handleTextPropsChange) => {
     return (
       <div>
-        <label>Text Color</label>
-        <input
-          name="textColor"
-          type="color"
-          value={selectedLayer.props.textColor}
-          onChange={handleTextPropsChange}
-        />
-        <label>Background Color</label>
-        <input
-          name="backgroundColor"
-          type="color"
-          value={selectedLayer.props.backgroundColor}
-          onChange={handleTextPropsChange}
-        />
         <label>Width</label>
         <input
           name="width"
