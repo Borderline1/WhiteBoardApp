@@ -13,9 +13,7 @@ function socketWorks(server, elements, sessions, roomRefs) {
       socket.join(roomName)
       if (!elements[roomName]) {
         // lookup in database if roomName exists
-
         // if it does, upload all elements into elements[roomName]
-
         // else
         elements[roomName] = []
       }
@@ -42,7 +40,6 @@ function socketWorks(server, elements, sessions, roomRefs) {
             sessionKey: key
           })
         }
-        // console.log(cursorPositions)
         socket.emit('cursor', cursorRefs[roomId])
         socket.to(roomId).emit('cursor', cursorRefs[roomId])
         // broadcast exludes the socket that the event came from
