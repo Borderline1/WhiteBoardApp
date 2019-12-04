@@ -49,7 +49,7 @@ export const rightTriangle = {
     height,
     fill,
     stroke,
-    topX,
+    points,
     strokeWidth,
     handleDelete,
     deletePosition,
@@ -72,10 +72,7 @@ export const rightTriangle = {
           <polygon
             stroke={stroke}
             strokeWidth={strokeWidth}
-            points={`${topX}
-            ${strokeWidth / 2}
-              , ${strokeWidth} ${height + strokeWidth / 2}, ${base} ${height +
-              strokeWidth / 2}`}
+            points={points}
             fill={fill}
           />
         </svg>
@@ -166,7 +163,14 @@ export const rightTriangle = {
           ...selectedLayer.props,
           base,
           height,
-          topX: base,
+          points: `${selectedLayer.props.base}
+            ${selectedLayer.props.strokeWidth / 2}
+              , ${selectedLayer.props.strokeWidth} ${selectedLayer.props
+            .height +
+            selectedLayer.props.strokeWidth / 2}, ${
+            selectedLayer.props.base
+          } ${selectedLayer.props.height +
+            selectedLayer.props.strokeWidth / 2}`,
           deletePosition: {top: '-6px', bottom: '', right: '-8px', left: ''},
           changePosition: {
             top: '',
@@ -188,7 +192,12 @@ export const rightTriangle = {
           ...selectedLayer.props,
           base,
           height,
-          topX: selectedLayer.props.strokeWidth,
+          points: `${selectedLayer.props.strokeWidth}
+          ${selectedLayer.props.strokeWidth / 2}
+            , ${selectedLayer.props.base}
+          ${selectedLayer.props.strokeWidth / 2}
+            , ${selectedLayer.props.strokeWidth} ${selectedLayer.props.height +
+            selectedLayer.props.strokeWidth / 2}`,
           deletePosition: {top: '-6px', bottom: '', right: '-8px', left: ''},
           changePosition: {
             top: '-6px',
@@ -210,7 +219,13 @@ export const rightTriangle = {
           ...selectedLayer.props,
           base,
           height,
-          topX: base,
+          points: `${selectedLayer.props.strokeWidth}
+          ${selectedLayer.props.strokeWidth / 2}
+            , ${selectedLayer.props.base}
+            ${selectedLayer.props.strokeWidth / 2}, ${
+            selectedLayer.props.base
+          } ${selectedLayer.props.height +
+            selectedLayer.props.strokeWidth / 2}`,
           deletePosition: {top: '', bottom: '-6px', right: '-8px', left: ''},
           changePosition: {
             top: '-6px',
@@ -232,7 +247,14 @@ export const rightTriangle = {
           ...selectedLayer.props,
           base,
           height,
-          topX: selectedLayer.props.strokeWidth,
+          points: `${selectedLayer.props.strokeWidth}
+            ${selectedLayer.props.strokeWidth / 2}
+              , ${selectedLayer.props.strokeWidth} ${selectedLayer.props
+            .height +
+            selectedLayer.props.strokeWidth / 2}, ${
+            selectedLayer.props.base
+          } ${selectedLayer.props.height +
+            selectedLayer.props.strokeWidth / 2}`,
           deletePosition: {top: '-6px', bottom: '', right: '-8px', left: ''},
           changePosition: {
             top: '',
@@ -270,7 +292,7 @@ export const rightTriangle = {
         stroke: strokeColor,
         strokeWidth: 5,
         rotate: 0,
-        topX: 10,
+        points: '10 2.5, 5 7.5, 10 7.5',
         deletePosition: {top: '-6px', bottom: '', right: '-8px', left: ''},
         changePosition: {
           top: '',
@@ -309,7 +331,14 @@ export const rightTriangle = {
             ...selectedLayer.props,
             base,
             height,
-            topX: base,
+            points: `${selectedLayer.props.base}
+            ${selectedLayer.props.strokeWidth / 2}
+              , ${selectedLayer.props.strokeWidth} ${selectedLayer.props
+              .height +
+              selectedLayer.props.strokeWidth / 2}, ${
+              selectedLayer.props.base
+            } ${selectedLayer.props.height +
+              selectedLayer.props.strokeWidth / 2}`,
             deletePosition: {top: '-6px', bottom: '', right: '-8px', left: ''},
             changePosition: {
               top: '',
@@ -331,7 +360,13 @@ export const rightTriangle = {
             ...selectedLayer.props,
             base,
             height,
-            topX: selectedLayer.props.strokeWidth,
+            points: `${selectedLayer.props.strokeWidth}
+            ${selectedLayer.props.strokeWidth / 2}
+              , ${selectedLayer.props.base}
+            ${selectedLayer.props.strokeWidth / 2}
+              , ${selectedLayer.props.strokeWidth} ${selectedLayer.props
+              .height +
+              selectedLayer.props.strokeWidth / 2}`,
             deletePosition: {top: '-6px', bottom: '', right: '-8px', left: ''},
             changePosition: {
               top: '-6px',
@@ -353,7 +388,13 @@ export const rightTriangle = {
             ...selectedLayer.props,
             base,
             height,
-            topX: base,
+            points: `${selectedLayer.props.strokeWidth}
+            ${selectedLayer.props.strokeWidth / 2}
+              , ${selectedLayer.props.base}
+              ${selectedLayer.props.strokeWidth / 2}, ${
+              selectedLayer.props.base
+            } ${selectedLayer.props.height +
+              selectedLayer.props.strokeWidth / 2}`,
             deletePosition: {top: '', bottom: '-6px', right: '-8px', left: ''},
             changePosition: {
               top: '-6px',
@@ -375,7 +416,14 @@ export const rightTriangle = {
             ...selectedLayer.props,
             base,
             height,
-            topX: selectedLayer.props.strokeWidth,
+            points: `${selectedLayer.props.strokeWidth}
+            ${selectedLayer.props.strokeWidth / 2}
+              , ${selectedLayer.props.strokeWidth} ${selectedLayer.props
+              .height +
+              selectedLayer.props.strokeWidth / 2}, ${
+              selectedLayer.props.base
+            } ${selectedLayer.props.height +
+              selectedLayer.props.strokeWidth / 2}`,
             deletePosition: {top: '-6px', bottom: '', right: '-8px', left: ''},
             changePosition: {
               top: '',
