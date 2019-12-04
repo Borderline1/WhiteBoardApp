@@ -13,9 +13,7 @@ function socketWorks(server, elements, sessions, roomRefs) {
       socket.join(roomName)
       if (!elements[roomName]) {
         // lookup in database if roomName exists
-
         // if it does, upload all elements into elements[roomName]
-
         // else
         elements[roomName] = []
       }
