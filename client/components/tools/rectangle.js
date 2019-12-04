@@ -53,15 +53,9 @@ export const rectangle = {
     stroke,
     strokeWidth,
     handleDelete,
-    deleteTop,
-    deleteBottom,
-    deleteRight,
-    deleteLeft,
-    changeTop,
-    changeBottom,
-    changeRight,
-    changeLeft,
-    changeRadius,
+    deletePosition,
+    changePosition,
+    rotatePosition,
     id,
     index,
     setSelectedLayerIds,
@@ -91,10 +85,10 @@ export const rectangle = {
           className="deleteLineRect"
           style={{
             display: deleteButtonDisplay,
-            top: deleteTop,
-            bottom: deleteBottom,
-            right: deleteRight,
-            left: deleteLeft
+            top: deletePosition.top,
+            bottom: deletePosition.bottom,
+            right: deletePosition.right,
+            left: deletePosition.left
           }}
           onClick={() => {
             handleDelete(index)
@@ -106,11 +100,11 @@ export const rectangle = {
           className="changeLineRect"
           style={{
             display: deleteButtonDisplay,
-            top: changeTop,
-            bottom: changeBottom,
-            right: changeRight,
-            left: changeLeft,
-            borderRadius: changeRadius
+            top: changePosition.top,
+            bottom: changePosition.bottom,
+            right: changePosition.right,
+            left: changePosition.left,
+            borderRadius: changePosition.radius
           }}
           onMouseDown={() => {
             setSelectedLayerIds([id])
@@ -123,8 +117,14 @@ export const rectangle = {
         <button
           name="rotate"
           type="button"
-          className="rotateRect"
-          style={{display: deleteButtonDisplay}}
+          className="rotateRectTri"
+          style={{
+            display: deleteButtonDisplay,
+            top: rotatePosition.top,
+            bottom: rotatePosition.bottom,
+            right: rotatePosition.right,
+            left: rotatePosition.left
+          }}
           onMouseDown={() => {
             setSelectedLayerIds([id])
             setChanging(false)
@@ -166,15 +166,15 @@ export const rectangle = {
           ...selectedLayer.props,
           width: width,
           height: height,
-          deleteTop: '-6px',
-          deleteBottom: '',
-          deleteRight: '-8px',
-          deleteLeft: '',
-          changeTop: '',
-          changeBottom: '-6px',
-          changeRight: '-8px',
-          changeLeft: '',
-          changeRadius: '100% 100% 0 100%'
+          deletePosition: {top: '-6px', bottom: '', right: '-8px', left: ''},
+          changePosition: {
+            top: '',
+            bottom: '-6px',
+            right: '-8px',
+            left: '',
+            radius: '100% 100% 0 100%'
+          },
+          rotatePosition: {top: '-6px', bottom: '', right: '', left: '-8px'}
         }
       })
     }
@@ -187,15 +187,15 @@ export const rectangle = {
           ...selectedLayer.props,
           width: width,
           height: height,
-          deleteTop: '-6px',
-          deleteBottom: '',
-          deleteRight: '-8px',
-          deleteLeft: '',
-          changeTop: '-6px',
-          changeBottom: '',
-          changeRight: '',
-          changeLeft: '-8px',
-          changeRadius: '0 100% 100% 100%'
+          deletePosition: {top: '-6px', bottom: '', right: '-8px', left: ''},
+          changePosition: {
+            top: '-6px',
+            bottom: '',
+            right: '',
+            left: '-8px',
+            radius: '0 100% 100% 100%'
+          },
+          rotatePosition: {top: '', bottom: '-6px', right: '', left: '-8px'}
         }
       })
     }
@@ -208,15 +208,15 @@ export const rectangle = {
           ...selectedLayer.props,
           width: width,
           height: height,
-          deleteTop: '',
-          deleteBottom: '-6px',
-          deleteRight: '-8px',
-          deleteLeft: '',
-          changeTop: '-6px',
-          changeBottom: '',
-          changeRight: '-8px',
-          changeLeft: '',
-          changeRadius: '100% 0 100% 100%'
+          deletePosition: {top: '', bottom: '-6px', right: '-8px', left: ''},
+          changePosition: {
+            top: '-6px',
+            bottom: '',
+            right: '-8px',
+            left: '',
+            radius: '100% 0 100% 100%'
+          },
+          rotatePosition: {top: '-6px', bottom: '', right: '', left: '-8px'}
         }
       })
     }
@@ -229,15 +229,15 @@ export const rectangle = {
           ...selectedLayer.props,
           width: width,
           height: height,
-          deleteTop: '-6px',
-          deleteBottom: '',
-          deleteRight: '-8px',
-          deleteLeft: '',
-          changeTop: '',
-          changeBottom: '-6px',
-          changeRight: '',
-          changeLeft: '-8px',
-          changeRadius: '100% 100% 100% 0%'
+          deletePosition: {top: '-6px', bottom: '', right: '-8px', left: ''},
+          changePosition: {
+            top: '',
+            bottom: '-6px',
+            right: '',
+            left: '-8px',
+            radius: '100% 100% 100% 0'
+          },
+          rotatePosition: {top: '-6px', bottom: '', right: '', left: '-8px'}
         }
       })
     }
@@ -266,15 +266,15 @@ export const rectangle = {
         fill,
         stroke: 'black',
         strokeWidth: 5,
-        deleteTop: '-6px',
-        deleteBottom: '',
-        deleteRight: '-8px',
-        deleteLeft: '',
-        changeTop: '',
-        changeBottom: '-6px',
-        changeRight: '-8px',
-        changeLeft: '',
-        changeRadius: '100% 100% 0 100%'
+        deletePosition: {top: '-6px', bottom: '', right: '-8px', left: ''},
+        changePosition: {
+          top: '',
+          bottom: '-6px',
+          right: '-8px',
+          left: '',
+          radius: '100% 100% 0 100%'
+        },
+        rotatePosition: {top: '-6px', bottom: '', right: '', left: '-8px'}
       }
     }
     socket.emit('create', data)
@@ -301,15 +301,15 @@ export const rectangle = {
             ...selectedLayer.props,
             width,
             height,
-            deleteTop: '-6px',
-            deleteBottom: '',
-            deleteRight: '-8px',
-            deleteLeft: '',
-            changeTop: '',
-            changeBottom: '-6px',
-            changeRight: '-8px',
-            changeLeft: '',
-            changeRadius: '100% 100% 0 100%'
+            deletePosition: {top: '-6px', bottom: '', right: '-8px', left: ''},
+            changePosition: {
+              top: '',
+              bottom: '-6px',
+              right: '-8px',
+              left: '',
+              radius: '100% 100% 0 100%'
+            },
+            rotatePosition: {top: '-6px', bottom: '', right: '', left: '-8px'}
           }
         })
       }
@@ -322,15 +322,15 @@ export const rectangle = {
             ...selectedLayer.props,
             width,
             height,
-            deleteTop: '-6px',
-            deleteBottom: '',
-            deleteRight: '-8px',
-            deleteLeft: '',
-            changeTop: '-6px',
-            changeBottom: '',
-            changeRight: '',
-            changeLeft: '-8px',
-            changeRadius: '0 100% 100% 100%'
+            deletePosition: {top: '-6px', bottom: '', right: '-8px', left: ''},
+            changePosition: {
+              top: '-6px',
+              bottom: '',
+              right: '',
+              left: '-8px',
+              radius: '0 100% 100% 100%'
+            },
+            rotatePosition: {top: '', bottom: '-6px', right: '', left: '-8px'}
           }
         })
       }
@@ -343,15 +343,15 @@ export const rectangle = {
             ...selectedLayer.props,
             width,
             height,
-            deleteTop: '',
-            deleteBottom: '-6px',
-            deleteRight: '-8px',
-            deleteLeft: '',
-            changeTop: '-6px',
-            changeBottom: '',
-            changeRight: '-8px',
-            changeLeft: '',
-            changeRadius: '100% 0 100% 100%'
+            deletePosition: {top: '', bottom: '-6px', right: '-8px', left: ''},
+            changePosition: {
+              top: '-6px',
+              bottom: '',
+              right: '-8px',
+              left: '',
+              radius: '100% 0 100% 100%'
+            },
+            rotatePosition: {top: '-6px', bottom: '', right: '', left: '-8px'}
           }
         })
       }
@@ -364,15 +364,15 @@ export const rectangle = {
             ...selectedLayer.props,
             width,
             height,
-            deleteTop: '-6px',
-            deleteBottom: '',
-            deleteRight: '-8px',
-            deleteLeft: '',
-            changeTop: '',
-            changeBottom: '-6px',
-            changeRight: '',
-            changeLeft: '-8px',
-            changeRadius: '100% 100% 100% 0%'
+            deletePosition: {top: '-6px', bottom: '', right: '-8px', left: ''},
+            changePosition: {
+              top: '',
+              bottom: '-6px',
+              right: '',
+              left: '-8px',
+              radius: '100% 100% 100% 0'
+            },
+            rotatePosition: {top: '-6px', bottom: '', right: '', left: '-8px'}
           }
         })
       }

@@ -180,6 +180,9 @@ div.changeElement {
   border: 2px solid black;
   border-radius: 100% 100% 0 100%;
 }
+div.changeElement:hover {
+  box-shadow: 0 0 20px orange;
+}
 button.rotateElement {
   position: absolute;
   left: -8px;
@@ -190,7 +193,7 @@ button.rotateElement {
   border: 2px solid black;
   border-radius: 50%;
 }
-button.rotateRect {
+button.rotateRectTri {
   position: absolute;
   width: 0.5rem;
   height: 1.2rem;
