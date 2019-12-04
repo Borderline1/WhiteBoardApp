@@ -2,7 +2,6 @@
 /* eslint-disable max-params */
 /* eslint-disable react/display-name */
 import React from 'react'
-import className from 'classnames'
 
 export const rectangle = {
   name: 'rectangle',
@@ -168,8 +167,8 @@ export const rectangle = {
         y: yPos,
         props: {
           ...selectedLayer.props,
-          width: width,
-          height: height,
+          width,
+          height,
           deletePosition: {top: '-6px', bottom: '', right: '-8px', left: ''},
           changePosition: {
             top: '',
@@ -189,8 +188,8 @@ export const rectangle = {
         y: yPos,
         props: {
           ...selectedLayer.props,
-          width: width,
-          height: height,
+          width,
+          height,
           deletePosition: {top: '-6px', bottom: '', right: '-8px', left: ''},
           changePosition: {
             top: '-6px',
@@ -210,8 +209,8 @@ export const rectangle = {
         y: yPos,
         props: {
           ...selectedLayer.props,
-          width: width,
-          height: height,
+          width,
+          height,
           deletePosition: {top: '', bottom: '-6px', right: '-8px', left: ''},
           changePosition: {
             top: '-6px',
@@ -231,8 +230,8 @@ export const rectangle = {
         y: yPos,
         props: {
           ...selectedLayer.props,
-          width: width,
-          height: height,
+          width,
+          height,
           deletePosition: {top: '-6px', bottom: '', right: '-8px', left: ''},
           changePosition: {
             top: '',

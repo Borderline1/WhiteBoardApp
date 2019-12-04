@@ -1,7 +1,6 @@
 /* eslint-disable complexity */
 /* eslint-disable react/display-name */
 import React from 'react'
-import className from 'classnames'
 import {Input} from 'semantic-ui-react'
 
 export const triangle = {
@@ -57,6 +56,7 @@ export const triangle = {
     stroke,
     strokeWidth,
     handleDelete,
+    points,
     deletePosition,
     changePosition,
     rotatePosition,
@@ -70,16 +70,13 @@ export const triangle = {
     if (selectedLayer && selectedLayer.id === id) {
       deleteButtonDisplay = 'inline'
     }
-    console.log('trianlge')
     return (
       <div>
         <svg width={base + strokeWidth} height={height + strokeWidth}>
           <polygon
             stroke={stroke}
             strokeWidth={strokeWidth}
-            points={`${(base + strokeWidth) / 2} ${strokeWidth /
-              2}, ${strokeWidth} ${height + strokeWidth / 2}, ${base} ${height +
-              strokeWidth / 2}`}
+            points={points}
             fill={fill}
           />
         </svg>
@@ -170,6 +167,11 @@ export const triangle = {
           ...selectedLayer.props,
           base,
           height,
+          points: `${(base + selectedLayer.props.strokeWidth) /
+            2} ${selectedLayer.props.strokeWidth / 2}, ${
+            selectedLayer.props.strokeWidth
+          } ${height + selectedLayer.props.strokeWidth / 2}, ${base} ${height +
+            selectedLayer.props.strokeWidth / 2}`,
           deletePosition: {top: '-6px', bottom: '', right: '-8px', left: ''},
           changePosition: {
             top: '',
@@ -191,6 +193,10 @@ export const triangle = {
           ...selectedLayer.props,
           base,
           height,
+          points: `${selectedLayer.props.strokeWidth} ${selectedLayer.props
+            .strokeWidth / 2}, ${base} ${selectedLayer.props.strokeWidth /
+            2}, ${(base + selectedLayer.props.strokeWidth) / 2} ${height +
+            selectedLayer.props.strokeWidth / 2}`,
           deletePosition: {top: '-6px', bottom: '', right: '-8px', left: ''},
           changePosition: {
             top: '-6px',
@@ -212,6 +218,10 @@ export const triangle = {
           ...selectedLayer.props,
           base,
           height,
+          points: `${selectedLayer.props.strokeWidth} ${selectedLayer.props
+            .strokeWidth / 2}, ${base} ${selectedLayer.props.strokeWidth /
+            2}, ${(base + selectedLayer.props.strokeWidth) / 2} ${height +
+            selectedLayer.props.strokeWidth / 2}`,
           deletePosition: {top: '', bottom: '-6px', right: '-8px', left: ''},
           changePosition: {
             top: '-6px',
@@ -233,6 +243,11 @@ export const triangle = {
           ...selectedLayer.props,
           base,
           height,
+          points: `${(base + selectedLayer.props.strokeWidth) /
+            2} ${selectedLayer.props.strokeWidth / 2}, ${
+            selectedLayer.props.strokeWidth
+          } ${height + selectedLayer.props.strokeWidth / 2}, ${base} ${height +
+            selectedLayer.props.strokeWidth / 2}`,
           deletePosition: {top: '-6px', bottom: '', right: '-8px', left: ''},
           changePosition: {
             top: '',
@@ -270,6 +285,7 @@ export const triangle = {
         stroke: strokeColor,
         strokeWidth: 5,
         rotate: 0,
+        points: '7.5 2.5, 5 12.5, 10 12.5',
         deletePosition: {top: '-6px', bottom: '', right: '-8px', left: ''},
         changePosition: {
           top: '',
@@ -308,6 +324,12 @@ export const triangle = {
             ...selectedLayer.props,
             base,
             height,
+            points: `${(base + selectedLayer.props.strokeWidth) /
+              2} ${selectedLayer.props.strokeWidth / 2}, ${
+              selectedLayer.props.strokeWidth
+            } ${height +
+              selectedLayer.props.strokeWidth / 2}, ${base} ${height +
+              selectedLayer.props.strokeWidth / 2}`,
             deletePosition: {top: '-6px', bottom: '', right: '-8px', left: ''},
             changePosition: {
               top: '',
@@ -329,6 +351,10 @@ export const triangle = {
             ...selectedLayer.props,
             base,
             height,
+            points: `${selectedLayer.props.strokeWidth} ${selectedLayer.props
+              .strokeWidth / 2}, ${base} ${selectedLayer.props.strokeWidth /
+              2}, ${(base + selectedLayer.props.strokeWidth) / 2} ${height +
+              selectedLayer.props.strokeWidth / 2}`,
             deletePosition: {top: '-6px', bottom: '', right: '-8px', left: ''},
             changePosition: {
               top: '-6px',
@@ -350,6 +376,10 @@ export const triangle = {
             ...selectedLayer.props,
             base,
             height,
+            points: `${selectedLayer.props.strokeWidth} ${selectedLayer.props
+              .strokeWidth / 2}, ${base} ${selectedLayer.props.strokeWidth /
+              2}, ${(base + selectedLayer.props.strokeWidth) / 2} ${height +
+              selectedLayer.props.strokeWidth / 2}`,
             deletePosition: {top: '', bottom: '-6px', right: '-8px', left: ''},
             changePosition: {
               top: '-6px',
@@ -371,6 +401,11 @@ export const triangle = {
             ...selectedLayer.props,
             base,
             height,
+            points: `${selectedLayer.props.strokeWidth} ${height +
+              selectedLayer.props.strokeWidth / 2}, ${base} ${height +
+              selectedLayer.props.strokeWidth / 2}, ${(base +
+              selectedLayer.props.strokeWidth) /
+              2} ${selectedLayer.props.strokeWidth / 2}`,
             deletePosition: {top: '-6px', bottom: '', right: '-8px', left: ''},
             changePosition: {
               top: '',

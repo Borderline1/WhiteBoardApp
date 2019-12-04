@@ -70,7 +70,6 @@ export const rightTriangle = {
     if (selectedLayer && selectedLayer.id === id) {
       deleteButtonDisplay = 'inline'
     }
-    console.log('rightTriangle')
     return (
       <div>
         <svg width={base + strokeWidth} height={height + strokeWidth}>
