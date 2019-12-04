@@ -47,7 +47,7 @@ form div {
 }
 .ui.segment {
   background-color: rgb(182, 181, 181) !important;
-  width: 15vw !important;
+  width: 216px !important;
 }
 .ui.button.tool-button:hover {
   background: rgb(191, 243, 139) !important;
@@ -224,7 +224,7 @@ div.changeLineRect {
 }
 
 .tool-table {
-  width: '92.5%';
+  width: 92.5%;
   align-self: 'center';
   background-color: gray;
 }
