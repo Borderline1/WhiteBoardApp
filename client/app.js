@@ -160,13 +160,14 @@ const App = () => {
           socket,
           handleSelectTool
         )
+      } else {
+        tool.handleMouseMove(
+          selectedLayer,
+          clientX + window.scrollX,
+          clientY + window.scrollY,
+          socket
+        )
       }
-    } else if (creating && tool.name === 'spline') {
-      tool.handleMouseMove(
-        clientX + window.scrollX,
-        clientY + window.scrollY,
-        socket
-      )
     }
   }
 

@@ -1,28 +1,63 @@
 /* eslint-disable react/display-name */
 import React from 'react'
-import {Input} from 'semantic-ui-react'
-//onMouseDown we start with that x, y
-//how do we get?
-//prevx - clientx is new x
-//prevy - clienty is new y
 export const spline = {
   name: 'spline',
-  coordArr: [],
-  pointString: 'M ',
-  handleMouseMove: (newX, newY, socket) => {
-    // const arrCopy = spline.pointString.slice(-5)
-    // const oldX = arrCopy[arrCopy.length - 1]
-    // const oldY = arrCopy[arrCopy.length - 2]
-    // spline.pointString +=
-    //   ' L ' +
-    //   (Number(oldX) * 2 - newX).toString() +
-    //   ' ' +
-    //   (Number(oldY) * 2 - newY).toString()
-    const oldX = coordArr[coordArr.length - 2]
-    const oldY = coordArr[coordArr.length - 1]
+  handleMouseMove: (selectedLayer, newX, newY, socket) => {
+    const {coordArr, oldX, oldY, initialX, initialY} = selectedLayer.props
+    const splineData = {
+      type: 'l',
+      x: newX - oldX,
+      y: newY - oldY
+    }
 
-    spline.updateCoordArr(2 * oldX - newX, 2 * oldY - newY)
-    socket.emit('change', {})
+    const newOldX = newX
+    const newOldY = newY
+
+    let xValue = coordArr.reduce((acc, currPoint) => {
+      return acc + currPoint.x
+    }, initialX)
+    let yValue = coordArr.reduce((acc, currPoint) => {
+      return acc + currPoint.y
+    }, initialY)
+
+    newX = Math.min(selectedLayer.x, xValue)
+    newY = Math.min(selectedLayer.y, yValue)
+
+    let maxX = 0
+    let maxY = 0
+    let currX = maxX
+    let currY = maxY
+    for (let i = 1; i < coordArr.length; i++) {
+      currX += coordArr[i].x
+      currY += coordArr[i].y
+      if (currX > maxX) {
+        maxX = currX
+      }
+      if (currY > maxY) {
+        maxY = currY
+      }
+    }
+
+    const newWidth = maxX + initialX - newX
+    const newHeight = maxY + initialY - newY
+    const middlePoints = coordArr.slice(1)
+    socket.emit('change', {
+      ...selectedLayer,
+      x: newX,
+      y: newY,
+      props: {
+        ...selectedLayer.props,
+        width: newWidth,
+        height: newHeight,
+        oldX: newOldX,
+        oldY: newOldY,
+        coordArr: [
+          {type: 'M', x: initialX - newX, y: initialY - newY},
+          ...middlePoints,
+          splineData
+        ]
+      }
+    })
   },
   DimensionsComponent: () => {
     return <div />
@@ -38,7 +73,8 @@ export const spline = {
       handleDelete,
       index,
       setChanging,
-      setSelectedLayerIds
+      setSelectedLayerIds,
+      coordArr
     } = props
     // let deleteButtonDisplay = 'none'
     // if (selectedLayer && selectedLayer.id === id) {
@@ -49,23 +85,24 @@ export const spline = {
 
     //   }
     // }
+    let pointString = ''
+    for (let coord of coordArr) {
+      pointString += ` ${coord.type} ${coord.x} ${coord.y}`
+    }
     return (
       <div>
-        <svg width="100" height="100">
-          <path d={points} stroke={stroke} />
+        <svg width={props.width} height={props.height}>
+          <path
+            d={pointString}
+            stroke={stroke}
+            fill={fill}
+            strokeWidth={strokeWidth}
+          />
         </svg>
       </div>
     )
   },
-  updateCoordArr: (x, y) => {
-    const data = {
-      x,
-      y
-    }
-    spline.coordArr.push(data)
-  },
   handleCreate: (x, y, fill, uuid, socket, strokeColor) => {
-    //x and y are mouseX + window.scrollX and mouseY + window.scrollY
     const data = {
       type: 'spline',
       x: x,
@@ -75,14 +112,16 @@ export const spline = {
       props: {
         fill: 'transparent',
         stroke: 'black',
-        strokeWidth: 6,
+        strokeWidth: 10,
+        width: 10,
+        height: 10,
         initialX: x,
         initialY: y,
-        coordArr: spline.coordArr
+        oldX: x,
+        oldY: y,
+        coordArr: [{type: 'M', x: 0, y: 0}]
       }
     }
-    // spline.pointString += x + ' ' + y
-    spline.updateCoordArr(x, y)
     socket.emit('create', data)
   }
   //   handleChange: (
