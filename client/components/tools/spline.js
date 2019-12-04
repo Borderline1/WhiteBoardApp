@@ -63,7 +63,8 @@ export const spline = {
     return (
       <div>
         <label>Stroke Width</label>
-        <input
+        <Input
+          min="0"
           name="strokeWidth"
           type="number"
           value={selectedLayer.props.strokeWidth}

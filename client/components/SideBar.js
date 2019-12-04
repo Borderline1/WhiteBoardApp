@@ -2,7 +2,7 @@ import React, {Component} from 'react'
 import {ChromePicker} from 'react-color'
 import ToolButton from './ToolButton'
 import ColorWheel from './ColorWheel'
-import {Segment, Grid} from 'semantic-ui-react'
+import {Segment, Grid, Input} from 'semantic-ui-react'
 
 const SideBar = ({
   color,
@@ -106,14 +106,16 @@ const SideBar = ({
           <div>
             <h2>{selectedLayer.type.name}</h2>
             <label htmlFor="x">X position</label>
-            <input
+            <Input
+              min="0"
               name="x"
               type="number"
               value={selectedLayer.x}
               onChange={handleChange}
             />
             <label htmlFor="y">Y position</label>
-            <input
+            <Input
+              min="0"
               name="y"
               type="number"
               value={selectedLayer.y}

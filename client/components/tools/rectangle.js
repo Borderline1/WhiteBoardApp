@@ -15,28 +15,32 @@ export const rectangle = {
     return (
       <div>
         <label>Width</label>
-        <input
+        <Input
+          min="0"
           name="width"
           type="number"
           value={selectedLayer.props.width}
           onChange={handleChange}
         />
         <label>Height</label>
-        <input
+        <Input
+          min="0"
           name="height"
           type="number"
           value={selectedLayer.props.height}
           onChange={handleChange}
         />
         <label>Stroke Width</label>
-        <input
+        <Input
+          min="0"
           name="strokeWidth"
           type="number"
           value={selectedLayer.props.strokeWidth}
           onChange={handleChange}
         />
         <label>Rotate</label>
-        <input
+        <Input
+          min="0"
           name="rotate"
           type="number"
           value={selectedLayer.props.rotate}

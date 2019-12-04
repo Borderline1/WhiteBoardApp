@@ -3,6 +3,7 @@
 /* eslint-disable react/display-name */
 import React from 'react'
 import className from 'classnames'
+import {Input} from 'semantic-ui-react'
 
 // let _id = 0
 
@@ -12,7 +13,8 @@ export const line = {
     return (
       <div>
         <label>Stroke Width</label>
-        <input
+        <Input
+          min="0"
           name="strokeWidth"
           type="number"
           value={selectedLayer.props.strokeWidth}

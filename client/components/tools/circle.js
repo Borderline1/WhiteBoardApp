@@ -9,6 +9,7 @@ export const circle = {
       <div>
         <label>Radius</label>
         <Input
+          min="0"
           name="radius"
           type="number"
           width="4"
@@ -17,6 +18,7 @@ export const circle = {
         />
         <label>Stroke Width</label>
         <Input
+          min="0"
           name="strokeWidth"
           type="number"
           value={selectedLayer.props.strokeWidth}
