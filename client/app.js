@@ -8,6 +8,7 @@ import uuidv1 from 'uuid/v1'
 import className from 'classnames'
 import io from 'socket.io-client'
 import Entry from './components/entry'
+import {useHotkeys} from 'react-hotkeys-hook'
 
 const serverAddress = window.location.origin
 
@@ -15,6 +16,7 @@ const App = () => {
   const [socket, setSocket] = useState(null)
   const [color, setColor] = useState('#1133EE')
   const [strokeColor, setStrokeColor] = useState('#000000')
+  const [selectedColor, setSelectedColor] = useState(null)
   const [filling, setFilling] = useState(true)
   const [tool, setTool] = useState(types.picker)
   const [mouseX, setMouseX] = useState(0)
@@ -31,10 +33,23 @@ const App = () => {
   const [dragging, setDragging] = useState(false)
   const [creating, setCreating] = useState(false)
   const [changing, setChanging] = useState(false)
+  const [rotating, setRotating] = useState(false)
   const [layerInitialPositionsXs, setLayerInitialPositionsXs] = useState([])
   const [layerInitialPositionsYs, setLayerInitialPositionsYs] = useState([])
   const [lasso, setLasso] = useState(null)
   const [lassoing, setLassoing] = useState(false)
+
+  useHotkeys('p', () => setTool(types.picker))
+  useHotkeys('1', () => setTool(types.picker))
+  useHotkeys('2', () => setTool(types.circle))
+  useHotkeys('3', () => setTool(types.triangle))
+  useHotkeys('4', () => setTool(types.rectangle))
+  useHotkeys('5', () => setTool(types.lines))
+  useHotkeys('6', () => setTool(types.spline))
+  useHotkeys('7', () => setTool(types.ellipse))
+  useHotkeys('8', () => setTool(types.rightTriangle))
+  useHotkeys('9', () => setTool(types.polygon))
+  useHotkeys('0', () => setTool(types.textBox))
 
   const clientLayers = layers.map(layer => {
     return {...layer, type: types[layer.type]}
@@ -114,6 +129,17 @@ const App = () => {
           layerInitialPositionsXs,
           layerInitialPositionsYs
         )
+      } else if (rotating) {
+        if (selectedLayer) {
+          selectedLayer.type.handleRotate(
+            selectedLayer,
+            socket,
+            prevX,
+            prevY,
+            clientX,
+            clientY
+          )
+        }
       } else if (dragging) {
         tool.handleDragging(
           selectedLayers,
@@ -137,15 +163,24 @@ const App = () => {
         )
       }
     } else if (creating && selectedLayer) {
-      tool.handleCreatingUpdate(
-        selectedLayer,
-        prevX + window.scrollX,
-        prevY + window.scrollY,
-        clientX + window.scrollX,
-        clientY + window.scrollY,
-        socket,
-        handleSelectTool
-      )
+      if (tool.name !== 'spline') {
+        tool.handleCreatingUpdate(
+          selectedLayer,
+          prevX + window.scrollX,
+          prevY + window.scrollY,
+          clientX + window.scrollX,
+          clientY + window.scrollY,
+          socket,
+          handleSelectTool
+        )
+      } else {
+        tool.handleMouseMove(
+          selectedLayer,
+          clientX + window.scrollX,
+          clientY + window.scrollY,
+          socket
+        )
+      }
     }
   }
 
@@ -173,6 +208,7 @@ const App = () => {
   }
 
   const handleDisplayMouseUp = event => {
+    setRotating(false)
     setChanging(false)
     if (dragging) {
       setDragging(false)
@@ -242,6 +278,8 @@ const App = () => {
             handleSelectTool={handleSelectTool}
             selectedLayer={selectedLayer}
             socket={socket}
+            selectedColor={selectedColor}
+            setSelectedColor={setSelectedColor}
           />
           <div
             id="canvas"
@@ -274,8 +312,20 @@ const App = () => {
                     }
                   }}
                   onMouseUp={() => {
-                    if (dragging) return
-                    else setSelectedLayerIds([layer.id])
+                    if (dragging) {
+                      const xPositions = []
+                      const yPositions = []
+                      const layersToUpdate = clientLayers.filter(layer =>
+                        selectedLayerIds.includes(layer.id))
+                      for (let layer of layersToUpdate) {
+                        xPositions.push(layer.x)
+                        yPositions.push(layer.y)
+                      }
+                      setLayerInitialPositionsXs(xPositions)
+                      setLayerInitialPositionsYs(yPositions)
+                    } else {
+                      setSelectedLayerIds([layer.id])
+                    }
                   }}
                   className={className('layer', {
                     indicated: indicatedLayerIds.includes(layer.id),
@@ -284,7 +334,8 @@ const App = () => {
                   style={{
                     position: 'absolute',
                     top: layer.y,
-                    left: layer.x
+                    left: layer.x,
+                    transform: `rotate(${layer.props.rotate}deg)`
                   }}
                 >
                   {/* this layers canvas component */}
@@ -296,6 +347,7 @@ const App = () => {
                     index={index}
                     handleDelete={handleDelete}
                     setChanging={setChanging}
+                    setRotating={setRotating}
                     id={layer.id}
                     setSelectedLayerIds={setSelectedLayerIds}
                     selectedLayerIds={selectedLayerIds}

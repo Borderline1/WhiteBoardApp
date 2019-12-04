@@ -1,8 +1,7 @@
 import React, {Component} from 'react'
-import {ChromePicker} from 'react-color'
 import ToolButton from './ToolButton'
 import ColorWheel from './ColorWheel'
-import {Segment, Grid} from 'semantic-ui-react'
+import {Segment, Grid, Header} from 'semantic-ui-react'
 
 const SideBar = ({
   color,
@@ -15,7 +14,9 @@ const SideBar = ({
   handleColorChange,
   types,
   handleSelectTool,
-  socket
+  socket,
+  selectedColor,
+  setSelectedColor
 }) => {
   const handleChange = e => {
     e.preventDefault()
@@ -42,14 +43,21 @@ const SideBar = ({
       })
     }
   }
-  const firstHalf = Object.keys(types).slice(
-    0,
-    Object.keys(types).length / 2 + 1
-  )
-  const secondHalf = Object.keys(types).slice(Object.keys(types).length / 2 + 1)
+  const handleRotate = e => {
+    let {name, type, value} = e.target
+    socket.emit('change', {
+      ...selectedLayer,
+      props: {
+        ...selectedLayer.props,
+        rotate: value
+      }
+    })
+  }
+  const firstHalf = Object.keys(types).slice(0, Object.keys(types).length / 2)
+  const secondHalf = Object.keys(types).slice(Object.keys(types).length / 2)
   return (
     <div id="sidebar">
-      {/* iterate over all tools instead of hard coding */}
+      <Header as="h1">SVG Board</Header>
       <div className="toolbox">
         <Segment className="tool-table">
           <h4 className="tools-header">TOOLS</h4>
@@ -93,6 +101,8 @@ const SideBar = ({
           filling={filling}
           selectedLayer={selectedLayer}
           socket={socket}
+          selectedColor={selectedColor}
+          setSelectedColor={setSelectedColor}
         />
         {/* Form Stuff */}
         {selectedLayer ? (
@@ -115,7 +125,8 @@ const SideBar = ({
             {selectedLayer.type.DimensionsComponent(
               selectedLayer,
               handleChange,
-              handleTextPropsChange
+              handleTextPropsChange,
+              handleRotate
             )}
           </div>
         ) : null}

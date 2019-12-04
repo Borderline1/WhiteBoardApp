@@ -1,7 +1,6 @@
 /* eslint-disable max-params */
 /* eslint-disable react/display-name */
 import React from 'react'
-import className from 'classnames'
 
 // let _id = 0
 
@@ -10,20 +9,6 @@ export const textBox = {
   DimensionsComponent: (selectedLayer, handleChange, handleTextPropsChange) => {
     return (
       <div>
-        <label>Text Color</label>
-        <input
-          name="textColor"
-          type="color"
-          value={selectedLayer.props.textColor}
-          onChange={handleTextPropsChange}
-        />
-        <label>Background Color</label>
-        <input
-          name="backgroundColor"
-          type="color"
-          value={selectedLayer.props.backgroundColor}
-          onChange={handleTextPropsChange}
-        />
         <label>Width</label>
         <input
           name="width"
@@ -136,10 +121,10 @@ export const textBox = {
       x,
       y,
       id: uuid,
-      rotate: 0,
       props: {
         width: 70,
         height: 50,
+        rotate: 0,
         text: 'Text',
         backgroundColor: '#ffffff',
         textColor,

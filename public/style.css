@@ -47,7 +47,7 @@ form div {
 }
 .ui.segment {
   background-color: rgb(182, 181, 181) !important;
-  width: 15vw !important;
+  width: 216px !important;
 }
 .ui.button.tool-button:hover {
   background: rgb(191, 243, 139) !important;
@@ -160,15 +160,8 @@ button.deleteElement {
   border: 2px solid black;
   border-radius: 50%;
 }
-button.deleteElement.visible {
-  position: absolute;
-  right: -8px;
-  top: -6px;
-  width: 0.5rem;
-  height: 1.2rem;
-  background-color: rgb(255, 247, 238);
-  border: 2px solid black;
-  border-radius: 50%;
+button.deleteElement:hover {
+  box-shadow: 0 0 10px orangered;
 }
 div.changeElement {
   position: absolute;
@@ -180,6 +173,33 @@ div.changeElement {
   border: 2px solid black;
   border-radius: 100% 100% 0 100%;
 }
+div.changeElement:hover {
+  box-shadow: 0 0 10px orangered;
+}
+button.rotateElement {
+  position: absolute;
+  left: -8px;
+  top: -6px;
+  width: 0.5rem;
+  height: 1.2rem;
+  background-color: rgb(255, 247, 238);
+  border: 2px solid black;
+  border-radius: 50%;
+}
+button.rotateElement:hover {
+  box-shadow: 0 0 10px orangered;
+}
+button.rotateRectTri {
+  position: absolute;
+  width: 0.5rem;
+  height: 1.2rem;
+  background-color: rgb(255, 247, 238);
+  border: 2px solid black;
+  border-radius: 50%;
+}
+button.rotateRectTri:hover {
+  box-shadow: 0 0 10px orangered;
+}
 button.deleteLineRect {
   position: absolute;
   width: 0.5rem;
@@ -188,22 +208,25 @@ button.deleteLineRect {
   border: 2px solid black;
   border-radius: 50%;
 }
+button.deleteLineRect:hover {
+  box-shadow: 0 0 10px orangered;
+}
 div.changeLineRect {
   position: absolute;
-  /* right: -8px;
-  bottom: -6px; */
   width: 1rem;
   height: 1rem;
   background-color: rgb(255, 247, 238);
   border: 2px solid black;
 }
-
+div.changeLineRect:hover {
+  box-shadow: 0 0 10px orangered;
+}
 .polygon {
   transform: rotate(180deg);
 }
 
 .tool-table {
-  width: '92.5%';
+  width: 92.5%;
   align-self: 'center';
   background-color: gray;
 }
@@ -273,6 +296,12 @@ div.changeLineRect {
   height: 1.9rem;
   display: inline-block;
   text-align: center;
+}
+.selected-color:hover {
+  box-shadow: inset 0 0 6px black;
+}
+.selected-color.selected {
+  box-shadow: 0 0 10px black;
 }
 .selected-color-container {
   width: 2rem;

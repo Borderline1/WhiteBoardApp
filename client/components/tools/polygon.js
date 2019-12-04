@@ -33,7 +33,12 @@ export const polygon = {
     }
     return coordinateStr
   },
-  DimensionsComponent: (selectedLayer, handleChange) => {
+  DimensionsComponent: (
+    selectedLayer,
+    handleChange,
+    handleTextPropsChange,
+    handleRotate
+  ) => {
     return (
       <div>
         <label>Sides</label>
@@ -49,6 +54,13 @@ export const polygon = {
           type="number"
           value={selectedLayer.props.radius}
           onChange={handleChange}
+        />
+        <label>Rotate</label>
+        <Input
+          name="rotate"
+          type="number"
+          value={selectedLayer.props.rotate}
+          onChange={handleRotate}
         />
         <label>Stroke Width</label>
         <Input
@@ -72,7 +84,8 @@ export const polygon = {
       id,
       index,
       setSelectedLayerIds,
-      setChanging
+      setChanging,
+      setRotating
     } = props
     const points = polygon.generatePoints(props, x, y)
     let deleteButtonDisplay = 'none'
@@ -112,9 +125,28 @@ export const polygon = {
             setChanging(false)
           }}
         />
+        <button
+          name="rotate"
+          type="button"
+          className="rotateElement"
+          style={{display: deleteButtonDisplay}}
+          onMouseDown={() => {
+            setSelectedLayerIds([id])
+            setChanging(false)
+            setRotating(true)
+          }}
+          onMouseUp={() => {
+            setSelectedLayerIds([])
+            setRotating(false)
+          }}
+        >
+          <p style={{position: 'absolute', right: '3px', top: '-4px'}}>⤺</p>
+        </button>
       </div>
     )
   },
+  //when polygon is rotated upsidedown,
+  //attempting to change size will bheave oddly, shrinking in size.
   handleChange: (
     clientX,
     clientY,
@@ -138,8 +170,19 @@ export const polygon = {
       props: {
         ...selectedLayer.props,
         radius: oldRadius + newRadius,
-        width: oldWidth + movementX,
-        height: oldHeight + movementY
+        width: Math.abs(oldWidth + movementX),
+        height: Math.abs(oldHeight + movementY)
+      }
+    })
+  },
+  handleRotate: (selectedLayer, socket, prevX, prevY, clientX, clientY) => {
+    const movementX = clientX - prevX
+    const movementY = clientY - prevY
+    socket.emit('change', {
+      ...selectedLayer,
+      props: {
+        ...selectedLayer.props,
+        rotate: +Math.floor(movementX * 0.5 - movementY * 0.5)
       }
     })
   },
@@ -156,7 +199,8 @@ export const polygon = {
         fill,
         sides: 5,
         width: 20,
-        height: 20
+        height: 20,
+        rotate: 0
       }
     }
     socket.emit('create', data)
