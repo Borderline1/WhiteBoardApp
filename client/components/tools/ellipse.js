@@ -14,32 +14,36 @@ export const ellipse = {
   ) => {
     return (
       <div>
-        <label>Radius X</label>
+        <label className="input-label">Radius X</label>
         <Input
+          className="input-input"
           min="0"
           name="rx"
           type="number"
           value={selectedLayer.props.rx}
           onChange={handleChange}
         />
-        <label>Radius Y</label>
+        <label className="input-label">Radius Y</label>
         <Input
+          className="input-input"
           min="0"
           name="ry"
           type="number"
           value={selectedLayer.props.ry}
           onChange={handleChange}
         />
-        <label>Stroke Width</label>
+        <label className="input-label">Stroke Width</label>
         <Input
+          className="input-input"
           min="0"
           name="strokeWidth"
           type="number"
           value={selectedLayer.props.strokeWidth}
           onChange={handleChange}
         />
-        <label>Rotate</label>
+        <label className="input-label">Rotate</label>
         <Input
+          className="input-input"
           min="0"
           name="rotate"
           type="number"

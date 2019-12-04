@@ -18,17 +18,17 @@ const ColorWheel = props => {
   const colors = {
     red: '#ff0000',
     orange: '#ff8000',
-    lightCoral: '#ff9999',
-    yellow: '#ffff00',
+    tartOrange: '#FE4A49',
+    orangeYellow: '#FED766',
 
     green: '#009900',
-    turquoise: '#009999',
+    ball: '#009999',
     lime: '#80ff00',
     teal: '#66ffb2',
 
     purple: '#7f00ff',
     navy: '#0000ff',
-    blue1: '#0080ff',
+    ballBlue: '#2AB7CA',
     aqua: '#00ffff',
 
     black: '#000000',
@@ -48,7 +48,7 @@ const ColorWheel = props => {
         <div
           className="applied-color-1"
           style={
-            filling ? {boxShadow: '0 0 6px #000000'} : {boxShadow: '0 0 0'}
+            filling ? {boxShadow: '0 0 6px #ffffff'} : {boxShadow: '0 0 0'}
           }
           onClick={() => toggleFilling(true)}
         >
@@ -78,7 +78,7 @@ const ColorWheel = props => {
         <div
           className="applied-color-2"
           style={
-            !filling ? {boxShadow: '0 0 6px #000000'} : {boxShadow: '0 0 0'}
+            !filling ? {boxShadow: '0 0 6px #ffffff'} : {boxShadow: '0 0 0'}
           }
           onClick={() => toggleFilling(false)}
         >

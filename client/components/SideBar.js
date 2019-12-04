@@ -108,10 +108,12 @@ const SideBar = ({
         />
         {/* Form Stuff */}
         {selectedLayer ? (
-          <div>
-            <h2>{selectedLayer.type.name}</h2>
-            <label htmlFor="x">X position</label>
+          <div id="dimensions-form">
+            <label htmlFor="x" className="input-label">
+              X position
+            </label>
             <Input
+              className="input-input"
               min="0"
               name="x"
               type="number"
@@ -119,8 +121,11 @@ const SideBar = ({
               onChange={handleChange}
             />
 
-            <label htmlFor="y">Y position</label>
+            <label htmlFor="y" className="input-label">
+              Y position
+            </label>
             <Input
+              className="input-input"
               min="0"
               name="y"
               type="number"

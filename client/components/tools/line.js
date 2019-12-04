@@ -11,8 +11,9 @@ export const line = {
   DimensionsComponent: (selectedLayer, handleChange) => {
     return (
       <div>
-        <label>Stroke Width</label>
+        <label className="input-label">Stroke Width</label>
         <Input
+          className="input-input"
           min="0"
           name="strokeWidth"
           type="number"
