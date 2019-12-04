@@ -125,7 +125,9 @@ export const polygon = {
             setChanging(false)
           }}
         />
-        <div
+        <button
+          name="rotate"
+          type="button"
           className="rotateElement"
           style={{display: deleteButtonDisplay}}
           onMouseDown={() => {
@@ -137,7 +139,9 @@ export const polygon = {
             setSelectedLayerIds([])
             setRotating(false)
           }}
-        />
+        >
+          <p style={{position: 'absolute', right: '3px', top: '-4px'}}>⤺</p>
+        </button>
       </div>
     )
   },
