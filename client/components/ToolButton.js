@@ -13,8 +13,7 @@ const ToolButton = ({tool, types, name, handleSelectTool}) => {
     textBox: 'font',
     line: 'minus',
     image: 'file image outline',
-    spline: 'pencil',
-    ellipse: 'cloud'
+    spline: 'pencil'
   }
   return (
     <Button
@@ -28,6 +27,11 @@ const ToolButton = ({tool, types, name, handleSelectTool}) => {
       ) : name === 'triangle' ? (
         <img
           src="https://img.icons8.com/material/13/000000/triangle-stroked--v1.png"
+          alt={name}
+        />
+      ) : name === 'ellipse' ? (
+        <img
+          src="https://img.icons8.com/android/13/000000/ellipse-stroked.png"
           alt={name}
         />
       ) : name === 'rightTriangle' ? (
