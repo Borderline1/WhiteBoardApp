@@ -190,15 +190,13 @@ button.rotateElement {
   border: 2px solid black;
   border-radius: 50%;
 }
-div.rotateElement {
+button.rotateRect {
   position: absolute;
-  left: -8px;
-  top: -6px;
-  width: 1rem;
-  height: 1rem;
+  width: 0.5rem;
+  height: 1.2rem;
   background-color: rgb(255, 247, 238);
   border: 2px solid black;
-  border-radius: 100% 0 100% 0;
+  border-radius: 50%;
 }
 button.deleteLineRect {
   position: absolute;

@@ -123,7 +123,7 @@ export const rectangle = {
         <button
           name="rotate"
           type="button"
-          className="rotateElement"
+          className="rotateRect"
           style={{display: deleteButtonDisplay}}
           onMouseDown={() => {
             setSelectedLayerIds([id])
