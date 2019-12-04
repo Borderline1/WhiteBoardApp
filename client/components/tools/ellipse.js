@@ -1,9 +1,11 @@
+/* eslint-disable complexity */
+/* eslint-disable max-params */
 /* eslint-disable react/display-name */
 import React from 'react'
-import {Input} from 'semantic-ui-react'
+import className from 'classnames'
 
-export const circle = {
-  name: 'circle',
+export const ellipse = {
+  name: 'ellipse',
   DimensionsComponent: (
     selectedLayer,
     handleChange,
@@ -13,59 +15,67 @@ export const circle = {
     return (
       <div>
         <label>Radius X</label>
-        <Input
-          name="radiusX"
+        <input
+          name="rx"
           type="number"
-          width="4"
-          value={selectedLayer.props.radiusX}
+          value={selectedLayer.props.rx}
           onChange={handleChange}
         />
         <label>Radius Y</label>
-        <Input
-          name="radiusY"
+        <input
+          name="ry"
           type="number"
-          width="4"
-          value={selectedLayer.props.radiusY}
+          value={selectedLayer.props.ry}
           onChange={handleChange}
         />
         <label>Stroke Width</label>
-        <Input
+        <input
           name="strokeWidth"
           type="number"
           value={selectedLayer.props.strokeWidth}
           onChange={handleChange}
+        />
+        <label>Rotate</label>
+        <input
+          name="rotate"
+          type="number"
+          value={selectedLayer.props.rotate}
+          onChange={handleRotate}
         />
       </div>
     )
   },
   ElementComponent: ({
     selectedLayer,
-    radius,
+    rx,
+    ry,
     fill,
     stroke,
     strokeWidth,
-    id,
     handleDelete,
+    deletePosition,
+    changePosition,
+    rotatePosition,
+    id,
     index,
+    setSelectedLayerIds,
     setChanging,
-    setSelectedLayerIds
+    setRotating
   }) => {
     let deleteButtonDisplay = 'none'
     if (selectedLayer && selectedLayer.id === id) {
       deleteButtonDisplay = 'inline'
     }
-    const containerSizeX = radiusX * 2 + strokeWidth
-    const containerSizeY = radiusY * 2 + strokeWidth
-    const centerX = radiusX + strokeWidth / 2
-    const centerY = radiusY + strokeWidth / 2
+    const containerSizeX = rx * 2 + strokeWidth
+    const containerSizeY = ry * 2 + strokeWidth
     return (
       <div>
         <svg width={containerSizeX} height={containerSizeY}>
           <ellipse
-            cx={centerX}
-            cy={centerY}
-            rx={radiusX}
-            ry={radiusY}
+            cx={rx + strokeWidth / 2}
+            cy={ry + strokeWidth / 2}
+            rx={rx}
+            ry={ry}
             fill={fill}
             stroke={stroke}
             strokeWidth={strokeWidth}
@@ -74,8 +84,14 @@ export const circle = {
         <button
           name="X"
           type="button"
-          className="deleteElement"
-          style={{display: deleteButtonDisplay}}
+          className="deleteLineRect"
+          style={{
+            display: deleteButtonDisplay,
+            top: deletePosition.top,
+            bottom: deletePosition.bottom,
+            right: deletePosition.right,
+            left: deletePosition.left
+          }}
           onClick={() => {
             handleDelete(index)
           }}
@@ -83,8 +99,15 @@ export const circle = {
           <p style={{position: 'absolute', left: '4px', top: '-4px'}}>x</p>
         </button>
         <div
-          className="changeElement"
-          style={{display: deleteButtonDisplay}}
+          className="changeLineRect"
+          style={{
+            display: deleteButtonDisplay,
+            top: changePosition.top,
+            bottom: changePosition.bottom,
+            right: changePosition.right,
+            left: changePosition.left,
+            borderRadius: changePosition.radius
+          }}
           onMouseDown={() => {
             setSelectedLayerIds([id])
             setChanging(true)
@@ -93,69 +116,268 @@ export const circle = {
             setChanging(false)
           }}
         />
+        <button
+          name="rotate"
+          type="button"
+          className="rotateRectTri"
+          style={{
+            display: deleteButtonDisplay,
+            top: rotatePosition.top,
+            bottom: rotatePosition.bottom,
+            right: rotatePosition.right,
+            left: rotatePosition.left
+          }}
+          onMouseDown={() => {
+            setSelectedLayerIds([id])
+            setChanging(false)
+            setRotating(true)
+          }}
+          onMouseUp={() => {
+            setSelectedLayerIds([])
+            setRotating(false)
+          }}
+        >
+          <p style={{position: 'absolute', right: '2px', top: '-4px'}}>⤺</p>
+        </button>
       </div>
     )
   },
-  handleChange: (
-    clientX,
-    clientY,
-    prevX,
-    prevY,
-    socket,
-    selectedLayer,
-    layerInitialPositionsXs
-  ) => {
-    const layerInitialPositionX = layerInitialPositionsXs[0]
-    const oldRadius = (prevX - layerInitialPositionX) / 2
-    const movementX = clientX - prevX
-    const newRadius = movementX / 2
-    socket.emit('change', {
-      ...selectedLayer,
-      props: {
-        ...selectedLayer.props,
-        radius: oldRadius + newRadius
-      }
-    })
-  },
-  handleCreate: (x, y, fill, uuid, socket, strokeColor) => {
+  // handleChange: (
+  //   clientX,
+  //   clientY,
+  //   prevX,
+  //   prevY,
+  //   socket,
+  //   selectedLayer,
+  //   layerInitialPositionXs,
+  //   layerInitialPositionYs
+  // ) => {
+  //   const layerInitialPositionX = layerInitialPositionXs[0]
+  //   const layerInitialPositionY = layerInitialPositionYs[0]
+  //   const xPos = Math.min(layerInitialPositionX, clientX)
+  //   const yPos = Math.min(layerInitialPositionY, clientY)
+  //   const width = Math.abs(layerInitialPositionX - clientX)
+  //   const height = Math.abs(layerInitialPositionY - clientY)
+
+  //   if (clientX > layerInitialPositionX && clientY > layerInitialPositionY) {
+  //     socket.emit('change', {
+  //       ...selectedLayer,
+  //       x: xPos,
+  //       y: yPos,
+  //       props: {
+  //         ...selectedLayer.props,
+  //         width: width,
+  //         height: height,
+  //         deletePosition: {top: '-6px', bottom: '', right: '-8px', left: ''},
+  //         changePosition: {
+  //           top: '',
+  //           bottom: '-6px',
+  //           right: '-8px',
+  //           left: '',
+  //           radius: '100% 100% 0 100%'
+  //         },
+  //         rotatePosition: {top: '-6px', bottom: '', right: '', left: '-8px'}
+  //       }
+  //     })
+  //   }
+  //   if (clientX < layerInitialPositionX && clientY < layerInitialPositionY) {
+  //     socket.emit('change', {
+  //       ...selectedLayer,
+  //       x: xPos,
+  //       y: yPos,
+  //       props: {
+  //         ...selectedLayer.props,
+  //         width: width,
+  //         height: height,
+  //         deletePosition: {top: '-6px', bottom: '', right: '-8px', left: ''},
+  //         changePosition: {
+  //           top: '-6px',
+  //           bottom: '',
+  //           right: '',
+  //           left: '-8px',
+  //           radius: '0 100% 100% 100%'
+  //         },
+  //         rotatePosition: {top: '', bottom: '-6px', right: '', left: '-8px'}
+  //       }
+  //     })
+  //   }
+  //   if (clientX > layerInitialPositionX && clientY < layerInitialPositionY) {
+  //     socket.emit('change', {
+  //       ...selectedLayer,
+  //       x: xPos,
+  //       y: yPos,
+  //       props: {
+  //         ...selectedLayer.props,
+  //         width: width,
+  //         height: height,
+  //         deletePosition: {top: '', bottom: '-6px', right: '-8px', left: ''},
+  //         changePosition: {
+  //           top: '-6px',
+  //           bottom: '',
+  //           right: '-8px',
+  //           left: '',
+  //           radius: '100% 0 100% 100%'
+  //         },
+  //         rotatePosition: {top: '-6px', bottom: '', right: '', left: '-8px'}
+  //       }
+  //     })
+  //   }
+  //   if (clientX < layerInitialPositionX && clientY > layerInitialPositionY) {
+  //     socket.emit('change', {
+  //       ...selectedLayer,
+  //       x: xPos,
+  //       y: yPos,
+  //       props: {
+  //         ...selectedLayer.props,
+  //         width: width,
+  //         height: height,
+  //         deletePosition: {top: '-6px', bottom: '', right: '-8px', left: ''},
+  //         changePosition: {
+  //           top: '',
+  //           bottom: '-6px',
+  //           right: '',
+  //           left: '-8px',
+  //           radius: '100% 100% 100% 0'
+  //         },
+  //         rotatePosition: {top: '-6px', bottom: '', right: '', left: '-8px'}
+  //       }
+  //     })
+  //   }
+  // },
+  // handleRotate: (selectedLayer, socket, prevX, prevY, clientX, clientY) => {
+  //   const movementX = clientX - prevX
+  //   const movementY = clientY - prevY
+  //   socket.emit('change', {
+  //     ...selectedLayer,
+  //     props: {
+  //       ...selectedLayer.props,
+  //       rotate: +Math.floor(movementX * 0.5 - movementY * 0.5)
+  //     }
+  //   })
+  // },
+  handleCreate: (x, y, fill = 'black', uuid, socket, strokeColor) => {
     const data = {
-      type: 'circle',
-      x: x - 10,
-      y: y - 10,
+      type: 'ellipse',
+      x,
+      y,
       id: uuid,
       props: {
-        radiusX: 12,
-        radiusY: 8,
+        rx: 8,
+        ry: 12,
         rotate: 0,
         fill,
-        stroke: strokeColor,
-        strokeWidth: 6
+        stroke: 'black',
+        strokeWidth: 5,
+        deletePosition: {top: '-6px', bottom: '', right: '-8px', left: ''},
+        changePosition: {
+          top: '',
+          bottom: '-6px',
+          right: '-8px',
+          left: '',
+          radius: '100% 100% 0 100%'
+        },
+        rotatePosition: {top: '-6px', bottom: '', right: '', left: '-8px'}
       }
     }
     socket.emit('create', data)
-  },
-  handleCreatingUpdate: (
-    selectedLayer,
-    prevX,
-    prevY,
-    clientX,
-    clientY,
-    socket
-  ) => {
-    const strokeAdd = selectedLayer.props.strokeWidth / 2
-    const xdiff = prevX - clientX
-    const ydiff = prevY - clientY
-    const radius = Math.round(Math.sqrt(xdiff * xdiff + ydiff * ydiff))
-    const xPos = prevX - radius - strokeAdd
-    const yPos = prevY - radius - strokeAdd
-
-    if (selectedLayer) {
-      socket.emit('change', {
-        ...selectedLayer,
-        x: xPos,
-        y: yPos,
-        props: {...selectedLayer.props, radius}
-      })
-    }
   }
+  //   handleCreatingUpdate: (
+  //     selectedLayer,
+  //     prevX,
+  //     prevY,
+  //     clientX,
+  //     clientY,
+  //     socket
+  //   ) => {
+  //     const xPos = Math.min(prevX, clientX)
+  //     const yPos = Math.min(prevY, clientY)
+  //     const width = Math.abs(prevX - clientX)
+  //     const height = Math.abs(prevY - clientY)
+  //     if (selectedLayer) {
+  //       if (clientX > prevX && clientY > prevY) {
+  //         socket.emit('change', {
+  //           ...selectedLayer,
+  //           x: xPos,
+  //           y: yPos,
+  //           props: {
+  //             ...selectedLayer.props,
+  //             width,
+  //             height,
+  //             deletePosition: {top: '-6px', bottom: '', right: '-8px', left: ''},
+  //             changePosition: {
+  //               top: '',
+  //               bottom: '-6px',
+  //               right: '-8px',
+  //               left: '',
+  //               radius: '100% 100% 0 100%'
+  //             },
+  //             rotatePosition: {top: '-6px', bottom: '', right: '', left: '-8px'}
+  //           }
+  //         })
+  //       }
+  //       if (clientX < prevX && clientY < prevY) {
+  //         socket.emit('change', {
+  //           ...selectedLayer,
+  //           x: xPos,
+  //           y: yPos,
+  //           props: {
+  //             ...selectedLayer.props,
+  //             width,
+  //             height,
+  //             deletePosition: {top: '-6px', bottom: '', right: '-8px', left: ''},
+  //             changePosition: {
+  //               top: '-6px',
+  //               bottom: '',
+  //               right: '',
+  //               left: '-8px',
+  //               radius: '0 100% 100% 100%'
+  //             },
+  //             rotatePosition: {top: '', bottom: '-6px', right: '', left: '-8px'}
+  //           }
+  //         })
+  //       }
+  //       if (clientX > prevX && clientY < prevY) {
+  //         socket.emit('change', {
+  //           ...selectedLayer,
+  //           x: xPos,
+  //           y: yPos,
+  //           props: {
+  //             ...selectedLayer.props,
+  //             width,
+  //             height,
+  //             deletePosition: {top: '', bottom: '-6px', right: '-8px', left: ''},
+  //             changePosition: {
+  //               top: '-6px',
+  //               bottom: '',
+  //               right: '-8px',
+  //               left: '',
+  //               radius: '100% 0 100% 100%'
+  //             },
+  //             rotatePosition: {top: '-6px', bottom: '', right: '', left: '-8px'}
+  //           }
+  //         })
+  //       }
+  //       if (clientX < prevX && clientY > prevY) {
+  //         socket.emit('change', {
+  //           ...selectedLayer,
+  //           x: xPos,
+  //           y: yPos,
+  //           props: {
+  //             ...selectedLayer.props,
+  //             width,
+  //             height,
+  //             deletePosition: {top: '-6px', bottom: '', right: '-8px', left: ''},
+  //             changePosition: {
+  //               top: '',
+  //               bottom: '-6px',
+  //               right: '',
+  //               left: '-8px',
+  //               radius: '100% 100% 100% 0'
+  //             },
+  //             rotatePosition: {top: '-6px', bottom: '', right: '', left: '-8px'}
+  //           }
+  //         })
+  //       }
+  //     }
+  //   }
 }
