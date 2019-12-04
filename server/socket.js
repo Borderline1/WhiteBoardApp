@@ -42,7 +42,6 @@ function socketWorks(server, elements, sessions, roomRefs) {
             sessionKey: key
           })
         }
-        // console.log(cursorPositions)
         socket.emit('cursor', cursorRefs[roomId])
         socket.to(roomId).emit('cursor', cursorRefs[roomId])
         // broadcast exludes the socket that the event came from
