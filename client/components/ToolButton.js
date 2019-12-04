@@ -13,7 +13,7 @@ const ToolButton = ({tool, types, name, handleSelectTool}) => {
     textBox: 'font',
     line: 'minus',
     image: 'file image outline',
-    spline: 'pencil alternate'
+    spline: 'pencil'
   }
   return (
     <Button
