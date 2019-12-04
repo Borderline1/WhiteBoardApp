@@ -2,7 +2,7 @@ import React, {Component} from 'react'
 import {ChromePicker} from 'react-color'
 import ToolButton from './ToolButton'
 import ColorWheel from './ColorWheel'
-import {Segment, Grid} from 'semantic-ui-react'
+import {Segment, Grid, Header} from 'semantic-ui-react'
 
 const SideBar = ({
   color,
@@ -56,7 +56,7 @@ const SideBar = ({
   const secondHalf = Object.keys(types).slice(Object.keys(types).length / 2)
   return (
     <div id="sidebar">
-      {/* iterate over all tools instead of hard coding */}
+      <Header as="h1">SVG Board</Header>
       <div className="toolbox">
         <Segment className="tool-table">
           <h4 className="tools-header">TOOLS</h4>

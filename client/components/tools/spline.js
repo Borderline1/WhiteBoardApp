@@ -1,5 +1,7 @@
 /* eslint-disable react/display-name */
 import React from 'react'
+import {Input} from 'semantic-ui-react'
+
 export const spline = {
   name: 'spline',
   handleMouseMove: (selectedLayer, newX, newY, socket) => {
@@ -59,11 +61,23 @@ export const spline = {
       }
     })
   },
-  DimensionsComponent: (selectedLayer, handleChange) => {
+  DimensionsComponent: (
+    selectedLayer,
+    handleChange,
+    handleTextPropsChange,
+    handleRotate
+  ) => {
     return (
       <div>
+        <label>Rotate</label>
+        <Input
+          name="rotate"
+          type="number"
+          value={selectedLayer.props.rotate}
+          onChange={handleRotate}
+        />
         <label>Stroke Width</label>
-        <input
+        <Input
           name="strokeWidth"
           type="number"
           value={selectedLayer.props.strokeWidth}
@@ -72,36 +86,31 @@ export const spline = {
       </div>
     )
   },
-  ElementComponent: props => {
-    const {
-      selectedLayer,
-      radius,
-      fill,
-      stroke,
-      strokeWidth,
-      id,
-      handleDelete,
-      index,
-      setChanging,
-      setSelectedLayerIds,
-      coordArr
-    } = props
-    // let deleteButtonDisplay = 'none'
-    // if (selectedLayer && selectedLayer.id === id) {
-    //   deleteButtonDisplay = 'inline'
-    // }
-    // for (let i = 0; i < spline.pointString.length; i += 2) {
-    //   if (i === 0) {
-
-    //   }
-    // }
+  ElementComponent: ({
+    selectedLayer,
+    width,
+    height,
+    fill,
+    stroke,
+    strokeWidth,
+    id,
+    handleDelete,
+    index,
+    setRotating,
+    setChanging,
+    coordArr
+  }) => {
+    let deleteButtonDisplay = 'none'
+    if (selectedLayer && selectedLayer.id === id) {
+      deleteButtonDisplay = 'inline'
+    }
     let pointString = ''
     for (let coord of coordArr) {
       pointString += ` ${coord.type} ${coord.x} ${coord.y}`
     }
     return (
       <div>
-        <svg width={props.width} height={props.height}>
+        <svg width={width} height={height}>
           <path
             d={pointString}
             stroke={stroke}
@@ -109,8 +118,45 @@ export const spline = {
             strokeWidth={strokeWidth}
           />
         </svg>
+        <button
+          name="X"
+          type="button"
+          className="deleteElement"
+          style={{display: deleteButtonDisplay}}
+          onClick={() => {
+            handleDelete(index)
+          }}
+        >
+          <p style={{position: 'absolute', left: '4px', top: '-4px'}}>x</p>
+        </button>
+        <button
+          name="rotate"
+          type="button"
+          className="rotateElement"
+          style={{display: deleteButtonDisplay}}
+          onMouseDown={() => {
+            setChanging(false)
+            setRotating(true)
+          }}
+          onMouseUp={() => {
+            setRotating(false)
+          }}
+        >
+          <p style={{position: 'absolute', right: '3px', top: '-4px'}}>⤺</p>
+        </button>
       </div>
     )
+  },
+  handleRotate: (selectedLayer, socket, prevX, prevY, clientX, clientY) => {
+    const movementX = clientX - prevX
+    const movementY = clientY - prevY
+    socket.emit('change', {
+      ...selectedLayer,
+      props: {
+        ...selectedLayer.props,
+        rotate: +Math.floor(movementX * 0.5 - movementY * 0.5)
+      }
+    })
   },
   handleCreate: (x, y, fill, uuid, socket, strokeColor) => {
     const data = {
@@ -121,7 +167,7 @@ export const spline = {
       rotate: 0,
       props: {
         fill: 'transparent',
-        stroke: 'black',
+        stroke: strokeColor,
         strokeWidth: 10,
         width: 10,
         height: 10,
@@ -129,7 +175,8 @@ export const spline = {
         initialY: y,
         oldX: x,
         oldY: y,
-        coordArr: [{type: 'M', x: 0, y: 0}]
+        coordArr: [{type: 'M', x: 0, y: 0}],
+        rotate: 0
       }
     }
     socket.emit('create', data)

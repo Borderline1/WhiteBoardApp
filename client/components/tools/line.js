@@ -2,7 +2,6 @@
 /* eslint-disable max-params */
 /* eslint-disable react/display-name */
 import React from 'react'
-import className from 'classnames'
 
 // let _id = 0
 
