@@ -117,7 +117,7 @@ export const rectangle = {
         <button
           name="rotate"
           type="button"
-          className="rotateRect"
+          className="rotateRectTri"
           style={{
             display: deleteButtonDisplay,
             top: rotatePosition.top,
@@ -172,7 +172,7 @@ export const rectangle = {
             bottom: '-6px',
             right: '-8px',
             left: '',
-            radius: '100% 100 0 100%'
+            radius: '100% 100% 0 100%'
           },
           rotatePosition: {top: '-6px', bottom: '', right: '', left: '-8px'}
         }
@@ -307,7 +307,7 @@ export const rectangle = {
               bottom: '-6px',
               right: '-8px',
               left: '',
-              radius: '100% 100 0 100%'
+              radius: '100% 100% 0 100%'
             },
             rotatePosition: {top: '-6px', bottom: '', right: '', left: '-8px'}
           }

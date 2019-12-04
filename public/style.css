@@ -193,7 +193,7 @@ button.rotateElement {
   border: 2px solid black;
   border-radius: 50%;
 }
-button.rotateRect {
+button.rotateRectTri {
   position: absolute;
   width: 0.5rem;
   height: 1.2rem;
