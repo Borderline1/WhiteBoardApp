@@ -8,6 +8,7 @@ import uuidv1 from 'uuid/v1'
 import className from 'classnames'
 import io from 'socket.io-client'
 import Entry from './components/entry'
+import {useHotkeys} from 'react-hotkeys-hook'
 
 const serverAddress = window.location.origin
 
@@ -37,6 +38,18 @@ const App = () => {
   const [layerInitialPositionsYs, setLayerInitialPositionsYs] = useState([])
   const [lasso, setLasso] = useState(null)
   const [lassoing, setLassoing] = useState(false)
+
+  useHotkeys('p', () => setTool(types.picker))
+  useHotkeys('1', () => setTool(types.picker))
+  useHotkeys('2', () => setTool(types.circle))
+  useHotkeys('3', () => setTool(types.rectangle))
+  useHotkeys('4', () => setTool(types.line))
+  useHotkeys('5', () => setTool(types.triangle))
+  useHotkeys('6', () => setTool(types.rightTriangle))
+  useHotkeys('7', () => setTool(types.textBox))
+  useHotkeys('8', () => setTool(types.polygon))
+  useHotkeys('9', () => setTool(types.spline))
+  useHotkeys('0', () => setTool(types.ellipse))
 
   const clientLayers = layers.map(layer => {
     return {...layer, type: types[layer.type]}
