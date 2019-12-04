@@ -31,8 +31,8 @@ const App = () => {
   const [dragging, setDragging] = useState(false)
   const [creating, setCreating] = useState(false)
   const [changing, setChanging] = useState(false)
-  const [layerInitialPositionsXs, setLayerInitialPositionsXs] = useState(null)
-  const [layerInitialPositionsYs, setLayerInitialPositionsYs] = useState(null)
+  const [layerInitialPositionsXs, setLayerInitialPositionsXs] = useState([])
+  const [layerInitialPositionsYs, setLayerInitialPositionsYs] = useState([])
   const [lasso, setLasso] = useState(null)
   const [lassoing, setLassoing] = useState(false)
 
@@ -138,14 +138,22 @@ const App = () => {
         )
       }
     } else if (creating && selectedLayer) {
-      tool.handleCreatingUpdate(
-        selectedLayer,
-        prevX + window.scrollX,
-        prevY + window.scrollY,
+      if (tool.name !== 'spline') {
+        tool.handleCreatingUpdate(
+          selectedLayer,
+          prevX + window.scrollX,
+          prevY + window.scrollY,
+          clientX + window.scrollX,
+          clientY + window.scrollY,
+          socket,
+          handleSelectTool
+        )
+      }
+    } else if (creating && tool.name === 'spline') {
+      tool.handleMouseMove(
         clientX + window.scrollX,
         clientY + window.scrollY,
-        socket,
-        handleSelectTool
+        socket
       )
     }
   }
@@ -263,12 +271,15 @@ const App = () => {
                   }}
                   onMouseLeave={() => setIndicatedLayerIds([])}
                   onMouseDown={() => {
-                    setDragging(true)
-                    setLayerInitialPositionX(layer.x)
-                    setLayerInitialPositionY(layer.y)
-                    if (tool.name === 'picker') {
-                      setStrokeColor(layer.props.stroke)
-                      setColor(layer.props.fill)
+                    if (selectedLayerIds.length <= 1) {
+                      setSelectedLayerIds([layer.id])
+                      setDragging(true)
+                      setLayerInitialPositionsXs([layer.x])
+                      setLayerInitialPositionsYs([layer.y])
+                      if (tool.name === 'picker') {
+                        setStrokeColor(layer.props.stroke)
+                        setColor(layer.props.fill)
+                      }
                     }
                   }}
                   onMouseUp={() => {
