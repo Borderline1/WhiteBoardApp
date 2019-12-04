@@ -271,10 +271,15 @@ const App = () => {
     'yellow',
     'orange',
     'purple',
-    'pink'
+    'pink',
+    'brown',
+    'thistle',
+    'tomato',
+    'slategrey',
+    'gold',
+    'palegreen'
   ]
   const sessionKey = window.localStorage.getItem('sessionKey')
-  console.log(sessionKey)
   return (
     <div className="App">
       {loaded ? (
