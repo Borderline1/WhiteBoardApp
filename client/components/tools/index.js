@@ -6,6 +6,7 @@ import {triangle} from './triangle'
 import {textBox} from './textBox'
 import {polygon} from './polygon'
 import {rightTriangle} from './rightTriangle'
+import {spline} from './spline'
 import {ellipse} from './ellipse'
 // import {image} from './image'
 // import {iframe} from './iframe'
@@ -21,6 +22,7 @@ export const types = {
   rightTriangle,
   textBox,
   polygon,
+  spline,
   ellipse
   // image,
   // iframe
