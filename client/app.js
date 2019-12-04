@@ -42,14 +42,14 @@ const App = () => {
   useHotkeys('p', () => setTool(types.picker))
   useHotkeys('1', () => setTool(types.picker))
   useHotkeys('2', () => setTool(types.circle))
-  useHotkeys('3', () => setTool(types.rectangle))
-  useHotkeys('4', () => setTool(types.line))
-  useHotkeys('5', () => setTool(types.triangle))
-  useHotkeys('6', () => setTool(types.rightTriangle))
-  useHotkeys('7', () => setTool(types.textBox))
-  useHotkeys('8', () => setTool(types.polygon))
-  useHotkeys('9', () => setTool(types.spline))
-  useHotkeys('0', () => setTool(types.ellipse))
+  useHotkeys('3', () => setTool(types.triangle))
+  useHotkeys('4', () => setTool(types.rectangle))
+  useHotkeys('5', () => setTool(types.lines))
+  useHotkeys('6', () => setTool(types.spline))
+  useHotkeys('7', () => setTool(types.ellipse))
+  useHotkeys('8', () => setTool(types.rightTriangle))
+  useHotkeys('9', () => setTool(types.polygon))
+  useHotkeys('0', () => setTool(types.textBox))
 
   const clientLayers = layers.map(layer => {
     return {...layer, type: types[layer.type]}
