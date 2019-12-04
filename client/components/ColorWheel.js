@@ -60,9 +60,18 @@ const ColorWheel = props => {
                 : {backgroundColor: 'white'}
             }
           >
-            {color !== 'none' ? null : (
-              <Icon color="red" name="ban" size="large" />
-            )}
+            <div
+              style={{
+                position: 'absolute',
+                display: 'inline-block',
+                textAlign: 'center',
+                right: '0%'
+              }}
+            >
+              {color !== 'none' ? null : (
+                <Icon color="red" name="ban" size="large" />
+              )}
+            </div>
           </div>
           <p className="color-label">Fill</p>
         </div>
@@ -81,9 +90,18 @@ const ColorWheel = props => {
                 : {backgroundColor: 'white'}
             }
           >
-            {strokeColor !== 'none' ? null : (
-              <Icon color="red" name="ban" size="large" />
-            )}
+            <div
+              style={{
+                position: 'absolute',
+                display: 'inline-block',
+                textAlign: 'center',
+                right: '0%'
+              }}
+            >
+              {strokeColor !== 'none' ? null : (
+                <Icon color="red" name="ban" size="large" />
+              )}
+            </div>
           </div>
           <p className="color-label">Stroke</p>
         </div>

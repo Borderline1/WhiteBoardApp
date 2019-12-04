@@ -298,10 +298,10 @@ div.changeLineRect:hover {
   text-align: center;
 }
 .selected-color:hover {
-  box-shadow: 0 0 6px black;
+  box-shadow: inset 0 0 6px black;
 }
 .selected-color.selected {
-  box-shadow: 0 0 6px black;
+  box-shadow: 0 0 10px black;
 }
 .selected-color-container {
   width: 2rem;
