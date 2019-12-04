@@ -114,8 +114,10 @@ export const rectangle = {
             setChanging(false)
           }}
         />
-        <div
-          className="rotateElement"
+        <button
+          name="rotate"
+          type="button"
+          className="rotateRect"
           style={{
             display: deleteButtonDisplay,
             top: rotatePosition.top,
@@ -129,9 +131,12 @@ export const rectangle = {
             setRotating(true)
           }}
           onMouseUp={() => {
+            setSelectedLayerIds([])
             setRotating(false)
           }}
-        />
+        >
+          <p style={{position: 'absolute', right: '2px', top: '-4px'}}>⤺</p>
+        </button>
       </div>
     )
   },
