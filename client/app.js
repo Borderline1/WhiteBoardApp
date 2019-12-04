@@ -373,7 +373,7 @@ const App = () => {
                   <Icon
                     name="mouse pointer"
                     size="large"
-                    style={{top: '0', left: '0', color: cursorColors[idx]}}
+                    style={{color: cursorColors[idx]}}
                   />
                 )}{' '}
                 {cursor.name}
