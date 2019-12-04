@@ -95,7 +95,9 @@ export const triangle = {
             setChanging(false)
           }}
         />
-        <div
+        <button
+          name="rotate"
+          type="button"
           className="rotateElement"
           style={{display: deleteButtonDisplay}}
           onMouseDown={() => {
@@ -104,9 +106,12 @@ export const triangle = {
             setRotating(true)
           }}
           onMouseUp={() => {
+            setSelectedLayerIds([])
             setRotating(false)
           }}
-        />
+        >
+          <p style={{position: 'absolute', right: '2px', top: '-4px'}}>⤺</p>
+        </button>
       </div>
     )
   },
