@@ -39,7 +39,6 @@ const App = () => {
   const clientLayers = layers.map(layer => {
     return {...layer, type: types[layer.type]}
   })
-
   const selectedLayers = clientLayers.filter(layer =>
     selectedLayerIds.includes(layer.id))
   const selectedLayer =

@@ -1,5 +1,4 @@
 const db = require('./db')
-const Elem = require('./schemas/elemShapeSchema')
-const Room = require('./schemas/roomShapeSchema')
+const {Elem, Room} = require('./schemas/Schema')
 
 module.exports = {db, Elem, Room}

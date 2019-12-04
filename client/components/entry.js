@@ -1,6 +1,9 @@
-import React from 'react'
+import React, {useEffect} from 'react'
 import {Button, Input, Card, Container} from 'semantic-ui-react'
+import {withRouter} from 'react-router'
 const serverAddress = window.location.origin
+const queryString = require('query-string')
+const uuidv1 = require('uuid/v1')
 
 const Entry = ({
   loaded,
@@ -9,8 +12,14 @@ const Entry = ({
   setName,
   socket,
   roomName,
-  setRoomName
+  setRoomName,
+  history
 }) => {
+  useEffect(() => {
+    const parsedQueryString = queryString.parse(window.location.search)
+    if (parsedQueryString.name) setRoomName(parsedQueryString.name)
+  })
+
   const handleNameInput = e => {
     name = e.target.value
     setName(name)
@@ -21,8 +30,9 @@ const Entry = ({
     setRoomName(roomName)
   }
   const handleJoin = e => {
-    console.log('running')
-    socket.emit('joinRoom', roomName)
+    const parsedQueryString = queryString.parse(window.location.search)
+    const roomID = parsedQueryString.id ? parsedQueryString.id : uuidv1()
+    socket.emit('joinRoom', {roomName, roomID})
     fetch(serverAddress + '/create_user', {
       body: JSON.stringify({
         name,
@@ -41,6 +51,8 @@ const Entry = ({
           setLoaded(true)
         }
       })
+    const query = queryString.stringify({name: roomName, id: roomID})
+    history.push(`?${query}`)
   }
 
   return (
@@ -50,6 +62,7 @@ const Entry = ({
         value={roomName}
         onChange={handleRoomInput}
         className="join-input"
+        disabled={!!window.location.search}
         placeholder="Enter a room to use ..."
       />
       <Input
@@ -67,4 +80,4 @@ const Entry = ({
   )
 }
 
-export default Entry
+export default withRouter(Entry)

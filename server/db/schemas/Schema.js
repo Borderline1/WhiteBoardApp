@@ -5,14 +5,19 @@ const elemSchema = new mongoose.Schema({
   type: String,
   x: Number,
   y: Number,
-  rotate: Number,
   props: Object
 })
 
+const roomSchema = new mongoose.Schema({
+  _id: String,
+  name: String,
+  elements: [elemSchema]
+})
 //if methods need to be defined that happens here, before the model calls the schema
 
 //model
 let Elem = mongoose.model('Elem', elemSchema)
+let Room = mongoose.model('Room', roomSchema)
 
 //exports
-module.exports = Elem
+module.exports = {Elem, Room}
