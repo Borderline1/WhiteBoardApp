@@ -297,6 +297,9 @@ div.changeLineRect:hover {
   display: inline-block;
   text-align: center;
 }
+.selected-color:hover {
+  box-shadow: 0 0 6px black;
+}
 .selected-color-container {
   width: 2rem;
   height: 2rem;
