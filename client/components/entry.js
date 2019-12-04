@@ -21,7 +21,6 @@ const Entry = ({
     setRoomName(roomName)
   }
   const handleJoin = e => {
-    console.log('running')
     socket.emit('joinRoom', roomName)
     fetch(serverAddress + '/create_user', {
       body: JSON.stringify({
