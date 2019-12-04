@@ -1,7 +1,6 @@
 /* eslint-disable complexity */
 /* eslint-disable react/display-name */
 import React from 'react'
-import className from 'classnames'
 
 export const triangle = {
   name: 'triangle',
