@@ -300,6 +300,9 @@ div.changeLineRect:hover {
 .selected-color:hover {
   box-shadow: 0 0 6px black;
 }
+.selected-color.selected {
+  box-shadow: 0 0 6px black;
+}
 .selected-color-container {
   width: 2rem;
   height: 2rem;

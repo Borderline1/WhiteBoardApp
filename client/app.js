@@ -15,6 +15,7 @@ const App = () => {
   const [socket, setSocket] = useState(null)
   const [color, setColor] = useState('#1133EE')
   const [strokeColor, setStrokeColor] = useState('#000000')
+  const [selectedColor, setSelectedColor] = useState(null)
   const [filling, setFilling] = useState(true)
   const [tool, setTool] = useState(types.picker)
   const [mouseX, setMouseX] = useState(0)
@@ -265,6 +266,8 @@ const App = () => {
             handleSelectTool={handleSelectTool}
             selectedLayer={selectedLayer}
             socket={socket}
+            selectedColor={selectedColor}
+            setSelectedColor={setSelectedColor}
           />
           <div
             id="canvas"

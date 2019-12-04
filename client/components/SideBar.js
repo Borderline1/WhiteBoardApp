@@ -15,7 +15,9 @@ const SideBar = ({
   handleColorChange,
   types,
   handleSelectTool,
-  socket
+  socket,
+  selectedColor,
+  setSelectedColor
 }) => {
   const handleChange = e => {
     e.preventDefault()
@@ -100,6 +102,8 @@ const SideBar = ({
           filling={filling}
           selectedLayer={selectedLayer}
           socket={socket}
+          selectedColor={selectedColor}
+          setSelectedColor={setSelectedColor}
         />
         {/* Form Stuff */}
         {selectedLayer ? (
