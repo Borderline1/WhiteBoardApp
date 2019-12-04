@@ -180,6 +180,9 @@ div.changeElement {
   border: 2px solid black;
   border-radius: 100% 100% 0 100%;
 }
+div.changeElement:hover {
+  box-shadow: 0 0 20px orange;
+}
 div.rotateElement {
   position: absolute;
   left: -8px;
