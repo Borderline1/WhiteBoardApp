@@ -41,6 +41,7 @@ function socketWorks(server, elements, sessions, roomRefs) {
           })
         }
         socket.emit('cursor', cursorRefs[roomId])
+        socket.broadcast.emit('cursor', cursorRefs[roomId])
         socket.to(roomId).emit('cursor', cursorRefs[roomId])
         // broadcast exludes the socket that the event came from
       }, Math.round(1000 / 30))
