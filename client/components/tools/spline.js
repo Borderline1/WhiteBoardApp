@@ -15,10 +15,10 @@ export const spline = {
 
     let xValue = coordArr.reduce((acc, currPoint) => {
       return acc + currPoint.x
-    }, initialX)
+    }, selectedLayer.x)
     let yValue = coordArr.reduce((acc, currPoint) => {
       return acc + currPoint.y
-    }, initialY)
+    }, selectedLayer.y)
 
     newX = Math.min(selectedLayer.x, xValue)
     newY = Math.min(selectedLayer.y, yValue)
@@ -38,8 +38,8 @@ export const spline = {
       }
     }
 
-    const newWidth = maxX + initialX - newX
-    const newHeight = maxY + initialY - newY
+    const newWidth = maxX + initialX - newX + selectedLayer.props.strokeWidth
+    const newHeight = maxY + initialY - newY + selectedLayer.props.strokeWidth
     const middlePoints = coordArr.slice(1)
     socket.emit('change', {
       ...selectedLayer,
@@ -59,8 +59,18 @@ export const spline = {
       }
     })
   },
-  DimensionsComponent: () => {
-    return <div />
+  DimensionsComponent: (selectedLayer, handleChange) => {
+    return (
+      <div>
+        <label>Stroke Width</label>
+        <input
+          name="strokeWidth"
+          type="number"
+          value={selectedLayer.props.strokeWidth}
+          onChange={handleChange}
+        />
+      </div>
+    )
   },
   ElementComponent: props => {
     const {
@@ -124,51 +134,4 @@ export const spline = {
     }
     socket.emit('create', data)
   }
-  //   handleChange: (
-  //     clientX,
-  //     clientY,
-  //     prevX,
-  //     prevY,
-  //     socket,
-  //     selectedLayer,
-  //     layerInitialPositionsXs
-  //   ) => {
-  //     const layerInitialPositionX = layerInitialPositionsXs[0]
-  //     const oldRadius = (prevX - layerInitialPositionX) / 2
-  //     const movementX = clientX - prevX
-  //     const newRadius = movementX / 2
-  //     socket.emit('change', {
-  //       ...selectedLayer,
-  //       props: {
-  //         ...selectedLayer.props,
-  //         radius: oldRadius + newRadius
-  //       }
-  //     })
-  //   },
-
-  //   handleCreatingUpdate: (
-  //     selectedLayer,
-  //     prevX,
-  //     prevY,
-  //     clientX,
-  //     clientY,
-  //     socket
-  //   ) => {
-  //     spline.coordArr.push(clientX)
-  //     spline.coordArr.push(clientY)
-  //     const xdiff = prevX - clientX
-  //     const ydiff = prevY - clientY
-  //     const xPos = clientX
-  //     const yPos = clientY
-  //     for (let i = 0; spline.coordArr.length; i++) {}
-
-  //     if (selectedLayer) {
-  //       socket.emit('change', {
-  //         ...selectedLayer,
-  //         y: xPos,
-  //         x: yPos,
-  //         props: {...selectedLayer.props}
-  //       })
-  //     }
-  //   }
 }
