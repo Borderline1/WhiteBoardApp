@@ -52,11 +52,8 @@ const SideBar = ({
       }
     })
   }
-  const firstHalf = Object.keys(types).slice(
-    0,
-    Object.keys(types).length / 2 + 1
-  )
-  const secondHalf = Object.keys(types).slice(Object.keys(types).length / 2 + 1)
+  const firstHalf = Object.keys(types).slice(0, Object.keys(types).length / 2)
+  const secondHalf = Object.keys(types).slice(Object.keys(types).length / 2)
   return (
     <div id="sidebar">
       <Header as="h1">SVG Board</Header>
