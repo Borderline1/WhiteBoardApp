@@ -15,6 +15,7 @@ export const triangle = {
       <div>
         <label className="input-label">Base</label>
         <Input
+          className="input-input"
           min="0"
           name="base"
           type="number"
@@ -23,6 +24,7 @@ export const triangle = {
         />
         <label className="input-label">Height</label>
         <Input
+          className="input-input"
           min="0"
           name="height"
           type="number"
@@ -31,6 +33,7 @@ export const triangle = {
         />
         <label className="input-label">Stroke Width</label>
         <Input
+          className="input-input"
           min="0"
           name="strokeWidth"
           type="number"
@@ -39,6 +42,7 @@ export const triangle = {
         />
         <label className="input-label">Rotate</label>
         <Input
+          className="input-input"
           min="0"
           name="rotate"
           type="number"
