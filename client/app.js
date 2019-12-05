@@ -384,7 +384,8 @@ const App = () => {
                 style={{
                   position: 'absolute',
                   left: cursor.x + 8 + 'px',
-                  top: cursor.y + 8 + 'px'
+                  top: cursor.y + 8 + 'px',
+                  color: cursorColors[idx]
                 }}
               >
                 {' '}
