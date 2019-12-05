@@ -241,7 +241,8 @@ const App = () => {
         color,
         layerId,
         socket,
-        strokeColor
+        strokeColor,
+        roomName
       )
       setSelectedLayerIds([layerId])
     } else if (event.target.id !== 'canvas') {

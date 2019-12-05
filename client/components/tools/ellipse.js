@@ -263,7 +263,7 @@ export const ellipse = {
       }
     })
   },
-  handleCreate: (x, y, fill = 'black', uuid, socket, strokeColor) => {
+  handleCreate: (x, y, fill = 'black', uuid, socket, strokeColor, roomName) => {
     const data = {
       type: 'ellipse',
       x,
@@ -276,6 +276,7 @@ export const ellipse = {
         fill,
         stroke: 'black',
         strokeWidth: 5,
+        roomName: roomName,
         deletePosition: {top: '-6px', bottom: '', right: '-8px', left: ''},
         changePosition: {
           top: '',

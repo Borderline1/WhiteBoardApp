@@ -276,7 +276,7 @@ export const triangle = {
       }
     })
   },
-  handleCreate: (x, y, fill = 'black', uuid, socket, strokeColor) => {
+  handleCreate: (x, y, fill = 'black', uuid, socket, strokeColor, roomName) => {
     const data = {
       type: 'triangle',
       id: uuid,
@@ -290,6 +290,7 @@ export const triangle = {
         strokeWidth: 5,
         rotate: 0,
         points: '7.5 2.5, 5 12.5, 10 12.5',
+        roomName: roomName,
         deletePosition: {top: '-6px', bottom: '', right: '-8px', left: ''},
         changePosition: {
           top: '',
