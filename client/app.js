@@ -298,6 +298,8 @@ const App = () => {
             socket={socket}
             selectedColor={selectedColor}
             setSelectedColor={setSelectedColor}
+            cursorColors={cursorColors}
+            cursors={cursors}
           />
           <div
             id="canvas"
