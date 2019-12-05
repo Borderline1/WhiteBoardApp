@@ -24,7 +24,7 @@ form div {
   position: fixed;
   height: 100vh;
   width: 252px;
-  background-color: lightgray;
+  background-color: #3c4043;
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
@@ -32,7 +32,31 @@ form div {
   padding: 5px;
   z-index: 100000;
 }
-
+#title-header {
+  color: white;
+  margin-top: 5px;
+  font-size: 24pt;
+}
+.ui.segment {
+  background-color: #3c4043 !important;
+  width: 216px !important;
+}
+.input-input input {
+  height: 15px;
+}
+.input-label {
+  color: white;
+  font-weight: 900;
+  margin-bottom: 1.5px;
+}
+#dimensions-form-outer {
+  border: 2px dashed red;
+  display: flex;
+  justify-content: center;
+}
+#dimensions-form-inner {
+  width: 182px;
+}
 .ui.button.tool-button {
   background: white !important;
   color: black !important;
@@ -45,15 +69,14 @@ form div {
   width: 100%;
   height: 150% !important;
 }
-.ui.segment {
-  background-color: rgb(182, 181, 181) !important;
-  width: 216px !important;
+.ui.header {
+  margin: 0px !important;
 }
 .ui.button.tool-button:hover {
-  background: rgb(191, 243, 139) !important;
+  background: rgb(255, 240, 154) !important;
 }
 .ui.button.toolButtonSelected {
-  background: rgb(139, 232, 46) !important;
+  background: rgb(247, 210, 0) !important;
 }
 .toolbox {
   display: 'flex';
@@ -248,7 +271,7 @@ div.changeLineRect:hover {
 #fill-color {
   width: 2.4rem;
   height: 2.4rem;
-  border: 1px solid rgb(80, 80, 80);
+  border: 1px solid white;
   position: relative;
   left: 0.225rem;
   top: 0.2rem;
@@ -261,7 +284,7 @@ div.changeLineRect:hover {
 #stroke-color {
   width: 2.4rem;
   height: 2.4rem;
-  border: 1px solid rgb(80, 80, 80);
+  border: 1px solid white;
   position: relative;
   left: 0.225rem;
   top: 0.2rem;
@@ -274,6 +297,7 @@ div.changeLineRect:hover {
   font-size: 8.75pt;
 }
 .applied-color-1 {
+  background-color: white;
   border: 1px solid rgb(80, 80, 80);
   padding-bottom: 2.5px;
   display: flex;
@@ -283,9 +307,10 @@ div.changeLineRect:hover {
   width: 3rem;
   height: 48.5%;
   margin-left: 11px;
-  margin-bottom: 3.5px;
+  margin-bottom: 7px;
 }
 .applied-color-2 {
+  background-color: white;
   border: 1px solid rgb(80, 80, 80);
   padding-bottom: 2.5px;
   display: flex;
@@ -308,7 +333,7 @@ div.changeLineRect:hover {
   box-shadow: inset 0 0 6px black;
 }
 .selected-color.selected {
-  box-shadow: 0 0 10px black;
+  box-shadow: 0 0 10px white;
 }
 .selected-color-container {
   width: 2rem;
@@ -318,7 +343,6 @@ div.changeLineRect:hover {
   text-align: center;
 }
 #color-grid-container {
-  border: 1px solid black;
   display: flex;
   flex-direction: row;
   justify-content: space-between;

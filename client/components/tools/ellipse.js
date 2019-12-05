@@ -2,7 +2,7 @@
 /* eslint-disable max-params */
 /* eslint-disable react/display-name */
 import React from 'react'
-import className from 'classnames'
+import {Input, Form} from 'semantic-ui-react'
 
 export const ellipse = {
   name: 'ellipse',
@@ -14,29 +14,37 @@ export const ellipse = {
   ) => {
     return (
       <div>
-        <label>Radius X</label>
-        <input
+        <label className="input-label">Radius X</label>
+        <Input
+          className="input-input"
+          min="0"
           name="rx"
           type="number"
           value={selectedLayer.props.rx}
           onChange={handleChange}
         />
-        <label>Radius Y</label>
-        <input
+        <label className="input-label">Radius Y</label>
+        <Input
+          className="input-input"
+          min="0"
           name="ry"
           type="number"
           value={selectedLayer.props.ry}
           onChange={handleChange}
         />
-        <label>Stroke Width</label>
-        <input
+        <label className="input-label">Stroke Width</label>
+        <Input
+          className="input-input"
+          min="0"
           name="strokeWidth"
           type="number"
           value={selectedLayer.props.strokeWidth}
           onChange={handleChange}
         />
-        <label>Rotate</label>
-        <input
+        <label className="input-label">Rotate</label>
+        <Input
+          className="input-input"
+          min="0"
           name="rotate"
           type="number"
           value={selectedLayer.props.rotate}
