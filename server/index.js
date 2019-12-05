@@ -55,6 +55,13 @@ class Session {
     this._mouseX = 0
     this._mouseY = 0
     this._timer = 10
+    this._socketId = null
+  }
+  getRoom() {
+    return this._room
+  }
+  setRoom(roomName) {
+    this._room = roomName
   }
   getName() {
     return this._name

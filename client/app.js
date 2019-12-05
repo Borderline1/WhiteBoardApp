@@ -9,6 +9,7 @@ import className from 'classnames'
 import io from 'socket.io-client'
 import Entry from './components/entry'
 import {useHotkeys} from 'react-hotkeys-hook'
+import {Icon} from 'semantic-ui-react'
 
 const serverAddress = window.location.origin
 
@@ -307,6 +308,22 @@ const App = () => {
     socket.emit('delete', clientLayers[index], index)
   }
 
+  const cursorColors = [
+    'red',
+    'blue',
+    'green',
+    'yellow',
+    'orange',
+    'purple',
+    'pink',
+    'brown',
+    'thistle',
+    'tomato',
+    'slategrey',
+    'gold',
+    'palegreen'
+  ]
+  const sessionKey = window.localStorage.getItem('sessionKey')
   return (
     <div className="App">
       {loaded ? (
@@ -325,6 +342,8 @@ const App = () => {
             socket={socket}
             selectedColor={selectedColor}
             setSelectedColor={setSelectedColor}
+            cursorColors={cursorColors}
+            cursors={cursors}
           />
           <div
             id="canvas"
@@ -402,25 +421,25 @@ const App = () => {
                 </div>
               )
             })}
-            {cursors.map(cursor => (
+            {cursors.map((cursor, idx) => (
               <div
                 key={cursor.sessionKey}
                 className="cursor"
                 style={{
                   position: 'absolute',
                   left: cursor.x + 8 + 'px',
-                  top: cursor.y + 8 + 'px'
+                  top: cursor.y + 8 + 'px',
+                  color: cursorColors[idx]
                 }}
               >
-                <div
-                  style={{
-                    borderRadius: '50px',
-                    position: 'relative',
-                    background: 'silver',
-                    width: '4px',
-                    height: '4px'
-                  }}
-                />{' '}
+                {' '}
+                {cursor.sessionKey === sessionKey ? null : (
+                  <Icon
+                    name="mouse pointer"
+                    size="large"
+                    style={{color: cursorColors[idx]}}
+                  />
+                )}{' '}
                 {cursor.name}
               </div>
             ))}
