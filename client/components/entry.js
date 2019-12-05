@@ -1,5 +1,5 @@
 import React from 'react'
-import {Button, Input, Card, Container} from 'semantic-ui-react'
+import {Button, Input, Card} from 'semantic-ui-react'
 const serverAddress = window.location.origin
 
 const Entry = ({
