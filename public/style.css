@@ -49,9 +49,13 @@ form div {
   font-weight: 900;
   margin-bottom: 1.5px;
 }
-#dimensions-form {
+#dimensions-form-outer {
   border: 2px dashed red;
-  text-align: center;
+  display: flex;
+  justify-content: center;
+}
+#dimensions-form-inner {
+  width: 182px;
 }
 .ui.button.tool-button {
   background: white !important;

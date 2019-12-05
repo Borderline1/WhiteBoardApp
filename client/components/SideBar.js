@@ -1,5 +1,4 @@
 import React, {Component} from 'react'
-import {ChromePicker} from 'react-color'
 import ToolButton from './ToolButton'
 import ColorWheel from './ColorWheel'
 import {Segment, Grid, Header, Input, Form} from 'semantic-ui-react'
@@ -108,37 +107,39 @@ const SideBar = ({
         />
         {/* Form Stuff */}
         {selectedLayer ? (
-          <div id="dimensions-form">
-            <label htmlFor="x" className="input-label">
-              X position
-            </label>
-            <Input
-              className="input-input"
-              min="0"
-              name="x"
-              type="number"
-              value={selectedLayer.x}
-              onChange={handleChange}
-            />
+          <div id="dimensions-form-outer">
+            <div id="dimensions-form-inner">
+              <label htmlFor="x" className="input-label">
+                X position
+              </label>
+              <Input
+                className="input-input"
+                min="0"
+                name="x"
+                type="number"
+                value={selectedLayer.x}
+                onChange={handleChange}
+              />
 
-            <label htmlFor="y" className="input-label">
-              Y position
-            </label>
-            <Input
-              className="input-input"
-              min="0"
-              name="y"
-              type="number"
-              value={selectedLayer.y}
-              onChange={handleChange}
-            />
+              <label htmlFor="y" className="input-label">
+                Y position
+              </label>
+              <Input
+                className="input-input"
+                min="0"
+                name="y"
+                type="number"
+                value={selectedLayer.y}
+                onChange={handleChange}
+              />
 
-            {selectedLayer.type.DimensionsComponent(
-              selectedLayer,
-              handleChange,
-              handleTextPropsChange,
-              handleRotate
-            )}
+              {selectedLayer.type.DimensionsComponent(
+                selectedLayer,
+                handleChange,
+                handleTextPropsChange,
+                handleRotate
+              )}
+            </div>
           </div>
         ) : null}
       </div>
