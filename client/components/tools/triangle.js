@@ -13,32 +13,36 @@ export const triangle = {
   ) => {
     return (
       <div>
-        <label>Base</label>
+        <label className="input-label">Base</label>
         <Input
+          className="input-input"
           min="0"
           name="base"
           type="number"
           value={selectedLayer.props.base}
           onChange={handleChange}
         />
-        <label>Height</label>
+        <label className="input-label">Height</label>
         <Input
+          className="input-input"
           min="0"
           name="height"
           type="number"
           value={selectedLayer.props.height}
           onChange={handleChange}
         />
-        <label>Stroke Width</label>
+        <label className="input-label">Stroke Width</label>
         <Input
+          className="input-input"
           min="0"
           name="strokeWidth"
           type="number"
           value={selectedLayer.props.strokeWidth}
           onChange={handleChange}
         />
-        <label>Rotate</label>
+        <label className="input-label">Rotate</label>
         <Input
+          className="input-input"
           min="0"
           name="rotate"
           type="number"
