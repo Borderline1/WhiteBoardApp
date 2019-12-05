@@ -219,7 +219,15 @@ export const line = {
       })
     }
   },
-  handleCreate: (x, y, fill = '#000000', uuid, socket, strokeColor) => {
+  handleCreate: (
+    x,
+    y,
+    fill = '#000000',
+    uuid,
+    socket,
+    strokeColor,
+    roomName
+  ) => {
     const data = {
       type: 'line',
       x,
@@ -234,6 +242,7 @@ export const line = {
         strokeWidth: 3,
         height: 4,
         width: 4,
+        roomName: roomName,
         deleteTop: '-6px',
         deleteBottom: '',
         deleteRight: '-8px',

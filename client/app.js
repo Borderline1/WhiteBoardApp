@@ -196,7 +196,8 @@ const App = () => {
         color,
         layerId,
         socket,
-        strokeColor
+        strokeColor,
+        roomName
       )
       setSelectedLayerIds([layerId])
     } else if (event.target.id !== 'canvas') {
@@ -324,7 +325,9 @@ const App = () => {
                       }
                       setLayerInitialPositionsXs(xPositions)
                       setLayerInitialPositionsYs(yPositions)
-                    } else {setSelectedLayerIds([layer.id])}
+                    } else {
+                      setSelectedLayerIds([layer.id])
+                    }
                   }}
                   className={className('layer', {
                     indicated: indicatedLayerIds.includes(layer.id),

@@ -186,7 +186,7 @@ export const polygon = {
       }
     })
   },
-  handleCreate: (x, y, fill, uuid, socket, strokeColor) => {
+  handleCreate: (x, y, fill, uuid, socket, strokeColor, roomName) => {
     const data = {
       type: 'polygon',
       id: uuid,
@@ -200,7 +200,8 @@ export const polygon = {
         sides: 5,
         width: 20,
         height: 20,
-        rotate: 0
+        rotate: 0,
+        roomName: roomName
       }
     }
     socket.emit('create', data)

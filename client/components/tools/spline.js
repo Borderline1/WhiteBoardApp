@@ -158,7 +158,7 @@ export const spline = {
       }
     })
   },
-  handleCreate: (x, y, fill, uuid, socket, strokeColor) => {
+  handleCreate: (x, y, fill, uuid, socket, strokeColor, roomName) => {
     const data = {
       type: 'spline',
       x: x,
@@ -176,7 +176,8 @@ export const spline = {
         oldX: x,
         oldY: y,
         coordArr: [{type: 'M', x: 0, y: 0}],
-        rotate: 0
+        rotate: 0,
+        roomName: roomName
       }
     }
     socket.emit('create', data)

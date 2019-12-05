@@ -252,7 +252,7 @@ export const rectangle = {
       }
     })
   },
-  handleCreate: (x, y, fill = 'black', uuid, socket, strokeColor) => {
+  handleCreate: (x, y, fill = 'black', uuid, socket, strokeColor, roomName) => {
     const data = {
       type: 'rectangle',
       x,
@@ -265,6 +265,7 @@ export const rectangle = {
         fill,
         stroke: 'black',
         strokeWidth: 5,
+        roomName: roomName,
         deletePosition: {top: '-6px', bottom: '', right: '-8px', left: ''},
         changePosition: {
           top: '',

@@ -58,16 +58,15 @@ function socketWorks(server, elements, sessions, roomRefs) {
       elements[roomId].push(data)
       socket.emit('create', elements[roomId])
       socket.to(roomId).emit('create', elements[roomId])
-      //add room structure to db
-      // let elem = new Elem({
-      //   _id: data.id,
-      //   type: data.type,
-      //   x: data.x,
-      //   y: data.y,
-      //   rotate: data.rotate,
-      //   props: data.props
-      // })
-      // elem.save()
+      // add room structure to db
+      let elem = new Elem({
+        _id: data.id,
+        type: data.type,
+        x: data.x,
+        y: data.y,
+        props: data.props
+      })
+      elem.save()
     })
     socket.on('change', data => {
       let roomId = roomRefs[socket.id]
@@ -80,23 +79,22 @@ function socketWorks(server, elements, sessions, roomRefs) {
       socket.emit('change', elements[roomId])
       socket.to(roomId).emit('change', elements[roomId])
       //update db and db code!
-      // Elem.findOneAndUpdate(
-      //   {_id: data.id},
-      //   {
-      //     type: data.type.name,
-      //     x: data.x,
-      //     y: data.y,
-      //     rotate: data.rotate,
-      //     props: data.props
-      //   },
-      //   {new: true},
-      //   (error, elem) => {
-      //     if (error) {
-      //       console.log(elem)
-      //       throw error
-      //     }
-      //   }
-      // )
+      Elem.findOneAndUpdate(
+        {_id: data.id},
+        {
+          type: data.type.name,
+          x: data.x,
+          y: data.y,
+          props: data.props
+        },
+        {new: true},
+        (error, elem) => {
+          if (error) {
+            console.log(elem)
+            throw error
+          }
+        }
+      )
     })
     socket.on('massChange', data => {
       let roomId = roomRefs[socket.id]
