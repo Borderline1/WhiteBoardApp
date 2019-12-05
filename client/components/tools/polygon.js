@@ -41,33 +41,41 @@ export const polygon = {
   ) => {
     return (
       <div>
-        <label>Sides</label>
+        <label className="input-label">Sides</label>
         <Input
+          className="input-input"
+          min="0"
           name="sides"
           type="number"
           value={selectedLayer.props.sides}
           onChange={handleChange}
         />
-        <label>Radius</label>
+        <label className="input-label">Radius</label>
         <Input
+          className="input-input"
+          min="0"
           name="radius"
           type="number"
           value={selectedLayer.props.radius}
           onChange={handleChange}
         />
-        <label>Rotate</label>
+        <label className="input-label">Stroke Width</label>
         <Input
-          name="rotate"
-          type="number"
-          value={selectedLayer.props.rotate}
-          onChange={handleRotate}
-        />
-        <label>Stroke Width</label>
-        <Input
+          className="input-input"
+          min="0"
           name="strokeWidth"
           type="number"
           value={selectedLayer.props.strokeWidth}
           onChange={handleChange}
+        />
+        <label className="input-label">Rotate</label>
+        <Input
+          className="input-input"
+          min="0"
+          name="rotate"
+          type="number"
+          value={selectedLayer.props.rotate}
+          onChange={handleRotate}
         />
       </div>
     )

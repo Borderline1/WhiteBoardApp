@@ -324,7 +324,9 @@ const App = () => {
                       }
                       setLayerInitialPositionsXs(xPositions)
                       setLayerInitialPositionsYs(yPositions)
-                    } else {setSelectedLayerIds([layer.id])}
+                    } else {
+                      setSelectedLayerIds([layer.id])
+                    }
                   }}
                   className={className('layer', {
                     indicated: indicatedLayerIds.includes(layer.id),

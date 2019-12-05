@@ -1,6 +1,7 @@
 /* eslint-disable complexity */
 /* eslint-disable react/display-name */
 import React from 'react'
+import {Input} from 'semantic-ui-react'
 
 export const rightTriangle = {
   name: 'rightTriangle',
@@ -12,29 +13,37 @@ export const rightTriangle = {
   ) => {
     return (
       <div>
-        <label>Base</label>
-        <input
+        <label className="input-label">Base</label>
+        <Input
+          className="input-input"
+          min="0"
           name="base"
           type="number"
           value={selectedLayer.props.base}
           onChange={handleChange}
         />
-        <label>Height</label>
-        <input
+        <label className="input-label">Height</label>
+        <Input
+          className="input-input"
+          min="0"
           name="height"
           type="number"
           value={selectedLayer.props.height}
           onChange={handleChange}
         />
-        <label>Stroke Width</label>
-        <input
+        <label className="input-label">Stroke Width</label>
+        <Input
+          className="input-input"
+          min="0"
           name="strokeWidth"
           type="number"
           value={selectedLayer.props.strokeWidth}
           onChange={handleChange}
         />
-        <label>Rotate</label>
-        <input
+        <label className="input-label">Rotate</label>
+        <Input
+          className="input-input"
+          min="0"
           name="rotate"
           type="number"
           value={selectedLayer.props.rotate}
