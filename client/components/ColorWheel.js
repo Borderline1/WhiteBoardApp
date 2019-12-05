@@ -48,7 +48,7 @@ const ColorWheel = props => {
         <div
           className="applied-color-1"
           style={
-            filling ? {boxShadow: '0 0 6px #ffffff'} : {boxShadow: '0 0 0'}
+            filling ? {boxShadow: '0 0 12px #FFD700'} : {boxShadow: '0 0 0'}
           }
           onClick={() => toggleFilling(true)}
         >
@@ -78,7 +78,7 @@ const ColorWheel = props => {
         <div
           className="applied-color-2"
           style={
-            !filling ? {boxShadow: '0 0 6px #ffffff'} : {boxShadow: '0 0 0'}
+            !filling ? {boxShadow: '0 0 12px #FFD700'} : {boxShadow: '0 0 0'}
           }
           onClick={() => toggleFilling(false)}
         >

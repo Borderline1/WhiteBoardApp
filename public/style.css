@@ -73,10 +73,10 @@ form div {
   margin: 0px !important;
 }
 .ui.button.tool-button:hover {
-  background: rgb(191, 243, 139) !important;
+  background: rgb(255, 240, 154) !important;
 }
 .ui.button.toolButtonSelected {
-  background: rgb(139, 232, 46) !important;
+  background: rgb(247, 210, 0) !important;
 }
 .toolbox {
   display: 'flex';
