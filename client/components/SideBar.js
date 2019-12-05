@@ -16,7 +16,9 @@ const SideBar = ({
   handleSelectTool,
   socket,
   selectedColor,
-  setSelectedColor
+  setSelectedColor,
+  cursorColors,
+  cursors
 }) => {
   const handleChange = e => {
     e.preventDefault()
@@ -60,6 +62,44 @@ const SideBar = ({
       <Header as="h1" id="title-header">
         SVG Board
       </Header>
+      <div
+        style={{
+          display: 'flex',
+          justifyContent: 'space-between',
+          alignItems: 'center'
+        }}
+      >
+        <div style={{top: '50', color: 'white', fontWeight: 'bold'}}>
+          USERS:
+        </div>
+        {cursors.map((cursor, idx) => (
+          <div
+            key={cursor}
+            style={{
+              height: '2rem',
+              width: '2rem',
+              borderRadius: '50%',
+              backgroundColor: cursorColors[idx],
+              // display: 'inline-block',
+              // textAlign: 'center',
+              margin: '0.5rem',
+              display: 'flex',
+              justifyContent: 'center',
+              alignItems: 'center'
+            }}
+          >
+            <div
+              style={{
+                top: '50',
+                color: 'black',
+                fontWeight: '900'
+              }}
+            >
+              {cursor.name.slice(0, 1).toUpperCase()}
+            </div>
+          </div>
+        ))}
+      </div>
       <div className="toolbox">
         <Segment className="tool-table">
           <Grid columns={2}>

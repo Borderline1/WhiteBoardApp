@@ -181,6 +181,7 @@ form div {
 
 .layer.selected {
   outline: dashed 2px red;
+  z-index: 99999;
 }
 
 button.deleteElement {
@@ -192,6 +193,7 @@ button.deleteElement {
   background-color: rgb(255, 247, 238);
   border: 2px solid black;
   border-radius: 50%;
+  z-index: 99999;
 }
 button.deleteElement:hover {
   box-shadow: 0 0 10px orangered;
@@ -205,6 +207,7 @@ div.changeElement {
   background-color: rgb(255, 247, 238);
   border: 2px solid black;
   border-radius: 100% 100% 0 100%;
+  z-index: 99999;
 }
 div.changeElement:hover {
   box-shadow: 0 0 10px orangered;
@@ -218,6 +221,7 @@ button.rotateElement {
   background-color: rgb(255, 247, 238);
   border: 2px solid black;
   border-radius: 50%;
+  z-index: 99999;
 }
 button.rotateElement:hover {
   box-shadow: 0 0 10px orangered;
@@ -229,6 +233,7 @@ button.rotateRectTri {
   background-color: rgb(255, 247, 238);
   border: 2px solid black;
   border-radius: 50%;
+  z-index: 99999;
 }
 button.rotateRectTri:hover {
   box-shadow: 0 0 10px orangered;
@@ -240,6 +245,7 @@ button.deleteLineRect {
   background-color: rgb(255, 247, 238);
   border: 2px solid black;
   border-radius: 50%;
+  z-index: 99999;
 }
 button.deleteLineRect:hover {
   box-shadow: 0 0 10px orangered;
@@ -250,6 +256,7 @@ div.changeLineRect {
   height: 1rem;
   background-color: rgb(255, 247, 238);
   border: 2px solid black;
+  z-index: 99999;
 }
 div.changeLineRect:hover {
   box-shadow: 0 0 10px orangered;
