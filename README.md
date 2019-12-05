@@ -1,7 +1,6 @@
 # SVG BOARD
+
 Savage board is a collaborative whiteboard app allows groups of people to join a room by name and draw together!
-
-
 
 ## Start
 
@@ -9,7 +8,6 @@ Running `npm run start-dev` will make great things happen!
 
 If you want to run the server and/or `webpack` separately, you can also
 `npm run start-server` and `npm run build-client`.
-
 
 ## Deployment
 
@@ -42,13 +40,11 @@ The steps below are also covered in the CI/CD workshop.
   1.  `heroku git:remote your-app-name` You'll need to be a
       collaborator on the app.
 
-
 _**NOTE**_ that this script depends on your local `origin` Git remote matching
 your GitHub URL, and your local `heroku` remote matching the name of your
 Heroku app. This is only an issue if you rename your GitHub organization,
 repository name or Heroku app name. You can update these values using
 `git remote` and its related commands.
-
 
 ### Cody's own deploy script
 

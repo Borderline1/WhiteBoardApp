@@ -9,6 +9,7 @@ import className from 'classnames'
 import io from 'socket.io-client'
 import Entry from './components/entry'
 import {useHotkeys} from 'react-hotkeys-hook'
+import {Icon} from 'semantic-ui-react'
 
 const serverAddress = window.location.origin
 
@@ -39,17 +40,61 @@ const App = () => {
   const [lasso, setLasso] = useState(null)
   const [lassoing, setLassoing] = useState(false)
 
-  useHotkeys('p', () => setTool(types.picker))
-  useHotkeys('1', () => setTool(types.picker))
-  useHotkeys('2', () => setTool(types.circle))
-  useHotkeys('3', () => setTool(types.triangle))
-  useHotkeys('4', () => setTool(types.rectangle))
-  useHotkeys('5', () => setTool(types.lines))
-  useHotkeys('6', () => setTool(types.spline))
-  useHotkeys('7', () => setTool(types.ellipse))
-  useHotkeys('8', () => setTool(types.rightTriangle))
-  useHotkeys('9', () => setTool(types.polygon))
-  useHotkeys('0', () => setTool(types.textBox))
+  useHotkeys('p', () => {
+    setTool(types.picker)
+    setSelectedLayerIds([])
+    setCreating(false)
+  })
+  useHotkeys('1', () => {
+    setTool(types.picker)
+    setSelectedLayerIds([])
+    setCreating(false)
+  })
+  useHotkeys('2', () => {
+    setTool(types.circle)
+    setSelectedLayerIds([])
+    setCreating(true)
+  })
+  useHotkeys('3', () => {
+    setTool(types.triangle)
+    setSelectedLayerIds([])
+    setCreating(true)
+  })
+  useHotkeys('4', () => {
+    setTool(types.rectangle)
+    setSelectedLayerIds([])
+    setCreating(true)
+  })
+  useHotkeys('5', () => {
+    setTool(types.lines)
+    setSelectedLayerIds([])
+    setCreating(true)
+  })
+  useHotkeys('6', () => {
+    setTool(types.spline)
+    setSelectedLayerIds([])
+    setCreating(true)
+  })
+  useHotkeys('7', () => {
+    setTool(types.ellipse)
+    setSelectedLayerIds([])
+    setCreating(true)
+  })
+  useHotkeys('8', () => {
+    setTool(types.rightTriangle)
+    setSelectedLayerIds([])
+    setCreating(true)
+  })
+  useHotkeys('9', () => {
+    setTool(types.polygon)
+    setSelectedLayerIds([])
+    setCreating(true)
+  })
+  useHotkeys('0', () => {
+    setTool(types.textBox)
+    setSelectedLayerIds([])
+    setCreating(true)
+  })
 
   const clientLayers = layers.map(layer => {
     return {...layer, type: types[layer.type]}
@@ -264,6 +309,22 @@ const App = () => {
     socket.emit('delete', clientLayers[index], index)
   }
 
+  const cursorColors = [
+    'red',
+    'blue',
+    'green',
+    'yellow',
+    'orange',
+    'purple',
+    'pink',
+    'brown',
+    'thistle',
+    'tomato',
+    'slategrey',
+    'gold',
+    'palegreen'
+  ]
+  const sessionKey = window.localStorage.getItem('sessionKey')
   return (
     <div className="App">
       {loaded ? (
@@ -282,6 +343,8 @@ const App = () => {
             socket={socket}
             selectedColor={selectedColor}
             setSelectedColor={setSelectedColor}
+            cursorColors={cursorColors}
+            cursors={cursors}
           />
           <div
             id="canvas"
@@ -359,25 +422,25 @@ const App = () => {
                 </div>
               )
             })}
-            {cursors.map(cursor => (
+            {cursors.map((cursor, idx) => (
               <div
                 key={cursor.sessionKey}
                 className="cursor"
                 style={{
                   position: 'absolute',
                   left: cursor.x + 8 + 'px',
-                  top: cursor.y + 8 + 'px'
+                  top: cursor.y + 8 + 'px',
+                  color: cursorColors[idx]
                 }}
               >
-                <div
-                  style={{
-                    borderRadius: '50px',
-                    position: 'relative',
-                    background: 'silver',
-                    width: '4px',
-                    height: '4px'
-                  }}
-                />{' '}
+                {' '}
+                {cursor.sessionKey === sessionKey ? null : (
+                  <Icon
+                    name="mouse pointer"
+                    size="large"
+                    style={{color: cursorColors[idx]}}
+                  />
+                )}{' '}
                 {cursor.name}
               </div>
             ))}

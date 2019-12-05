@@ -69,15 +69,19 @@ export const spline = {
   ) => {
     return (
       <div>
-        <label>Rotate</label>
+        <label className="input-label">Rotate</label>
         <Input
+          className="input-input"
+          min="0"
           name="rotate"
           type="number"
           value={selectedLayer.props.rotate}
           onChange={handleRotate}
         />
-        <label>Stroke Width</label>
+        <label className="input-label">Stroke Width</label>
         <Input
+          className="input-input"
+          min="0"
           name="strokeWidth"
           type="number"
           value={selectedLayer.props.strokeWidth}

@@ -32,19 +32,21 @@ function socketWorks(server, elements, sessions, roomRefs) {
         cursorRefs[roomId] = []
         for (let i = 0, n = sessionKeys.length; i < n; i++) {
           const key = sessionKeys[i]
-          const session = sessions[key]
+          const session2 = sessions[key]
           cursorRefs[roomId].push({
-            x: session.getMouseX(),
-            y: session.getMouseY(),
-            name: session.getName(),
+            x: session2.getMouseX(),
+            y: session2.getMouseY(),
+            name: session2.getName(),
             sessionKey: key
           })
         }
         socket.emit('cursor', cursorRefs[roomId])
+        socket.broadcast.emit('cursor', cursorRefs[roomId])
         socket.to(roomId).emit('cursor', cursorRefs[roomId])
         // broadcast exludes the socket that the event came from
       }, Math.round(1000 / 30))
     }
+
     socket.on('cursor', data => {
       const session = sessions[data.sessionKey]
       if (session) {

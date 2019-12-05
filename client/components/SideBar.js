@@ -1,7 +1,7 @@
 import React, {Component} from 'react'
 import ToolButton from './ToolButton'
 import ColorWheel from './ColorWheel'
-import {Segment, Grid, Header} from 'semantic-ui-react'
+import {Segment, Grid, Header, Input, Form} from 'semantic-ui-react'
 
 const SideBar = ({
   color,
@@ -16,7 +16,9 @@ const SideBar = ({
   handleSelectTool,
   socket,
   selectedColor,
-  setSelectedColor
+  setSelectedColor,
+  cursorColors,
+  cursors
 }) => {
   const handleChange = e => {
     e.preventDefault()
@@ -57,10 +59,49 @@ const SideBar = ({
   const secondHalf = Object.keys(types).slice(Object.keys(types).length / 2)
   return (
     <div id="sidebar">
-      <Header as="h1">SVG Board</Header>
+      <Header as="h1" id="title-header">
+        SVG Board
+      </Header>
+      <div
+        style={{
+          display: 'flex',
+          justifyContent: 'space-between',
+          alignItems: 'center'
+        }}
+      >
+        <div style={{top: '50', color: 'white', fontWeight: 'bold'}}>
+          USERS:
+        </div>
+        {cursors.map((cursor, idx) => (
+          <div
+            key={cursor}
+            style={{
+              height: '2rem',
+              width: '2rem',
+              borderRadius: '50%',
+              backgroundColor: cursorColors[idx],
+              // display: 'inline-block',
+              // textAlign: 'center',
+              margin: '0.5rem',
+              display: 'flex',
+              justifyContent: 'center',
+              alignItems: 'center'
+            }}
+          >
+            <div
+              style={{
+                top: '50',
+                color: 'black',
+                fontWeight: '900'
+              }}
+            >
+              {cursor.name.slice(0, 1).toUpperCase()}
+            </div>
+          </div>
+        ))}
+      </div>
       <div className="toolbox">
         <Segment className="tool-table">
-          <h4 className="tools-header">TOOLS</h4>
           <Grid columns={2}>
             <Grid.Column id="tools-column-1">
               {firstHalf.map(typeKey => {
@@ -106,28 +147,39 @@ const SideBar = ({
         />
         {/* Form Stuff */}
         {selectedLayer ? (
-          <div>
-            <h2>{selectedLayer.type.name}</h2>
-            <label htmlFor="x">X position</label>
-            <input
-              name="x"
-              type="number"
-              value={selectedLayer.x}
-              onChange={handleChange}
-            />
-            <label htmlFor="y">Y position</label>
-            <input
-              name="y"
-              type="number"
-              value={selectedLayer.y}
-              onChange={handleChange}
-            />
-            {selectedLayer.type.DimensionsComponent(
-              selectedLayer,
-              handleChange,
-              handleTextPropsChange,
-              handleRotate
-            )}
+          <div id="dimensions-form-outer">
+            <div id="dimensions-form-inner">
+              <label htmlFor="x" className="input-label">
+                X position
+              </label>
+              <Input
+                className="input-input"
+                min="0"
+                name="x"
+                type="number"
+                value={selectedLayer.x}
+                onChange={handleChange}
+              />
+
+              <label htmlFor="y" className="input-label">
+                Y position
+              </label>
+              <Input
+                className="input-input"
+                min="0"
+                name="y"
+                type="number"
+                value={selectedLayer.y}
+                onChange={handleChange}
+              />
+
+              {selectedLayer.type.DimensionsComponent(
+                selectedLayer,
+                handleChange,
+                handleTextPropsChange,
+                handleRotate
+              )}
+            </div>
           </div>
         ) : null}
       </div>

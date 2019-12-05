@@ -1,6 +1,7 @@
 /* eslint-disable max-params */
 /* eslint-disable react/display-name */
 import React from 'react'
+import {Input} from 'semantic-ui-react'
 
 // let _id = 0
 
@@ -9,15 +10,19 @@ export const textBox = {
   DimensionsComponent: (selectedLayer, handleChange, handleTextPropsChange) => {
     return (
       <div>
-        <label>Width</label>
-        <input
+        <label className="input-label">Width</label>
+        <Input
+          className="input-input"
+          min="0"
           name="width"
           type="number"
           value={selectedLayer.props.width}
           onChange={handleTextPropsChange}
         />
-        <label>Height</label>
-        <input
+        <label className="input-label">Height</label>
+        <Input
+          className="input-input"
+          min="0"
           name="height"
           type="number"
           value={selectedLayer.props.height}

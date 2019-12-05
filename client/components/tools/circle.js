@@ -8,16 +8,20 @@ export const circle = {
   DimensionsComponent: (selectedLayer, handleChange) => {
     return (
       <div>
-        <label>Radius</label>
+        <label className="input-label">Radius</label>
         <Input
+          className="input-input"
+          min="0"
           name="radius"
           type="number"
           width="4"
           value={selectedLayer.props.radius}
           onChange={handleChange}
         />
-        <label>Stroke Width</label>
+        <label className="input-label">Stroke Width</label>
         <Input
+          className="input-input"
+          min="0"
           name="strokeWidth"
           type="number"
           value={selectedLayer.props.strokeWidth}
