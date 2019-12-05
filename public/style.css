@@ -357,6 +357,7 @@ div.changeLineRect:hover {
   flex-direction: row;
   justify-content: space-between;
   padding-left: 5px;
+  margin-top: 0 !important;
 }
 #main-colors-container {
   display: flex;

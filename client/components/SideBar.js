@@ -74,7 +74,7 @@ const SideBar = ({
         </div>
         {cursors.map((cursor, idx) => (
           <div
-            key={cursor}
+            key={idx}
             style={{
               height: '2rem',
               width: '2rem',

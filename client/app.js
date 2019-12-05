@@ -348,7 +348,7 @@ const App = () => {
           <div
             id="canvas"
             //lets think about changing canvas width height soon; note to self - Henry
-            style={{position: 'absolute', width: 5000, height: 5000}}
+            style={{position: 'absolute', width: '5000px', height: 5000}}
             onMouseMove={handleDisplayMouseMove}
             onMouseDown={handleDisplayMouseDown}
             onMouseUp={handleDisplayMouseUp}
