@@ -79,7 +79,7 @@ class Session {
     this._mouseY = y
   }
   resetTimer() {
-    this._timer = 10
+    this._timer = 500
   }
   decrementTimer() {
     this._timer -= 1
