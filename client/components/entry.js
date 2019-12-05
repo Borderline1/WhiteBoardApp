@@ -44,6 +44,7 @@ const Entry = ({
 
   return (
     <div className="join-container">
+      <h1 className="join-title">SVG Board</h1>
       <Input
         type="text"
         value={roomName}

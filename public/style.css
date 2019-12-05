@@ -1,7 +1,6 @@
 body {
   font-family: sans-serif;
 }
-
 a {
   text-decoration: none;
 }
@@ -123,18 +122,24 @@ form div {
 }
 
 .join-container {
+  background-image: url('splash.png');
   position: absolute;
   width: 100vw;
   height: 100vh;
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
+  padding-top: 100px;
 }
 
-.join-header {
+.join-title {
   font-family: 'Arial';
-  font-size: 30px;
+  font-size: 150px;
+  color: white;
+  background-color: #3c4043;
+  opacity: 0.95;
+  border-radius: 40px;
+  padding: 0 25px;
 }
 
 .join-input {
@@ -145,7 +150,9 @@ form div {
   border: none;
   background: rgb(240, 240, 240);
   border-radius: 5px;
-  margin: 5px;
+  margin: 12.5px;
+  height: 56px;
+  width: 300px;
 }
 
 .join-button {
@@ -160,9 +167,12 @@ form div {
   cursor: pointer;
   padding: 5px;
   margin: 5px;
+  height: 40px;
+  width: 72px;
 }
 .join-button:hover {
-  background: rgb(230, 230, 230);
+  background-color: rgb(51, 204, 210) !important;
+  color: white !important;
 }
 
 .layer.indicated {
