@@ -42,6 +42,7 @@ form div {
 }
 .input-input input {
   height: 15px;
+  color: black;
 }
 .input-label {
   color: white;

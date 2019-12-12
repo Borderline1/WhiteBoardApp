@@ -13,32 +13,36 @@ export const triangle = {
   ) => {
     return (
       <div>
-        <label>Base</label>
+        <label className="input-label">Base</label>
         <Input
+          className="input-input"
           min="0"
           name="base"
           type="number"
           value={selectedLayer.props.base}
           onChange={handleChange}
         />
-        <label>Height</label>
+        <label className="input-label">Height</label>
         <Input
+          className="input-input"
           min="0"
           name="height"
           type="number"
           value={selectedLayer.props.height}
           onChange={handleChange}
         />
-        <label>Stroke Width</label>
+        <label className="input-label">Stroke Width</label>
         <Input
+          className="input-input"
           min="0"
           name="strokeWidth"
           type="number"
           value={selectedLayer.props.strokeWidth}
           onChange={handleChange}
         />
-        <label>Rotate</label>
+        <label className="input-label">Rotate</label>
         <Input
+          className="input-input"
           min="0"
           name="rotate"
           type="number"
@@ -272,7 +276,7 @@ export const triangle = {
       }
     })
   },
-  handleCreate: (x, y, fill = 'black', uuid, socket, strokeColor) => {
+  handleCreate: (x, y, fill = 'black', uuid, socket, strokeColor, roomName) => {
     const data = {
       type: 'triangle',
       id: uuid,
@@ -286,6 +290,7 @@ export const triangle = {
         strokeWidth: 5,
         rotate: 0,
         points: '7.5 2.5, 5 12.5, 10 12.5',
+        roomName: roomName,
         deletePosition: {top: '-6px', bottom: '', right: '-8px', left: ''},
         changePosition: {
           top: '',

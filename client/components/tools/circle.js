@@ -1,3 +1,4 @@
+/* eslint-disable max-params */
 /* eslint-disable react/display-name */
 import React from 'react'
 import {Input} from 'semantic-ui-react'
@@ -105,7 +106,7 @@ export const circle = {
       }
     })
   },
-  handleCreate: (x, y, fill, uuid, socket, strokeColor) => {
+  handleCreate: (x, y, fill, uuid, socket, strokeColor, roomName) => {
     const data = {
       type: 'circle',
       x: x - 10,
@@ -116,7 +117,8 @@ export const circle = {
         rotate: 0,
         fill,
         stroke: strokeColor,
-        strokeWidth: 6
+        strokeWidth: 6,
+        roomName: roomName
       }
     }
     socket.emit('create', data)

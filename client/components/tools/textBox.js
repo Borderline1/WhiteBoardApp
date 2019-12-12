@@ -118,6 +118,8 @@ export const textBox = {
     color = '#ffffff',
     uuid,
     socket,
+    strokeColor,
+    roomName,
     text = '',
     textColor = '#000000'
   ) => {
@@ -135,7 +137,8 @@ export const textBox = {
         textColor,
         selectionStart: 0,
         selectionEnd: 0,
-        id: uuid
+        id: uuid,
+        roomName: roomName
       }
     }
     socket.emit('create', data)
