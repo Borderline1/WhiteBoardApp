@@ -1,6 +1,6 @@
 # SVG BOARD
 
-Savage board is a collaborative whiteboard app allows groups of people to join a room by name and draw together!
+SVG board is a collaborative whiteboard app allows groups of people to join a room by name and draw together!
 
 ## Start
 
