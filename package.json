@@ -56,7 +56,7 @@
     "react-hotkeys-hook": "^1.5.3",
     "react-router-dom": "^5.0.0",
     "semantic-ui-react": "^0.88.1",
-    "socket.io": "^2.2.0",
+    "socket.io": "^2.4.0",
     "uuid": "^3.3.3"
   },
   "devDependencies": {
