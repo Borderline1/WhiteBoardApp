@@ -43,7 +43,7 @@
     "classnames": "^2.2.6",
     "compression": "^1.7.3",
     "cors": "^2.8.5",
-    "express": "^4.16.4",
+    "express": "^4.17.3",
     "express-session": "^1.15.1",
     "history": "^4.9.0",
     "mongodb": "^3.3.4",
